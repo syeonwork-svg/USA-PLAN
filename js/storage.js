@@ -16,7 +16,7 @@ const STORAGE_KEYS = {
 const StorageManager = {
   // Initialize storage with mock data if empty
   init() {
-    const CURRENT_VERSION = "v17";
+    const CURRENT_VERSION = "v18";
     const savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
 
     // Non-destructive initialization: only set default if key doesn't exist
