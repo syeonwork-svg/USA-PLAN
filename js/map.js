@@ -292,6 +292,40 @@ const MapComponent = {
         marker.openPopup();
       }
     }
+  },
+
+  // Focus map viewport to cover all itinerary activities of the given date
+  focusOnDay(dateStr) {
+    const timelineData = StorageManager.getTimeline();
+    const dayActivities = timelineData[dateStr] || [];
+    
+    // Find all activities for this day that have valid coordinates
+    const validLocs = dayActivities.filter(act => act.lat && act.lng);
+    if (validLocs.length === 0) return;
+
+    const isGoogle = (this.googleMap && document.getElementById("google-map").style.display === "block");
+
+    if (isGoogle) {
+      if (!this.googleMap) return;
+      const bounds = new google.maps.LatLngBounds();
+      validLocs.forEach(loc => {
+        bounds.extend({ lat: loc.lat, lng: loc.lng });
+      });
+      this.googleMap.fitBounds(bounds);
+      
+      // If only one location, set zoom to 14
+      if (validLocs.length === 1) {
+        this.googleMap.setZoom(14);
+      }
+    } else {
+      if (!this.leafletMap) return;
+      const points = validLocs.map(loc => [loc.lat, loc.lng]);
+      if (points.length === 1) {
+        this.leafletMap.setView(points[0], 14);
+      } else {
+        this.leafletMap.fitBounds(points, { padding: [50, 50] });
+      }
+    }
   }
 };
 window.MapComponent = MapComponent;

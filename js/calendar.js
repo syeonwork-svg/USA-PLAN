@@ -4,6 +4,10 @@ const CalendarComponent = {
   currentMonth: 9, // 0-indexed, so 9 is October
 
   init() {
+    const details = StorageManager.getTripDetails();
+    const startParts = (details.startDate || "2026-10-14").split("-");
+    this.currentYear = parseInt(startParts[0]);
+    this.currentMonth = parseInt(startParts[1]) - 1; // 0-indexed
     this.render();
     this.bindEvents();
   },
@@ -16,9 +20,10 @@ const CalendarComponent = {
       this.changeMonth(1);
     });
     document.getElementById("today-btn").addEventListener("click", () => {
-      // Set to October 2026 (the trip month) or actual today
-      this.currentYear = 2026;
-      this.currentMonth = 9;
+      const details = StorageManager.getTripDetails();
+      const startParts = (details.startDate || "2026-10-14").split("-");
+      this.currentYear = parseInt(startParts[0]);
+      this.currentMonth = parseInt(startParts[1]) - 1; // 0-indexed
       this.render();
     });
 
@@ -67,9 +72,9 @@ const CalendarComponent = {
     const addressGroup = document.getElementById("cal-event-address-group");
 
     endDateGroup.style.display = (type === "accommodation") ? "block" : "none";
-    hotelGroup.style.display = (type === "accommodation") ? "block" : "none";
-    checkinGroup.style.display = (type === "accommodation") ? "block" : "none";
-    addressGroup.style.display = (type === "accommodation") ? "block" : "none";
+    hotelGroup.style.display = "none";
+    checkinGroup.style.display = "none";
+    addressGroup.style.display = "none";
     
     durationGroup.style.display = (type === "roadtrip") ? "block" : "none";
     destGroup.style.display = (type === "roadtrip") ? "block" : "none";
@@ -187,7 +192,9 @@ const CalendarComponent = {
     let renderableEvents = [...dayEvents];
     const dayAccommodations = renderableEvents.filter(ev => ev.type === "accommodation");
     if (dayAccommodations.length > 1) {
-      const mergedTitle = `${dayAccommodations[0].title.replace(" 숙박", "")} ➔ ${dayAccommodations[1].title.replace(" 숙박", "")}`;
+      const title0 = (dayAccommodations[0].title || "").replace(" 숙박", "");
+      const title1 = (dayAccommodations[1].title || "").replace(" 숙박", "");
+      const mergedTitle = `${title0} -> ${title1}`;
       const mergedEvent = {
         id: dayAccommodations[0].id,
         title: mergedTitle,
@@ -208,6 +215,7 @@ const CalendarComponent = {
     });
 
     sortedDayEvents.forEach(ev => {
+      const evTitle = ev.title || "";
       if (ev.type === "label") {
         const labelDiv = document.createElement("div");
         labelDiv.className = "calendar-cell-label";
@@ -220,7 +228,7 @@ const CalendarComponent = {
         labelDiv.style.overflow = "hidden";
         labelDiv.style.textOverflow = "ellipsis";
         labelDiv.style.cursor = "pointer";
-        labelDiv.innerHTML = `${ev.title}`;
+        labelDiv.innerHTML = evTitle;
         
         labelDiv.addEventListener("click", (e) => {
           e.stopPropagation();
@@ -233,7 +241,7 @@ const CalendarComponent = {
       const badge = document.createElement("div");
       badge.className = `badge-event color-${ev.color}`;
 
-      if (ev.title.includes("할로윈")) {
+      if (typeof evTitle === "string" && evTitle.includes("할로윈")) {
         badge.classList.add("badge-halloween");
       }
 
@@ -249,17 +257,17 @@ const CalendarComponent = {
         } else {
           badge.classList.add("span-mid");
         }
-        badge.innerHTML = `🏨 ${ev.title}`;
+        badge.innerHTML = `🏨 ${evTitle}`;
       } else if (ev.type === "city") {
-        badge.innerHTML = `${ev.title}`;
+        badge.innerHTML = evTitle;
         if (ev.label) {
           badge.innerHTML += ` <span style="font-size: 9px; opacity: 0.7; margin-left: 2px;">${ev.label}</span>`;
         }
       } else if (ev.type === "roadtrip") {
-        badge.innerHTML = `🚗 ${ev.title}`;
+        badge.innerHTML = `🚗 ${evTitle}`;
       } else {
         // Activity
-        badge.innerHTML = `${ev.title}`;
+        badge.innerHTML = evTitle;
       }
 
       badge.addEventListener("click", (e) => {

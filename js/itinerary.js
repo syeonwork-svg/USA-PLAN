@@ -6,14 +6,21 @@ const ItineraryComponent = {
   editingDate: null,
 
   init() {
+    const details = StorageManager.getTripDetails();
+    this.selectedDate = details.startDate || "2026-10-14";
     this.calculateDays();
     this.render();
     this.bindEvents();
   },
 
   calculateDays() {
-    // Generate dates from 2026-10-15 to 2026-11-03 (20 days)
-    const startDate = new Date(2026, 9, 15); // Oct 15
+    const details = StorageManager.getTripDetails();
+    const startParts = (details.startDate || "2026-10-14").split("-");
+    const year = parseInt(startParts[0]);
+    const month = parseInt(startParts[1]) - 1; // 0-indexed
+    const day = parseInt(startParts[2]);
+
+    const startDate = new Date(year, month, day);
     const daysCount = 20;
     this.daysList = [];
 
@@ -23,16 +30,16 @@ const ItineraryComponent = {
       const current = new Date(startDate);
       current.setDate(startDate.getDate() + i);
       
-      const year = current.getFullYear();
-      const month = current.getMonth() + 1;
-      const date = current.getDate();
-      const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+      const y = current.getFullYear();
+      const m = current.getMonth() + 1;
+      const d = current.getDate();
+      const dateStr = `${y}-${String(m).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
       const dayName = weekdaysKOR[current.getDay()];
 
       this.daysList.push({
         dayIndex: i + 1,
         dateStr,
-        displayLabel: `${month}월 ${date}일 (${dayName})`
+        displayLabel: `${m}월 ${d}일 (${dayName})`
       });
     }
   },
@@ -202,7 +209,9 @@ const ItineraryComponent = {
         });
 
         // Split criteria: Korea vs USA
-        const isKorea = act.title.includes("인천") || act.title.includes("대한항공") || act.title.includes("이륙") || act.title.includes("출발") || (act.locName && (act.locName.includes("Incheon") || act.locName.includes("인천")));
+        const actTitle = act.title || "";
+        const actLoc = act.locName || "";
+        const isKorea = actTitle.includes("인천") || actTitle.includes("대한항공") || actTitle.includes("이륙") || actTitle.includes("출발") || actLoc.includes("Incheon") || actLoc.includes("인천");
         if (isKorea) {
           leftCol.appendChild(item);
         } else {
@@ -294,10 +303,11 @@ const ItineraryComponent = {
     const events = StorageManager.getEvents();
     const cityEvent = events.find(ev => ev.type === "city" && ev.date === this.selectedDate);
     let lat = 40.7128, lng = -74.0060; // NYC Default
-    if (cityEvent) {
-      if (cityEvent.title.includes("애틀랜타")) { lat = 33.7490; lng = -84.3880; }
-      else if (cityEvent.title.includes("올랜도")) { lat = 28.5383; lng = -81.3792; }
-      else if (cityEvent.title.includes("마이애미")) { lat = 25.7617; lng = -80.1918; }
+    if (cityEvent && cityEvent.title) {
+      const cityTitle = cityEvent.title;
+      if (cityTitle.includes("애틀랜타")) { lat = 33.7490; lng = -84.3880; }
+      else if (cityTitle.includes("올랜도") || cityTitle.includes("올랜드")) { lat = 28.5383; lng = -81.3792; }
+      else if (cityTitle.includes("마이애미")) { lat = 25.7617; lng = -80.1918; }
     }
     
     document.getElementById("timeline-item-loc").value = "";

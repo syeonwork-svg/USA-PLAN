@@ -10,13 +10,13 @@ const App = {
     this.initTheme();
 
     // 3. Initialize components
-    if (window.CalendarComponent) CalendarComponent.init();
-    if (window.ItineraryComponent) ItineraryComponent.init();
-    if (window.ExpensesComponent) ExpensesComponent.init();
-    if (window.MapComponent) MapComponent.init();
-    if (window.TicketsComponent) TicketsComponent.init();
-    if (window.PassportsComponent) PassportsComponent.init();
-    if (window.ChecklistComponent) ChecklistComponent.init();
+    try { if (window.CalendarComponent) CalendarComponent.init(); } catch (e) { console.error("Calendar init error:", e); }
+    try { if (window.ItineraryComponent) ItineraryComponent.init(); } catch (e) { console.error("Itinerary init error:", e); }
+    try { if (window.ExpensesComponent) ExpensesComponent.init(); } catch (e) { console.error("Expenses init error:", e); }
+    try { if (window.MapComponent) MapComponent.init(); } catch (e) { console.error("Map init error:", e); }
+    try { if (window.TicketsComponent) TicketsComponent.init(); } catch (e) { console.error("Tickets init error:", e); }
+    try { if (window.PassportsComponent) PassportsComponent.init(); } catch (e) { console.error("Passports init error:", e); }
+    try { if (window.ChecklistComponent) ChecklistComponent.init(); } catch (e) { console.error("Checklist init error:", e); }
 
     // 4. Bind overall event listeners
     this.bindEvents();
@@ -118,7 +118,12 @@ const App = {
   },
 
   initTheme() {
-    const savedTheme = localStorage.getItem("theme");
+    let savedTheme = null;
+    try {
+      savedTheme = localStorage.getItem("theme");
+    } catch (e) {
+      console.warn("Theme loading failed from localStorage:", e);
+    }
     const themeCheckbox = document.getElementById("theme-checkbox");
     
     let isDark = false;
@@ -136,10 +141,18 @@ const App = {
   toggleTheme(isDark) {
     if (isDark) {
       document.documentElement.setAttribute("data-theme", "dark");
-      localStorage.setItem("theme", "dark");
+      try {
+        localStorage.setItem("theme", "dark");
+      } catch (e) {
+        console.warn("Theme writing failed to localStorage:", e);
+      }
     } else {
       document.documentElement.removeAttribute("data-theme");
-      localStorage.setItem("theme", "light");
+      try {
+        localStorage.setItem("theme", "light");
+      } catch (e) {
+        console.warn("Theme writing failed to localStorage:", e);
+      }
     }
 
     // Refresh map if initialized to apply light/dark tile skins
@@ -257,6 +270,8 @@ const App = {
     });
   }
 };
+
+window.App = App;
 
 // Start the application when DOM is ready
 document.addEventListener("DOMContentLoaded", () => {

@@ -3,38 +3,31 @@
 
 const DEFAULT_TRIP_DETAILS = {
   title: "미국 20일 가족 여행",
-  startDate: "2026-10-15",
-  endDate: "2026-11-03",
+  startDate: "2026-10-14",
+  endDate: "2026-11-02",
   budget: 12000000, // 1,200만 원
 };
 
 const DEFAULT_EVENTS = [
   // City/Region Badges
-  { id: "c1", title: "애틀랜타", date: "2026-10-15", color: "teal", type: "city" },
-  { id: "c2", title: "애틀랜타", date: "2026-10-16", color: "teal", type: "city" },
-  { id: "c3", title: "애틀랜타", date: "2026-10-17", color: "teal", type: "city" },
-  { id: "c4", title: "애틀랜타", date: "2026-10-18", color: "teal", type: "city" },
-  { id: "c5", title: "애틀랜타", date: "2026-10-19", color: "teal", type: "city" },
+  { id: "c1", title: "애틀랜타", date: "2026-10-14", color: "teal", type: "city" },
+  { id: "c2", title: "애틀랜타", date: "2026-10-15", color: "teal", type: "city" },
+  { id: "c3", title: "애틀랜타", date: "2026-10-16", color: "teal", type: "city" },
+  { id: "c4", title: "애틀랜타", date: "2026-10-17", color: "teal", type: "city" },
+  { id: "c5", title: "애틀랜타", date: "2026-10-18", color: "teal", type: "city" },
+  { id: "c6", title: "애틀랜타", date: "2026-10-19", color: "teal", type: "city" },
   
-  // October 20th: Atlanta -> Roadtrip -> Orlando -> 7h30m label
-  { id: "rt1", title: "애틀랜타", date: "2026-10-20", color: "teal", type: "city" },
-  { id: "rt2", title: "로드트립", date: "2026-10-20", color: "black", type: "roadtrip" },
-  { id: "rt3", title: "올랜드", date: "2026-10-20", color: "orange", type: "city" },
-  { id: "rtl1", title: "🚗7시간 30분", date: "2026-10-20", color: "grey", type: "label" },
+  // October 20th: Roadtrip to Orlando
+  { id: "rt1", title: "올랜도 | 로드트립 (7시간 30분)", date: "2026-10-20", color: "orange", type: "roadtrip" },
 
-  // October 21st: Orlando -> Roadtrip -> Miami -> 4h label
-  { id: "rt4", title: "올랜드", date: "2026-10-21", color: "orange", type: "city" },
-  { id: "rt5", title: "로드트립", date: "2026-10-21", color: "black", type: "roadtrip" },
-  { id: "rt6", title: "마이애미", date: "2026-10-21", color: "yellow", type: "city" },
-  { id: "rtl2", title: "🚗4시간", date: "2026-10-21", color: "grey", type: "label" },
+  // October 21st: Roadtrip to Miami
+  { id: "rt4", title: "마이애미 | 로드트립 (4시간)", date: "2026-10-21", color: "yellow", type: "roadtrip" },
 
   { id: "c7", title: "마이애미", date: "2026-10-22", color: "yellow", type: "city" },
   { id: "c8", title: "마이애미", date: "2026-10-23", color: "yellow", type: "city" },
   
-  // October 24th: Miami -> New York -> Morning ticket label
-  { id: "c9", title: "마이애미", date: "2026-10-24", color: "yellow", type: "city" },
-  { id: "c10", title: "뉴욕", date: "2026-10-24", color: "pink", type: "city" },
-  { id: "lbl1", title: "*아침 비행기표", date: "2026-10-24", color: "grey", type: "label" },
+  // October 24th: Miami -> NYC Flight
+  { id: "c10", title: "✈️ 마이애미 ➔ 뉴욕", date: "2026-10-24", color: "pink", type: "city" },
 
   { id: "c11", title: "뉴욕", date: "2026-10-25", color: "pink", type: "city" },
   { id: "c12", title: "뉴욕", date: "2026-10-26", color: "pink", type: "city" },
@@ -49,7 +42,6 @@ const DEFAULT_EVENTS = [
   { id: "lbl2", title: "*뉴욕으로 오실 수 있다면 같이 저녁", date: "2026-11-01", color: "grey", type: "label" },
 
   { id: "c19", title: "뉴욕", date: "2026-11-02", color: "pink", type: "city" },
-  { id: "c20", title: "뉴욕", date: "2026-11-03", color: "pink", type: "city" },
   
   // Activities (Small color badges)
   { id: "a1", title: "⛳️ 골프 (아빠, 엄마&작은아빠)", date: "2026-10-17", color: "green", type: "activity" },
@@ -58,40 +50,45 @@ const DEFAULT_EVENTS = [
   { id: "a4", title: "할로윈", date: "2026-10-31", color: "red", type: "activity" },
 
   // Accommodations (Multi-day spans, shown as grey bar at the bottom)
-  { id: "ac1", title: "저지시티 숙박", date: "2026-10-24", endDate: "2026-10-29", color: "grey", type: "accommodation", hotel: "하얏트 하우스 저지시티 (예약번호: HY12948)", checkin: "체크인 15:00 / 체크아웃 11:00", address: "1 Exchange Pl, Jersey City, NJ 07302" },
-  { id: "ac2", title: "뉴욕 중심가 숙박", date: "2026-10-29", endDate: "2026-11-02", color: "grey", type: "accommodation", hotel: "밀레니엄 힐튼 뉴욕 원 디엔디 (예약번호: MH88471)", checkin: "체크인 16:00 / 체크아웃 11:00", address: "One United Nations Plaza, New York, NY 10017" }
+  { id: "ac1", title: "저지시티", date: "2026-10-24", endDate: "2026-10-30", color: "grey", type: "accommodation" },
+  { id: "ac2", title: "뉴욕 중심가", date: "2026-10-30", endDate: "2026-11-02", color: "grey", type: "accommodation" }
 ];
 
 const DEFAULT_TIMELINE = {
   // Atlanta Days (10/15 - 10/19)
-  "2026-10-15": [
+  "2026-10-14": [
     { time: "13:30", title: "인천공항 T2 도착 및 체크인", desc: "대한항공 KE085 항공편 수하물 부치기 및 보안검색", locName: "인천국제공항 제2여객터미널", lat: 37.4602, lng: 126.4407 , isDraft: true },
     { time: "16:25", title: "대한항공 KE085 이륙 (인천 출발)", desc: "애틀랜타(ATL)행 14시간 비행 출발 (예약코드: EK859P)", locName: "인천국제공항", lat: 37.4602, lng: 126.4407 , isDraft: true },
     { time: "17:30", title: "애틀랜타 하츠필드 잭슨 공항 도착 (현지 시간)", desc: "대한항공 KE085편 도착, 입국 심사 및 수하물 수취", locName: "Hartsfield-Jackson Atlanta International Airport", lat: 33.6407, lng: -84.4277 , isDraft: true },
     { time: "19:00", title: "렌터카 픽업 및 숙소 이동", desc: "Hertz 렌터카에서 대형 SUV 인수 후 애틀랜타 시내 숙소 이동", locName: "Atlanta Airport Rental Car Center", lat: 33.6432, lng: -84.4492 , isDraft: true },
     { time: "20:30", title: "저녁 식사 (Mary Mac's Tea Room)", desc: "남부 전통 가정식 늦은 식사 및 마트 장보기", locName: "Mary Mac's Tea Room", lat: 33.7725, lng: -84.3800 , isDraft: true }
   ],
-  "2026-10-16": [
+  "2026-10-15": [
     { time: "10:00", title: "조지아 아쿠아리움 관람", desc: "세계에서 가장 큰 수족관 중 하나, 고래상어 보기", locName: "Georgia Aquarium", lat: 33.7634, lng: -84.3951 , isDraft: true },
     { time: "13:30", title: "점심 식사 (The Varsity)", desc: "역사적인 패스트푸드점에서 핫도그와 햄버거", locName: "The Varsity", lat: 33.7716, lng: -84.3891 , isDraft: true },
     { time: "15:00", title: "월드 오브 코카콜라 박물관", desc: "코카콜라 역사 관람 및 전세계 음료 시음", locName: "World of Coca-Cola", lat: 33.7624, lng: -84.3928 , isDraft: true }
   ],
-  "2026-10-17": [
+  "2026-10-16": [
     { time: "10:00", title: "CNN 센터 및 센테니얼 올림픽 공원 산책", desc: "도심 속 공원 산책 및 포토존", locName: "Centennial Olympic Park", lat: 33.7592, lng: -84.3934 , isDraft: true },
     { time: "12:30", title: "점심 식사 (Ponce City Market)", desc: "다양한 맛집이 모여있는 마켓 락스", locName: "Ponce City Market", lat: 33.7727, lng: -84.3656 , isDraft: true },
     { time: "15:00", title: "마틴 루터 킹 주니어 역사 지구", desc: "역사적인 생가와 박물관 관람", locName: "Martin Luther King, Jr. National Historical Park", lat: 33.7554, lng: -84.3734 , isDraft: true }
   ],
-  "2026-10-18": [
+  "2026-10-17": [
     { time: "08:00", title: "⛳️ 라운딩: 골프 (아빠, 엄마 & 작은아빠)", desc: "애틀랜타 인근 골프클럽 라운딩", locName: "Heritage Golf Links", lat: 33.8828, lng: -84.2185 , isDraft: true },
     { time: "14:30", title: "점심 식사 및 휴식", desc: "클럽하우스 또는 주변 한식당에서 식사", locName: "Duluth Korean Town", lat: 33.9535, lng: -84.1430 , isDraft: true },
     { time: "16:00", title: "스톤 마운틴 공원 케이블카 관람", desc: "거대한 바위산 정상에 올라가 애틀랜타 전망 감상", locName: "Stone Mountain Park", lat: 33.8083, lng: -84.1444 , isDraft: true },
     { time: "18:30", title: "가족 저녁 식사 및 마트 장보기", desc: "H-Mart 둘루스점에서 한식 장보기", locName: "H Mart Duluth", lat: 33.9599, lng: -84.1235 , isDraft: true }
   ],
-  "2026-10-19": [
+  "2026-10-18": [
     { time: "08:00", title: "⛳️ 라운딩: 골프 2일차 (아빠, 엄마 & 작은아빠)", desc: "다른 코스에서 두 번째 가족 라운딩", locName: "Stone Mountain Golf Club", lat: 33.8055, lng: -84.1481 , isDraft: true },
     { time: "13:00", title: "점심 식사 (South City Kitchen)", desc: "세련된 남부 스타일 런치", locName: "South City Kitchen Midtown", lat: 33.7850, lng: -84.3840 , isDraft: true },
     { time: "14:30", title: "하이 미술관 (High Museum of Art) 관람", desc: "아름다운 백색 건축물과 근현대 미술품 감상", locName: "High Museum of Art", lat: 33.7901, lng: -84.3856 , isDraft: true },
     { time: "16:30", title: "애틀랜타 식물원 산책", desc: "실내 온실과 숲속 공중 산책로 걷기", locName: "Atlanta Botanical Garden", lat: 33.7904, lng: -84.3736 , isDraft: true }
+  ],
+  "2026-10-19": [
+    { time: "10:00", title: "애틀랜타 벨트라인 산책 및 자전거 투어", desc: "도심 속 도시 재생 공원 산책 및 자유 시간", locName: "Atlanta BeltLine", lat: 33.7712, lng: -84.3629, isDraft: true },
+    { time: "12:30", title: "점심 식사 및 쇼핑", desc: "Krog Street Market에서 맛집 탐방 및 소품 쇼핑", locName: "Krog Street Market", lat: 33.7565, lng: -84.3644, isDraft: true },
+    { time: "18:00", title: "가족 저녁 식사 및 내일 로드트립 준비", desc: "숙소 근처 맛집에서 식사 후 차량 점검 및 조기 취침", locName: "Atlanta Downtown", lat: 33.7490, lng: -84.3880, isDraft: true }
   ],
 
   // Road trip to Orlando (10/20)
@@ -191,7 +188,7 @@ const DEFAULT_TICKETS = [
     id: "t1",
     category: "flight",
     title: "대한항공 KE085 (인천 ➔ 애틀랜타)",
-    date: "2026-10-15",
+    date: "2026-10-14",
     time: "16:25",
     details: "편명: KE085 (공동운항) | 좌석등급: 일반석\n항공사 예약번호: EK859P | 여행사 예약번호: HA2635045264\n탑승인원: 4명 | 발권: 하나투어",
     imageUrl: "",
@@ -227,7 +224,7 @@ const DEFAULT_TICKETS = [
     id: "t4",
     category: "activity",
     title: "헤리티지 골프 링크 라운딩 예약증",
-    date: "2026-10-18",
+    date: "2026-10-17",
     time: "08:00",
     details: "티타임: 오전 08:00 | 인원: 3인 라운딩\n예약자: 임세연 | 카트 포함 여부: 포함",
     imageUrl: "",
@@ -322,3 +319,12 @@ const GOOGLE_MAPS_PLACES = [
   { name: "Leon's Bagels", lat: 40.7276755, lng: -74.0004378, category: "food", address: "169 Thompson St, New York, NY 10012", note: "" },
   { name: "McNally Jackson Books SoHo", lat: 40.725538, lng: -74.000592, category: "shopping", address: "134 Prince St, New York, NY 10012", note: "" }
 ];
+
+window.DEFAULT_TRIP_DETAILS = DEFAULT_TRIP_DETAILS;
+window.DEFAULT_EVENTS = DEFAULT_EVENTS;
+window.DEFAULT_TIMELINE = DEFAULT_TIMELINE;
+window.DEFAULT_EXPENSES = DEFAULT_EXPENSES;
+window.DEFAULT_TICKETS = DEFAULT_TICKETS;
+window.DEFAULT_PASSPORTS = DEFAULT_PASSPORTS;
+window.DEFAULT_CHECKLIST = DEFAULT_CHECKLIST;
+window.GOOGLE_MAPS_PLACES = GOOGLE_MAPS_PLACES;

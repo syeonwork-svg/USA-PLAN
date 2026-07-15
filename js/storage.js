@@ -16,11 +16,231 @@ const STORAGE_KEYS = {
 const StorageManager = {
   // Initialize storage with mock data if empty
   init() {
-    const CURRENT_VERSION = "v26";
-    const savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
+    try {
+      const CURRENT_VERSION = "v32";
+      let savedVersion = null;
+      try {
+        savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
+      } catch (e) {
+        console.warn("localStorage version read failed:", e);
+      }
 
-    if (savedVersion !== CURRENT_VERSION) {
-      // Version 26 reset: Overwrite with fresh screenshot-aligned defaults
+      if (savedVersion !== CURRENT_VERSION) {
+        // Version 32 reset: Overwrite with fresh screenshot-aligned defaults
+        this.saveTripDetails(DEFAULT_TRIP_DETAILS);
+        this.saveEvents(DEFAULT_EVENTS);
+        this.saveTimeline(DEFAULT_TIMELINE);
+        this.saveExpenses(DEFAULT_EXPENSES);
+        this.saveTickets(DEFAULT_TICKETS);
+        this.savePassports(DEFAULT_PASSPORTS);
+        this.saveChecklist(DEFAULT_CHECKLIST);
+        this.saveGooglePlaces(GOOGLE_MAPS_PLACES);
+        this.saveMapConfig({ googleMapsApiKey: "" });
+        
+        try {
+          localStorage.setItem(STORAGE_KEYS.VERSION, CURRENT_VERSION);
+          localStorage.setItem("usa_travel_data_version", CURRENT_VERSION);
+        } catch (e) {}
+      } else {
+        // Non-destructive fallback using secure wrappers
+        if (!this.getItemRaw(STORAGE_KEYS.TRIP_DETAILS)) {
+          this.saveTripDetails(DEFAULT_TRIP_DETAILS);
+        }
+        if (!this.getItemRaw(STORAGE_KEYS.EVENTS)) {
+          this.saveEvents(DEFAULT_EVENTS);
+        }
+        if (!this.getItemRaw(STORAGE_KEYS.TIMELINE)) {
+          this.saveTimeline(DEFAULT_TIMELINE);
+        }
+        if (!this.getItemRaw(STORAGE_KEYS.EXPENSES)) {
+          this.saveExpenses(DEFAULT_EXPENSES);
+        }
+        if (!this.getItemRaw(STORAGE_KEYS.TICKETS)) {
+          this.saveTickets(DEFAULT_TICKETS);
+        }
+        if (!this.getItemRaw(STORAGE_KEYS.PASSPORTS)) {
+          this.savePassports(DEFAULT_PASSPORTS);
+        }
+        if (!this.getItemRaw(STORAGE_KEYS.CHECKLIST)) {
+          this.saveChecklist(DEFAULT_CHECKLIST);
+        }
+        if (!this.getItemRaw(STORAGE_KEYS.GOOGLE_PLACES)) {
+          this.saveGooglePlaces(GOOGLE_MAPS_PLACES);
+        }
+        if (!this.getItemRaw(STORAGE_KEYS.MAP_CONFIG)) {
+          this.saveMapConfig({ googleMapsApiKey: "" });
+        }
+      }
+    } catch (e) {
+      console.error("StorageManager init failed:", e);
+    }
+  },
+
+  // Raw helper to get item safely without throwing
+  getItemRaw(key) {
+    try {
+      return localStorage.getItem(key);
+    } catch (e) {
+      return null;
+    }
+  },
+
+  getTripDetails() {
+    try {
+      const data = JSON.parse(this.getItemRaw(STORAGE_KEYS.TRIP_DETAILS));
+      return (data && typeof data === "object" && !Array.isArray(data)) ? data : DEFAULT_TRIP_DETAILS;
+    } catch (e) {
+      return DEFAULT_TRIP_DETAILS;
+    }
+  },
+
+  saveTripDetails(details) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.TRIP_DETAILS, JSON.stringify(details));
+    } catch (e) {
+      console.warn("Storage write failed for trip details:", e);
+    }
+  },
+
+  getEvents() {
+    try {
+      const data = JSON.parse(this.getItemRaw(STORAGE_KEYS.EVENTS));
+      return Array.isArray(data) ? data : DEFAULT_EVENTS;
+    } catch (e) {
+      return DEFAULT_EVENTS;
+    }
+  },
+
+  saveEvents(events) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(events));
+    } catch (e) {
+      console.warn("Storage write failed for events:", e);
+    }
+  },
+
+  getTimeline() {
+    try {
+      const data = JSON.parse(this.getItemRaw(STORAGE_KEYS.TIMELINE));
+      return (data && typeof data === "object" && !Array.isArray(data)) ? data : DEFAULT_TIMELINE;
+    } catch (e) {
+      return DEFAULT_TIMELINE;
+    }
+  },
+
+  saveTimeline(timeline) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.TIMELINE, JSON.stringify(timeline));
+    } catch (e) {
+      console.warn("Storage write failed for timeline:", e);
+    }
+  },
+
+  getExpenses() {
+    try {
+      const data = JSON.parse(this.getItemRaw(STORAGE_KEYS.EXPENSES));
+      return Array.isArray(data) ? data : DEFAULT_EXPENSES;
+    } catch (e) {
+      return DEFAULT_EXPENSES;
+    }
+  },
+
+  saveExpenses(expenses) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
+    } catch (e) {
+      console.warn("Storage write failed for expenses:", e);
+    }
+  },
+
+  getTickets() {
+    try {
+      const data = JSON.parse(this.getItemRaw(STORAGE_KEYS.TICKETS));
+      return Array.isArray(data) ? data : DEFAULT_TICKETS;
+    } catch (e) {
+      return DEFAULT_TICKETS;
+    }
+  },
+
+  saveTickets(tickets) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(tickets));
+    } catch (e) {
+      console.warn("Storage write failed for tickets:", e);
+    }
+  },
+
+  getPassports() {
+    try {
+      const data = JSON.parse(this.getItemRaw(STORAGE_KEYS.PASSPORTS));
+      return Array.isArray(data) ? data : DEFAULT_PASSPORTS;
+    } catch (e) {
+      return DEFAULT_PASSPORTS;
+    }
+  },
+
+  savePassports(passports) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(passports));
+    } catch (e) {
+      console.warn("Storage write failed for passports:", e);
+    }
+  },
+
+  getChecklist() {
+    try {
+      const data = JSON.parse(this.getItemRaw(STORAGE_KEYS.CHECKLIST));
+      return Array.isArray(data) ? data : DEFAULT_CHECKLIST;
+    } catch (e) {
+      return DEFAULT_CHECKLIST;
+    }
+  },
+
+  saveChecklist(checklist) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(checklist));
+    } catch (e) {
+      console.warn("Storage write failed for checklist:", e);
+    }
+  },
+
+  getGooglePlaces() {
+    try {
+      const data = JSON.parse(this.getItemRaw(STORAGE_KEYS.GOOGLE_PLACES));
+      return Array.isArray(data) ? data : GOOGLE_MAPS_PLACES;
+    } catch (e) {
+      return GOOGLE_MAPS_PLACES;
+    }
+  },
+
+  saveGooglePlaces(places) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(places));
+    } catch (e) {
+      console.warn("Storage write failed for Google places:", e);
+    }
+  },
+
+  getMapConfig() {
+    try {
+      const data = JSON.parse(this.getItemRaw(STORAGE_KEYS.MAP_CONFIG));
+      return (data && typeof data === "object" && !Array.isArray(data)) ? data : { googleMapsApiKey: "" };
+    } catch (e) {
+      return { googleMapsApiKey: "" };
+    }
+  },
+
+  saveMapConfig(config) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify(config));
+    } catch (e) {
+      console.warn("Storage write failed for map config:", e);
+    }
+  },
+
+  // Reset to default
+  resetAll() {
+    try {
       localStorage.setItem(STORAGE_KEYS.TRIP_DETAILS, JSON.stringify(DEFAULT_TRIP_DETAILS));
       localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(DEFAULT_EVENTS));
       localStorage.setItem(STORAGE_KEYS.TIMELINE, JSON.stringify(DEFAULT_TIMELINE));
@@ -30,124 +250,9 @@ const StorageManager = {
       localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(DEFAULT_CHECKLIST));
       localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(GOOGLE_MAPS_PLACES));
       localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
-      
-      localStorage.setItem(STORAGE_KEYS.VERSION, CURRENT_VERSION);
-      localStorage.setItem("usa_travel_data_version", CURRENT_VERSION);
-    } else {
-      // Non-destructive fallback
-      if (!localStorage.getItem(STORAGE_KEYS.TRIP_DETAILS)) {
-        localStorage.setItem(STORAGE_KEYS.TRIP_DETAILS, JSON.stringify(DEFAULT_TRIP_DETAILS));
-      }
-      if (!localStorage.getItem(STORAGE_KEYS.EVENTS)) {
-        localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(DEFAULT_EVENTS));
-      }
-      if (!localStorage.getItem(STORAGE_KEYS.TIMELINE)) {
-        localStorage.setItem(STORAGE_KEYS.TIMELINE, JSON.stringify(DEFAULT_TIMELINE));
-      }
-      if (!localStorage.getItem(STORAGE_KEYS.EXPENSES)) {
-        localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(DEFAULT_EXPENSES));
-      }
-      if (!localStorage.getItem(STORAGE_KEYS.TICKETS)) {
-        localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(DEFAULT_TICKETS));
-      }
-      if (!localStorage.getItem(STORAGE_KEYS.PASSPORTS)) {
-        localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(DEFAULT_PASSPORTS));
-      }
-      if (!localStorage.getItem(STORAGE_KEYS.CHECKLIST)) {
-        localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(DEFAULT_CHECKLIST));
-      }
-      if (!localStorage.getItem(STORAGE_KEYS.GOOGLE_PLACES)) {
-        localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(GOOGLE_MAPS_PLACES));
-      }
-      if (!localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) {
-        localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
-      }
+    } catch (e) {
+      console.warn("Storage reset failed:", e);
     }
-  },
-
-  getTripDetails() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.TRIP_DETAILS)) || DEFAULT_TRIP_DETAILS;
-  },
-
-  saveTripDetails(details) {
-    localStorage.setItem(STORAGE_KEYS.TRIP_DETAILS, JSON.stringify(details));
-  },
-
-  getEvents() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.EVENTS)) || DEFAULT_EVENTS;
-  },
-
-  saveEvents(events) {
-    localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(events));
-  },
-
-  getTimeline() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.TIMELINE)) || DEFAULT_TIMELINE;
-  },
-
-  saveTimeline(timeline) {
-    localStorage.setItem(STORAGE_KEYS.TIMELINE, JSON.stringify(timeline));
-  },
-
-  getExpenses() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.EXPENSES)) || DEFAULT_EXPENSES;
-  },
-
-  saveExpenses(expenses) {
-    localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
-  },
-
-  getTickets() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.TICKETS)) || DEFAULT_TICKETS;
-  },
-
-  saveTickets(tickets) {
-    localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(tickets));
-  },
-
-  getPassports() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.PASSPORTS)) || DEFAULT_PASSPORTS;
-  },
-
-  savePassports(passports) {
-    localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(passports));
-  },
-
-  getChecklist() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.CHECKLIST)) || DEFAULT_CHECKLIST;
-  },
-
-  saveChecklist(checklist) {
-    localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(checklist));
-  },
-
-  getGooglePlaces() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.GOOGLE_PLACES)) || GOOGLE_MAPS_PLACES;
-  },
-
-  saveGooglePlaces(places) {
-    localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(places));
-  },
-
-  getMapConfig() {
-    return JSON.parse(localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) || { googleMapsApiKey: "" };
-  },
-
-  saveMapConfig(config) {
-    localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify(config));
-  },
-
-  // Reset to default
-  resetAll() {
-    localStorage.setItem(STORAGE_KEYS.TRIP_DETAILS, JSON.stringify(DEFAULT_TRIP_DETAILS));
-    localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(DEFAULT_EVENTS));
-    localStorage.setItem(STORAGE_KEYS.TIMELINE, JSON.stringify(DEFAULT_TIMELINE));
-    localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(DEFAULT_EXPENSES));
-    localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(DEFAULT_TICKETS));
-    localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(DEFAULT_PASSPORTS));
-    localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(DEFAULT_CHECKLIST));
-    localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(GOOGLE_MAPS_PLACES));
-    localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
     window.location.reload();
   },
 
@@ -212,8 +317,8 @@ const StorageManager = {
         });
 
         // Sync local storage versions to prevent mismatches
-        localStorage.setItem("usa_travel_data_version", "v26");
-        localStorage.setItem(this.VERSION || "usa_travel_version", "v26");
+        localStorage.setItem("usa_travel_data_version", "v32");
+        localStorage.setItem(this.VERSION || "usa_travel_version", "v32");
 
         alert("성공적으로 데이터가 복원되었습니다! 페이지를 새로고침하여 적용합니다.");
         window.location.reload();
@@ -325,8 +430,8 @@ const StorageManager = {
     });
 
     // Make sure versions stay matched
-    localStorage.setItem("usa_travel_data_version", "v26");
-    localStorage.setItem("usa_travel_version", "v26");
+    localStorage.setItem("usa_travel_data_version", "v32");
+    localStorage.setItem("usa_travel_version", "v32");
 
     alert(`${snap.timestamp} 시점의 백업으로 복원 완료되었습니다! 페이지를 새로고침합니다.`);
     window.location.reload();
@@ -337,5 +442,5 @@ const StorageManager = {
     snapshots.splice(index, 1);
     localStorage.setItem("usa_travel_planner_snapshots", JSON.stringify(snapshots));
   }
-  }
 };
+window.StorageManager = StorageManager;
