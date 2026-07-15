@@ -3,7 +3,7 @@
 <head>
   <script>
     (function() {
-      const targetVersion = "v20";
+      const targetVersion = "v21";
       localStorage.setItem("usa_travel_data_version", targetVersion);
     })();
   </script>
@@ -30,6 +30,24 @@
           <span class="brand-icon">✈️</span>
           <span class="brand-title">USA Travel Planner</span>
         </div>
+        
+        <!-- Sidebar Backup Panel -->
+        <div class="sidebar-backup-panel" style="padding: 10px; margin: 0 16px 16px 16px; background: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 8px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="font-size: 11px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 4px;">
+            💾 데이터 백업 및 복원
+          </div>
+          <div style="display: flex; gap: 6px;">
+            <button id="sb-export-backup-btn" class="btn btn-sm" style="flex: 1; font-size: 10px; padding: 6px; font-weight: 600; background: var(--accent-color); color: #fff; border: none; cursor: pointer; border-radius: 6px; text-align: center;">
+              내보내기
+            </button>
+            <button id="sb-import-backup-btn-trigger" class="btn btn-sm" style="flex: 1; font-size: 10px; padding: 6px; font-weight: 600; border: 1px solid var(--border-color); background: var(--bg-primary); cursor: pointer; border-radius: 6px; text-align: center;">
+              불러오기
+            </button>
+          </div>
+          <!-- Hidden File Input for Import -->
+          <input type="file" id="sb-import-backup-file-input" accept=".json" style="display: none;">
+        </div>
+
         <nav>
           <ul class="nav-menu">
             <li class="nav-item active" data-tab="calendar-tab">
@@ -687,15 +705,15 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""></script>
   
   <!-- App JS Files -->
-  <script src="js/mockData.js?v=20"></script>
-  <script src="js/storage.js?v=20"></script>
-  <script src="js/calendar.js?v=20"></script>
-  <script src="js/itinerary.js?v=20"></script>
-  <script src="js/expenses.js?v=20"></script>
-  <script src="js/map.js?v=20"></script>
-  <script src="js/tickets.js?v=20"></script>
-  <script src="js/passports.js?v=20"></script>
-  <script src="js/checklist.js?v=20"></script>
-  <script src="js/app.js?v=20"></script>
+  <script src="js/mockData.js?v=21"></script>
+  <script src="js/storage.js?v=21"></script>
+  <script src="js/calendar.js?v=21"></script>
+  <script src="js/itinerary.js?v=21"></script>
+  <script src="js/expenses.js?v=21"></script>
+  <script src="js/map.js?v=21"></script>
+  <script src="js/tickets.js?v=21"></script>
+  <script src="js/passports.js?v=21"></script>
+  <script src="js/checklist.js?v=21"></script>
+  <script src="js/app.js?v=21"></script>
 </body>
 </html>

@@ -72,6 +72,26 @@ const App = {
         }
       });
     }
+
+    // Sidebar Backup & Restore
+    const sbExportBtn = document.getElementById("sb-export-backup-btn");
+    const sbImportTrigger = document.getElementById("sb-import-backup-btn-trigger");
+    const sbImportInput = document.getElementById("sb-import-backup-file-input");
+
+    if (sbExportBtn && sbImportTrigger && sbImportInput) {
+      sbExportBtn.addEventListener("click", () => {
+        StorageManager.exportBackup();
+      });
+      sbImportTrigger.addEventListener("click", () => {
+        sbImportInput.click();
+      });
+      sbImportInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          StorageManager.importBackup(file);
+        }
+      });
+    }
   },
 
   switchTab(tabId) {
