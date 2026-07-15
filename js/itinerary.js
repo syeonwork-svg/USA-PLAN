@@ -441,6 +441,40 @@ const ItineraryComponent = {
     }
   },
 
+  createPrintItem(act) {
+    const item = document.createElement("div");
+    item.className = "timeline-item";
+    item.style.paddingBottom = "10px";
+    item.style.borderLeft = "2px solid #ddd";
+    item.style.marginLeft = "6px";
+    item.style.position = "relative";
+    
+    const isDraft = act.isDraft !== false;
+    if (isDraft) {
+      item.style.opacity = "0.7";
+    }
+
+    const locHTML = act.locName ? `<div style="font-size: 10.5px; color: #555; margin-top: 2px;">📍 ${act.locName}</div>` : "";
+
+    item.innerHTML = `
+      <div class="timeline-node" style="width: 8px; height: 8px; left: -5px; top: 4px; border-width: 2px; background: white; border-style: solid; border-color: #007aff; border-radius: 50%; position: absolute;"></div>
+      <div class="timeline-content" style="padding-left: 15px;">
+        <div class="timeline-info" style="display: flex; flex-direction: column;">
+          <div>
+            <span class="timeline-time" style="font-size: 11.5px; font-weight: 700; color: #007aff;">${act.time}</span>
+            <span class="timeline-title" style="font-size: 11.5px; font-weight: 700; color: #333; margin-left: 6px;">
+              ${act.title}
+              ${isDraft ? `<span style="font-size: 8px; color: #8e8e93; border: 1px solid #d1d1d6; padding: 0px 3px; border-radius: 3px; margin-left: 4px;">임시</span>` : ""}
+            </span>
+          </div>
+          ${act.desc ? `<div class="timeline-desc" style="font-size: 10.5px; color: #666; margin-top: 2px;">${act.desc}</div>` : ""}
+          ${locHTML}
+        </div>
+      </div>
+    `;
+    return item;
+  },
+
   renderPrintItinerary() {
     const printContainer = document.getElementById("print-only-itinerary-container");
     if (!printContainer) return;
@@ -499,39 +533,51 @@ const ItineraryComponent = {
         const printTimelineList = document.createElement("div");
         printTimelineList.className = "timeline";
         
-        dayActivities.forEach(act => {
-          const item = document.createElement("div");
-          item.className = "timeline-item";
-          item.style.paddingBottom = "10px";
-          item.style.borderLeft = "2px solid #ddd";
-          item.style.marginLeft = "6px";
-          item.style.position = "relative";
-          
-          const isDraft = act.isDraft !== false;
-          if (isDraft) {
-            item.style.opacity = "0.7";
-          }
+        if (dayInfo.dayIndex === 1) {
+          // Chronological vertical list with explicit Korea / USA separators for print readability
+          const koreaHeader = document.createElement("div");
+          koreaHeader.style.fontSize = "11.5px";
+          koreaHeader.style.fontWeight = "700";
+          koreaHeader.style.color = "#007aff";
+          koreaHeader.style.margin = "8px 0 4px 6px";
+          koreaHeader.innerText = "🇰🇷 한국 (출발)";
+          printTimelineList.appendChild(koreaHeader);
 
-          const locHTML = act.locName ? `<div style="font-size: 10.5px; color: #555; margin-top: 2px;">📍 ${act.locName}</div>` : "";
+          // Render Korea items
+          dayActivities.forEach(act => {
+            const actTitle = act.title || "";
+            const actLoc = act.locName || "";
+            const isKorea = actTitle.includes("인천") || actTitle.includes("대한항공") || actTitle.includes("이륙") || actTitle.includes("출발") || actLoc.includes("Incheon") || actLoc.includes("인천");
+            if (isKorea) {
+              const item = this.createPrintItem(act);
+              printTimelineList.appendChild(item);
+            }
+          });
 
-          item.innerHTML = `
-            <div class="timeline-node" style="width: 8px; height: 8px; left: -5px; top: 4px; border-width: 2px; background: white; border-style: solid; border-color: #007aff; border-radius: 50%; position: absolute;"></div>
-            <div class="timeline-content" style="padding-left: 15px;">
-              <div class="timeline-info" style="display: flex; flex-direction: column;">
-                <div>
-                  <span class="timeline-time" style="font-size: 11.5px; font-weight: 700; color: #007aff;">${act.time}</span>
-                  <span class="timeline-title" style="font-size: 11.5px; font-weight: 700; color: #333; margin-left: 6px;">
-                    ${act.title}
-                    ${isDraft ? `<span style="font-size: 8px; color: #8e8e93; border: 1px solid #d1d1d6; padding: 0px 3px; border-radius: 3px; margin-left: 4px;">임시</span>` : ""}
-                  </span>
-                </div>
-                ${act.desc ? `<div class="timeline-desc" style="font-size: 10.5px; color: #666; margin-top: 2px;">${act.desc}</div>` : ""}
-                ${locHTML}
-              </div>
-            </div>
-          `;
-          printTimelineList.appendChild(item);
-        });
+          const usaHeader = document.createElement("div");
+          usaHeader.style.fontSize = "11.5px";
+          usaHeader.style.fontWeight = "700";
+          usaHeader.style.color = "#ff3b30";
+          usaHeader.style.margin = "16px 0 4px 6px";
+          usaHeader.innerText = "🇺🇸 미국 (도착)";
+          printTimelineList.appendChild(usaHeader);
+
+          // Render USA items
+          dayActivities.forEach(act => {
+            const actTitle = act.title || "";
+            const actLoc = act.locName || "";
+            const isKorea = actTitle.includes("인천") || actTitle.includes("대한항공") || actTitle.includes("이륙") || actTitle.includes("출발") || actLoc.includes("Incheon") || actLoc.includes("인천");
+            if (!isKorea) {
+              const item = this.createPrintItem(act);
+              printTimelineList.appendChild(item);
+            }
+          });
+        } else {
+          dayActivities.forEach(act => {
+            const item = this.createPrintItem(act);
+            printTimelineList.appendChild(item);
+          });
+        }
 
         dayWrapper.appendChild(printTimelineList);
       }

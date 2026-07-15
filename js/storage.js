@@ -18,7 +18,7 @@ const StorageManager = {
   // Initialize storage with mock data if empty (non-destructive)
   init() {
     try {
-      const CURRENT_VERSION = "v36";
+      const CURRENT_VERSION = "v37";
       let savedVersion = null;
       try {
         savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
@@ -56,6 +56,29 @@ const StorageManager = {
       }
       if (!this.getItemRaw(STORAGE_KEYS.MAP_CONFIG)) {
         this.saveMapConfig({ googleMapsApiKey: "" });
+      }
+
+      // Non-destructively inject return flight ticket if missing from active database
+      try {
+        const activeTickets = JSON.parse(localStorage.getItem(STORAGE_KEYS.TICKETS) || "[]");
+        if (Array.isArray(activeTickets) && !activeTickets.some(t => t.id === "t2")) {
+          activeTickets.push({
+            id: "t2",
+            category: "flight",
+            title: "대한항공 KE082 (뉴욕 ➔ 인천)",
+            date: "2026-11-02",
+            time: "12:00",
+            details: "편명: KE082 | 좌석등급: 일반석\n항공사 예약번호: EK859P | 여행사 예약번호: HA2635045264\n탑승인원: 4명 | 발권: 하나투어",
+            imageUrl: "",
+            memo: "*수화물 규정 및 마일리지 적립 확인",
+            depCode: "JFK",
+            arrCode: "ICN",
+            flightNo: "KE082"
+          });
+          localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(activeTickets));
+        }
+      } catch (e) {
+        console.warn("Migration for t2 return ticket failed:", e);
       }
 
       // Always update saved version flag to allow software updates without formatting
@@ -329,8 +352,8 @@ const StorageManager = {
         });
 
         // Sync local storage versions to prevent mismatches
-        localStorage.setItem("usa_travel_data_version", "v36");
-        localStorage.setItem(this.VERSION || "usa_travel_version", "v36");
+        localStorage.setItem("usa_travel_data_version", "v37");
+        localStorage.setItem(this.VERSION || "usa_travel_version", "v37");
 
         alert("성공적으로 데이터가 복원되었습니다! 페이지를 새로고침하여 적용합니다.");
         window.location.reload();
@@ -444,8 +467,8 @@ const StorageManager = {
     });
 
     // Make sure versions stay matched
-    localStorage.setItem("usa_travel_data_version", "v36");
-    localStorage.setItem("usa_travel_version", "v36");
+    localStorage.setItem("usa_travel_data_version", "v37");
+    localStorage.setItem("usa_travel_version", "v37");
 
     alert(`${snap.timestamp} 시점의 백업으로 복원 완료되었습니다! 페이지를 새로고침합니다.`);
     window.location.reload();
