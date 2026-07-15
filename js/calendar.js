@@ -41,9 +41,8 @@ const CalendarComponent = {
     saveBtn.addEventListener("click", () => this.saveEvent());
     deleteBtn.addEventListener("click", () => this.deleteEvent());
 
-    // Add event floating button
     document.getElementById("add-calendar-event-btn").addEventListener("click", () => {
-      this.openModalForAdd(new Date(2026, 9, 14).toISOString().split("T")[0]);
+      this.openModalForAdd("2026-10-15");
     });
   },
 

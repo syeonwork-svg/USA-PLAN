@@ -21,9 +21,10 @@ const ItineraryComponent = {
       const current = new Date(startDate);
       current.setDate(startDate.getDate() + i);
       
-      const dateStr = current.toISOString().split("T")[0];
+      const year = current.getFullYear();
       const month = current.getMonth() + 1;
       const date = current.getDate();
+      const dateStr = `${year}-${String(month).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
       const dayName = weekdaysKOR[current.getDay()];
 
       this.daysList.push({

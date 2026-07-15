@@ -245,7 +245,7 @@ const ExpensesComponent = {
     document.getElementById("expense-category").value = "food";
     document.getElementById("expense-title").value = "";
     document.getElementById("expense-amount").value = "";
-    document.getElementById("expense-date").value = new Date(2026, 9, 15).toISOString().split("T")[0];
+    document.getElementById("expense-date").value = "2026-10-15";
     document.getElementById("expense-memo").value = "";
 
     document.getElementById("delete-expense-btn").style.display = "none";
