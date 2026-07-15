@@ -193,3 +193,36 @@ const DEFAULT_EXPENSES = [
   { id: "e17", category: "activity", title: "뉴욕 자유의 여신상 & 원월드 & 미술관 티켓", amount: 480000, date: "2026-10-25", memo: "Met, MoMA, 자유의 여신상" },
   { id: "e18", category: "activity", title: "나이아가라 폭포 당일치기 항공&투어", amount: 1100000, date: "2026-10-30", memo: "당일 왕복 비행기표 및 투어선 탑승" }
 ];
+
+const DEFAULT_TICKETS = [
+  {
+    id: "t1",
+    category: "flight",
+    title: "대한항공 KE085 (인천 ➔ 애틀랜타)",
+    date: "2026-10-14",
+    time: "09:20",
+    details: "편명: KE085 | 좌석: 32A, 32B, 32C\n예약번호: K98DF2 | 탑승구: 254",
+    imageUrl: "",
+    memo: "출발 3시간 전 공항 도착 및 위탁수하물 부치기 필수"
+  },
+  {
+    id: "t2",
+    category: "museum",
+    title: "뉴욕 근대 미술관 (MoMA) 입장권",
+    date: "2026-11-01",
+    time: "14:00",
+    details: "티켓 구분: 성인 일반 입장권 (3매)\n예약 번호: MoMA-99283-UN | 입장시간: 14:00",
+    imageUrl: "",
+    memo: "모바일 QR코드로 현장에서 줄 서지 않고 즉시 입장 가능"
+  },
+  {
+    id: "t3",
+    category: "activity",
+    title: "헤리티지 골프 링크 라운딩 예약증",
+    date: "2026-10-17",
+    time: "08:00",
+    details: "티타임: 오전 08:00 | 인원: 3인 라운딩\n예약자: 임세연 | 카트 포함 여부: 포함",
+    imageUrl: "",
+    memo: "클럽하우스 30분 전 도착하여 체크인 요망"
+  }
+];

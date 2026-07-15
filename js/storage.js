@@ -6,13 +6,14 @@ const STORAGE_KEYS = {
   EVENTS: "usa_travel_events",
   TIMELINE: "usa_travel_timeline",
   EXPENSES: "usa_travel_expenses",
+  TICKETS: "usa_travel_tickets",
   MAP_CONFIG: "usa_travel_map_config"
 };
 
 const StorageManager = {
   // Initialize storage with mock data if empty
   init() {
-    const CURRENT_VERSION = "v3";
+    const CURRENT_VERSION = "v4";
     const savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
 
     if (savedVersion !== CURRENT_VERSION) {
@@ -21,6 +22,7 @@ const StorageManager = {
       localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(DEFAULT_EVENTS));
       localStorage.setItem(STORAGE_KEYS.TIMELINE, JSON.stringify(DEFAULT_TIMELINE));
       localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(DEFAULT_EXPENSES));
+      localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(DEFAULT_TICKETS));
       if (!localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) {
         localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
       }
@@ -38,6 +40,9 @@ const StorageManager = {
     }
     if (!localStorage.getItem(STORAGE_KEYS.EXPENSES)) {
       localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(DEFAULT_EXPENSES));
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.TICKETS)) {
+      localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(DEFAULT_TICKETS));
     }
     if (!localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) {
       localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
@@ -76,6 +81,14 @@ const StorageManager = {
     localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(expenses));
   },
 
+  getTickets() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.TICKETS)) || DEFAULT_TICKETS;
+  },
+
+  saveTickets(tickets) {
+    localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(tickets));
+  },
+
   getMapConfig() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) || { googleMapsApiKey: "" };
   },
@@ -90,6 +103,7 @@ const StorageManager = {
     localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(DEFAULT_EVENTS));
     localStorage.setItem(STORAGE_KEYS.TIMELINE, JSON.stringify(DEFAULT_TIMELINE));
     localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(DEFAULT_EXPENSES));
+    localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(DEFAULT_TICKETS));
     localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
     window.location.reload();
   }

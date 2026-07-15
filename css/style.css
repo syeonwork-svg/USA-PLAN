@@ -1412,11 +1412,124 @@ h1 {
     height: calc(100vh - 180px);
   }
   
-  .map-wrapper {
-    height: 320px;
-  }
-  
   .map-sidebar {
     height: auto;
+  }
+}
+
+/* Tickets Apple Wallet Styling */
+.tickets-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.segmented-control-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.ticket-filter-bar {
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.05);
+  padding: 3px;
+  border-radius: 9px;
+  width: 100%;
+  max-width: 500px;
+}
+
+[data-theme="dark"] .ticket-filter-bar {
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.ticket-filter-bar .filter-btn {
+  flex: 1;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  background: transparent;
+  color: var(--text-secondary);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-family: var(--font-family);
+  white-space: nowrap;
+}
+
+.ticket-filter-bar .filter-btn.active {
+  background-color: var(--bg-secondary);
+  color: var(--text-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.ticket-pass-card {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+  border-top: 5px solid var(--ticket-accent);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.ticket-pass-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.ticket-header-strip {
+  background-color: var(--bg-primary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ticket-accent);
+}
+
+.ticket-body-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.ticket-title-text {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--text-primary);
+  margin-right: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 85%;
+}
+
+.ticket-barcode-wrap {
+  height: 40px;
+  width: 80%;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--text-primary),
+    var(--text-primary) 2px,
+    transparent 2px,
+    transparent 6px
+  );
+  opacity: 0.8;
+  margin: 8px auto;
+}
+
+@media (max-width: 768px) {
+  .tickets-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
   }
 }

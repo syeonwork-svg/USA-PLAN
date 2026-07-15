@@ -38,6 +38,9 @@
             <li class="nav-item" data-tab="map-tab">
               <a>🗺️ 지도 연동</a>
             </li>
+            <li class="nav-item" data-tab="tickets-tab">
+              <a>🎟️ 티켓 관리</a>
+            </li>
             <li class="nav-item" data-tab="settings-tab">
               <a>⚙️ 설정</a>
             </li>
@@ -182,7 +185,30 @@
         </div>
       </section>
 
-      <!-- 5. SETTINGS TAB -->
+      <!-- 5. TICKETS TAB -->
+      <section id="tickets-tab" class="content-section">
+        <div class="section-header">
+          <h1>티켓 및 예매 관리</h1>
+          <button class="btn btn-primary" id="add-ticket-btn">+ 티켓 등록</button>
+        </div>
+        
+        <!-- Apple style Segmented Filter Control -->
+        <div class="card segmented-control-card" style="padding: 12px; margin-bottom: 24px; display: flex; justify-content: center; background-color: var(--bg-primary);">
+          <div class="ticket-filter-bar" id="ticket-filter-bar">
+            <button class="filter-btn active" data-category="all">전체</button>
+            <button class="filter-btn" data-category="flight">✈️ 항공</button>
+            <button class="filter-btn" data-category="museum">🏛️ 미술관/문화</button>
+            <button class="filter-btn" data-category="activity">⛳️ 액티비티</button>
+            <button class="filter-btn" data-category="etc">🎫 기타</button>
+          </div>
+        </div>
+
+        <div class="tickets-grid" id="tickets-list-container">
+          <!-- Ticket cards will be injected dynamically -->
+        </div>
+      </section>
+
+      <!-- 6. SETTINGS TAB -->
       <section id="settings-tab" class="content-section">
         <div class="section-header">
           <h1>설정</h1>
@@ -397,6 +423,76 @@
     </div>
   </div>
 
+  <!-- D. Ticket Modal -->
+  <div class="modal-overlay" id="ticket-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="ticket-modal-title">티켓 등록</h3>
+        <button class="btn-icon" id="close-ticket-modal-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="ticket-form">
+          <input type="hidden" id="ticket-id">
+          <div class="form-group">
+            <label for="ticket-category">카테고리</label>
+            <select id="ticket-category" class="form-control" required>
+              <option value="flight">항공권 (Flight)</option>
+              <option value="museum">미술관/박물관/공연 (Culture)</option>
+              <option value="activity">액티비티/관광/골프 (Activity)</option>
+              <option value="etc">기타 예매 내역 (Other)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ticket-title">티켓/예약 명칭</label>
+            <input type="text" id="ticket-title" class="form-control" placeholder="예: 대한항공 KE085 항공권" required>
+          </div>
+          <div class="form-group" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 8px;">
+            <div>
+              <label for="ticket-date">날짜</label>
+              <input type="date" id="ticket-date" class="form-control" required>
+            </div>
+            <div>
+              <label for="ticket-time">시간</label>
+              <input type="time" id="ticket-time" class="form-control" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="ticket-details">세부 정보 (예약 번호, 좌석 번호 등)</label>
+            <textarea id="ticket-details" class="form-control" rows="3" placeholder="예: 예약번호: K98DF2&#13;좌석: 32A, 32B" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="ticket-image-file">티켓 이미지 업로드 (JPG, PNG)</label>
+            <input type="file" id="ticket-image-file" class="form-control" accept="image/*">
+            <input type="hidden" id="ticket-image-base64">
+          </div>
+          <div class="form-group">
+            <label for="ticket-image-url">또는 이미지 주소(URL)</label>
+            <input type="text" id="ticket-image-url" class="form-control" placeholder="인터넷 이미지 링크가 있을 경우 입력">
+          </div>
+          <div class="form-group">
+            <label for="ticket-memo">메모</label>
+            <input type="text" id="ticket-memo" class="form-control" placeholder="주의 사항 등 기입">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" id="delete-ticket-btn" style="display: none;">삭제</button>
+        <button class="btn" id="cancel-ticket-modal-btn">취소</button>
+        <button class="btn btn-primary" id="save-ticket-btn">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ticket Image Viewer Modal (Apple style clean photo overlay) -->
+  <div class="modal-overlay" id="ticket-image-viewer-modal" style="background-color: rgba(0,0,0,0.9); z-index: 3000;">
+    <div style="position: absolute; top: 20px; right: 20px; z-index: 10;">
+      <button class="btn-icon" id="close-ticket-viewer-btn" style="color: white; font-size: 24px;">✕</button>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; padding: 20px;">
+      <img id="ticket-viewer-img" src="" alt="티켓 이미지 원본" style="max-width: 100%; max-height: 90vh; object-fit: contain; border-radius: 8px; box-shadow: 0 4px 30px rgba(0,0,0,0.5);">
+    </div>
+  </div>
+
   <!-- Leaflet Map Script -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""></script>
   
@@ -407,6 +503,7 @@
   <script src="js/itinerary.js"></script>
   <script src="js/expenses.js"></script>
   <script src="js/map.js"></script>
+  <script src="js/tickets.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
