@@ -3,6 +3,43 @@ const App = {
   currentTab: "calendar-tab",
 
   init() {
+    // 0. Intercept and load shared URL plans
+    if (window.location.hash && window.location.hash.startsWith("#share=")) {
+      try {
+        const base64Data = window.location.hash.substring(7);
+        const decodedJson = decodeURIComponent(escape(atob(base64Data)));
+        const sharedObj = JSON.parse(decodedJson);
+        
+        if (sharedObj && typeof sharedObj === "object") {
+          if (confirm("공유받은 여행 일정이 감지되었습니다! 이 일정을 불러와 브라우저에 적용하시겠습니까?\n(주의: 기존 브라우저에 등록해 둔 여행 정보가 공유된 일정으로 교체됩니다.)")) {
+            const save = (key, val) => {
+              if (val !== undefined && val !== null) {
+                localStorage.setItem(key, typeof val === "string" ? val : JSON.stringify(val));
+              }
+            };
+            
+            save("usa_travel_details", sharedObj.tripDetails);
+            save("usa_travel_events", sharedObj.events);
+            save("usa_travel_timeline", sharedObj.timeline);
+            save("usa_travel_expenses", sharedObj.expenses);
+            save("usa_travel_tickets", sharedObj.tickets);
+            save("usa_travel_candidates", sharedObj.candidates);
+            save("usa_travel_checklist", sharedObj.checklist);
+            save("usa_travel_passports", sharedObj.passports);
+            save("usa_travel_version", "v39");
+            save("usa_travel_data_version", "v39");
+
+            window.location.hash = "";
+            window.location.reload();
+            return;
+          }
+        }
+      } catch (e) {
+        console.error("Failed to load shared trip data:", e);
+      }
+      window.location.hash = "";
+    }
+
     // 1. Initialize Storage with mock data
     StorageManager.init();
 
@@ -47,6 +84,50 @@ const App = {
     if (printBtn) {
       printBtn.addEventListener("click", () => {
         window.print();
+      });
+    }
+
+    // Sidebar Share Button
+    const shareBtn = document.getElementById("sidebar-share-btn");
+    if (shareBtn) {
+      shareBtn.addEventListener("click", () => {
+        try {
+          const shareData = {
+            tripDetails: StorageManager.getTripDetails(),
+            events: StorageManager.getEvents(),
+            timeline: StorageManager.getTimeline(),
+            expenses: StorageManager.getExpenses(),
+            tickets: StorageManager.getTickets(),
+            candidates: StorageManager.getCandidates(),
+            checklist: StorageManager.getChecklist(),
+            passports: StorageManager.getPassports()
+          };
+          const jsonString = JSON.stringify(shareData);
+          const base64Str = btoa(unescape(encodeURIComponent(jsonString)));
+          const shareUrl = window.location.origin + window.location.pathname + "#share=" + base64Str;
+          
+          navigator.clipboard.writeText(shareUrl).then(() => {
+            this.showNotification("공유 링크가 클립보드에 복사되었습니다! 카톡으로 동생에게 보내주세요. 🔗");
+          }).catch(err => {
+            // Fallback for browsers with restricted clipboard permission
+            const textarea = document.createElement("textarea");
+            textarea.value = shareUrl;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+              document.execCommand("copy");
+              this.showNotification("공유 링크가 클립보드에 복사되었습니다! 🔗");
+            } catch (e) {
+              alert("링크 생성 성공! 아래 주소를 복사해 주세요:\n\n" + shareUrl);
+            }
+            document.body.removeChild(textarea);
+          });
+        } catch (e) {
+          console.error("Failed to generate share URL:", e);
+          alert("공유 링크 생성 중 오류가 발생했습니다.");
+        }
       });
     }
 
