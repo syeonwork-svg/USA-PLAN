@@ -10,7 +10,7 @@ const DEFAULT_TRIP_DETAILS = {
 
 const DEFAULT_EVENTS = [
   // City/Region Badges
-  { id: "c1", title: "애틀랜타", date: "2026-10-15", color: "teal", type: "city" },
+  { id: "c1", title: "✈️ 인천 ➔ 애틀랜타", date: "2026-10-15", color: "teal", type: "city" },
   { id: "c2", title: "애틀랜타", date: "2026-10-16", color: "teal", type: "city" },
   { id: "c3", title: "애틀랜타", date: "2026-10-17", color: "teal", type: "city" },
   { id: "c4", title: "애틀랜타", date: "2026-10-18", color: "teal", type: "city" },
@@ -39,8 +39,8 @@ const DEFAULT_EVENTS = [
   { id: "c15", title: "뉴욕", date: "2026-10-30", color: "pink", type: "city" },
   { id: "c16", title: "뉴욕", date: "2026-10-31", color: "pink", type: "city" },
   { id: "c17", title: "뉴욕", date: "2026-11-01", color: "pink", type: "city" },
-  { id: "c18", title: "뉴욕", date: "2026-11-02", color: "pink", type: "city" },
-  { id: "c19", title: "뉴욕", date: "2026-11-03", color: "pink", type: "city" },
+  { id: "c18", title: "✈️ 뉴욕 ➔ 인천", date: "2026-11-02", color: "pink", type: "city" },
+  { id: "c19", title: "🇰🇷 인천공항 도착", date: "2026-11-03", color: "pink", type: "city" },
   
   // Activities (Small color badges)
   { id: "a1", title: "⛳️ 골프 라운딩", date: "2026-10-18", color: "green", type: "activity" },
