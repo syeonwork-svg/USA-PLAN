@@ -16,7 +16,7 @@ const STORAGE_KEYS = {
 const StorageManager = {
   // Initialize storage with mock data if empty
   init() {
-    const CURRENT_VERSION = "v24";
+    const CURRENT_VERSION = "v25";
     const savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
 
     // Non-destructive initialization: only set default if key doesn't exist
@@ -219,8 +219,8 @@ const StorageManager = {
         });
 
         // Sync local storage versions to prevent mismatches
-        localStorage.setItem("usa_travel_data_version", "v24");
-        localStorage.setItem(this.VERSION || "usa_travel_version", "v24");
+        localStorage.setItem("usa_travel_data_version", "v25");
+        localStorage.setItem(this.VERSION || "usa_travel_version", "v25");
 
         alert("성공적으로 데이터가 복원되었습니다! 페이지를 새로고침하여 적용합니다.");
         window.location.reload();
@@ -332,8 +332,8 @@ const StorageManager = {
     });
 
     // Make sure versions stay matched
-    localStorage.setItem("usa_travel_data_version", "v24");
-    localStorage.setItem("usa_travel_version", "v24");
+    localStorage.setItem("usa_travel_data_version", "v25");
+    localStorage.setItem("usa_travel_version", "v25");
 
     alert(`${snap.timestamp} 시점의 백업으로 복원 완료되었습니다! 페이지를 새로고침합니다.`);
     window.location.reload();

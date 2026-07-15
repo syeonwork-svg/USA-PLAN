@@ -127,13 +127,15 @@ const DEFAULT_TIMELINE = {
   ],
   "2026-10-26": [
     { time: "10:00", title: "메트로폴리탄 미술관 (The Met) 관람", desc: "세계적인 미술관의 엄청난 소장품 관람", locName: "The Metropolitan Museum of Art", lat: 40.7794, lng: -73.9632 , isDraft: true },
-    { time: "14:00", title: "센트럴 파크 샌드위치 피크닉 및 산책", desc: "쉼터에서 조용한 공원 산책 및 요한 레논 추모 광장 구경", locName: "Central Park", lat: 40.7851, lng: -73.9683 , isDraft: true },
-    { time: "17:00", title: "5번가 쇼핑 및 세인트 패트릭 대성당", desc: "맨해튼의 중심가 매장 구경", locName: "St. Patrick's Cathedral", lat: 40.7586, lng: -73.9762 , isDraft: true }
+    { time: "13:30", title: "센트럴 파크 샌드위치 피크닉 및 산책", desc: "쉼터에서 조용한 공원 산책 및 요한 레논 추모 광장 구경", locName: "Central Park", lat: 40.7851, lng: -73.9683 , isDraft: true },
+    { time: "15:30", title: "🎨 솔로몬 R. 구겐하임 미술관 관람", desc: "나선형 램프가 인상적인 근현대 미술 중심의 상징적 박물관", locName: "Solomon R. Guggenheim Museum", lat: 40.7829796, lng: -73.9589706 , isDraft: true }
   ],
   "2026-10-27": [
-    { time: "10:00", title: "브루클린 브릿지 도보 건너기", desc: "맨해튼에서 브루클린 방향으로 다리 건너기 (뷰 최고)", locName: "Brooklyn Bridge", lat: 40.7061, lng: -73.9969 , isDraft: true },
-    { time: "12:30", title: "덤보 (DUMBO) 사진 촬영 및 피자 식사", desc: "무한도전 촬영지 골목 포토존 및 그리말디 피자 점심", locName: "DUMBO, Brooklyn", lat: 40.7033, lng: -73.9896 , isDraft: true },
-    { time: "15:00", title: "브루클린 헤이츠 산책로 야경 감상", desc: "맨해튼 다운타운 빌딩 숲의 스카이라인 조망", locName: "Brooklyn Heights Promenade", lat: 40.6970, lng: -73.9976 , isDraft: true }
+    { time: "10:00", title: "☕️ Partners Coffee (Bedford) 모닝커피", desc: "브루클린 윌리엄스버그의 유명 힙스터 카페", locName: "Partners Coffee", lat: 40.7189284, lng: -73.9562766 , isDraft: true },
+    { time: "11:30", title: "브루클린 브릿지 도보 건너기", desc: "맨해튼에서 브루클린 방향으로 다리 건너기 (뷰 최고)", locName: "Brooklyn Bridge", lat: 40.7061, lng: -73.9969 , isDraft: true },
+    { time: "13:00", title: "덤보(DUMBO) 사진 촬영 및 Time Out Market 점심", desc: "포토존 구경 후 타임아웃 마켓 내 Ess-a-Bagel(에싸베이글) 시식", locName: "Time Out Market New York", lat: 40.7034205, lng: -73.9921457 , isDraft: true },
+    { time: "15:30", title: "🍦 Brooklyn Ice Cream Factory 디저트", desc: "브루클린 브릿지 공원의 시원하고 부드러운 수제 아이스크림", locName: "Brooklyn Ice Cream Factory", lat: 40.7026518, lng: -73.9945911 , isDraft: true },
+    { time: "16:30", title: "🌅 하버 뷰 론 (Harbor View Lawn) 노을 감상", desc: "브루클린 브릿지 파크에서 아름다운 맨해튼뷰 감상", locName: "Harbor View Lawn", lat: 40.7016568, lng: -73.9972614 , isDraft: true }
   ],
   "2026-10-28": [
     { time: "10:00", title: "자연사 박물관 (AMNH) 관람", desc: "영화 '박물관이 살아있다' 배경의 공룡 화석 관람", locName: "American Museum of Natural History", lat: 40.7813, lng: -73.9740 , isDraft: true },
@@ -143,8 +145,8 @@ const DEFAULT_TIMELINE = {
   "2026-10-29": [
     { time: "10:00", title: "그랜드 센트럴 터미널 관람", desc: "세계에서 가장 승강장이 많은 유서 깊은 기차역 광장", locName: "Grand Central Terminal", lat: 40.7527, lng: -73.9772 , isDraft: true },
     { time: "11:00", title: "숙소 이동: 뉴욕 중심가 숙소 체크인", desc: "저지시티 숙소 퇴실 후 맨해튼 미드타운 호텔 체크인", locName: "Midtown Manhattan, NY", lat: 40.7549, lng: -73.9840 , isDraft: true },
-    { time: "13:00", title: "뉴욕 공립 도서관 및 브라이언트 파크", desc: "아름다운 열람실 투어 및 잔디 광장에서 커피 브레이크", locName: "New York Public Library", lat: 40.7532, lng: -73.9822 , isDraft: true },
-    { time: "15:00", title: "엠파이어 스테이트 빌딩 전망대", desc: "뉴욕의 클래식 랜드마크 86층 야외 전망대 관람", locName: "Empire State Building", lat: 40.7484, lng: -73.9857 , isDraft: true }
+    { time: "13:00", title: "📚 뉴욕 공립도서관 투어 & 브라이언트 공원", desc: "도서관 투어 시간 확인 후 야외 브라이언트 공원 휴식", locName: "New York Public Library", lat: 40.7531823, lng: -73.9822534 , isDraft: true },
+    { time: "15:30", title: "엠파이어 스테이트 빌딩 전망대", desc: "뉴욕의 클래식 랜드마크 86층 야외 전망대 관람", locName: "Empire State Building", lat: 40.7484, lng: -73.9857 , isDraft: true }
   ],
   "2026-10-30": [
     { time: "07:00", title: "나이아가라 폭포 당일치기 비행기 투어", desc: "라구아디아 공항 -> 버팔로 나이아가라 공항 이동", locName: "Buffalo Niagara International Airport", lat: 42.9405, lng: -78.7322 , isDraft: true },
@@ -152,12 +154,17 @@ const DEFAULT_TIMELINE = {
     { time: "18:00", title: "뉴욕 귀환 및 저녁 식사", desc: "버팔로 공항 -> 라구아디아 복귀 후 숙소 복귀", locName: "LaGuardia Airport", lat: 40.7769, lng: -73.8740 , isDraft: true }
   ],
   "2026-10-31": [
-    { time: "13:00", title: "소호 (SOHO) 명품 및 쇼핑 스트리트 투어", desc: "아기자기한 벽돌 건물 사이 쇼핑 샵 구경", locName: "Soho, New York", lat: 40.7233, lng: -74.0030 , isDraft: true },
+    { time: "10:00", title: "🍳 소호 브런치: Sadelle's", desc: "아침 식사 예약 확인, 프렌치 토스트 및 토마토 스프 식사", locName: "Sadelle's New York", lat: 40.7263129, lng: -74.0002679 , isDraft: true },
+    { time: "11:30", title: "🛍️ 소호 쇼핑 투어 (Aimé Leon Dore & Glossier)", desc: "멀버리 스트릿의 에메레온도르 매장 및 Spring St의 글로시에 화장품 쇼핑", locName: "Aimé Leon Dore", lat: 40.7222993, lng: -73.9959041 , isDraft: true },
+    { time: "13:30", title: "🛍️ 소호 쇼핑 2차 (Sandy Liang & McNally 서점)", desc: "샌디리앙 의류 매장 구경 후 유명 독립 서점 맥널리 잭슨 도서 구경", locName: "Sandy Liang", lat: 40.7155802, lng: -73.9914295 , isDraft: true },
+    { time: "14:30", title: "🥖 Vesuvio Bakery & 프린스 스트릿 피자", desc: "소호 비수비오 베이커리 빵 시식 후 줄 서서 프린스 스트리트 조각피자 점심", locName: "Vesuvio Bakery", lat: 40.7258889, lng: -74.001428 , isDraft: true },
+    { time: "17:00", title: "🍟 Pommes Frites (그리니치 빌리지 감자튀김)", desc: "벨기에식 두툼한 감자튀김에 특제 갈릭 소스 곁들이기 (*갈릭소스 추천)", locName: "Pommes Frites", lat: 40.7301312, lng: -74.0003005 , isDraft: true },
     { time: "19:00", title: "🎃 뉴욕 빌리지 할로윈 퍼레이드 관람", desc: "그리니치 빌리지에서 열리는 전세계 최대 규모 할로윈 분장 행진 관람", locName: "Greenwich Village Halloween Parade", lat: 40.7336, lng: -74.0027 , isDraft: true }
   ],
   "2026-11-01": [
-    { time: "14:00", title: "뉴욕 근대 미술관 (MoMA) 관람", desc: "고흐의 '별이 빛나는 밤', 피카소의 작품 등 거장들의 미술품 감상", locName: "The Museum of Modern Art", lat: 40.7614, lng: -73.9776 , isDraft: true },
-    { time: "18:30", title: "👨‍👩‍👧‍👦 지인 가족과 저녁 식사", desc: "코리아타운 삼원가든에서 한식 갈비 저녁 식사", locName: "New York Korea Town", lat: 40.7477, lng: -73.9869 , isDraft: true }
+    { time: "11:30", title: "🍜 우동 점심 식사: Raku", desc: "웨이팅이 길어 오픈런으로 입장, 따끈하고 쫄깃한 우동 점심", locName: "Raku", lat: 40.7272479, lng: -74.0025495 , isDraft: true },
+    { time: "14:00", title: "🎨 뉴욕 현대 미술관 (MoMA) 관람", desc: "고흐 '별이 빛나는 밤', 피카소 등 교과서 속 명작 감상", locName: "The Museum of Modern Art", lat: 40.7614, lng: -73.9776 , isDraft: true },
+    { time: "18:30", title: "🥩 Quality Bistro 저녁 식사", desc: "파리풍의 미드타운 퀄리티 비스트로에서 저녁식사 (*버터가 시그니처)", locName: "Quality Bistro", lat: 40.7632028, lng: -73.979167 , isDraft: true }
   ],
   "2026-11-02": [
     { time: "09:00", title: "JFK 공항 이동 및 출국 준비", desc: "인천행 대한항공 KE082편 출국 예약 수속", locName: "John F. Kennedy International Airport", lat: 40.6413, lng: -73.7781 , isDraft: true },
