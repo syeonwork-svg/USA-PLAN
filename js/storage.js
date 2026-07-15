@@ -16,24 +16,10 @@ const STORAGE_KEYS = {
 const StorageManager = {
   // Initialize storage with mock data if empty
   init() {
-    const CURRENT_VERSION = "v15";
+    const CURRENT_VERSION = "v16";
     const savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
 
-    if (savedVersion !== CURRENT_VERSION) {
-      localStorage.clear(); // Force complete clear to populate newest items
-      localStorage.setItem(STORAGE_KEYS.VERSION, CURRENT_VERSION);
-      localStorage.setItem(STORAGE_KEYS.TRIP_DETAILS, JSON.stringify(DEFAULT_TRIP_DETAILS));
-      localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(DEFAULT_EVENTS));
-      localStorage.setItem(STORAGE_KEYS.TIMELINE, JSON.stringify(DEFAULT_TIMELINE));
-      localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(DEFAULT_EXPENSES));
-      localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(DEFAULT_TICKETS));
-      localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(DEFAULT_PASSPORTS));
-      localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(DEFAULT_CHECKLIST));
-      localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(GOOGLE_MAPS_PLACES));
-      localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
-      return;
-    }
-
+    // Non-destructive initialization: only set default if key doesn't exist
     if (!localStorage.getItem(STORAGE_KEYS.TRIP_DETAILS)) {
       localStorage.setItem(STORAGE_KEYS.TRIP_DETAILS, JSON.stringify(DEFAULT_TRIP_DETAILS));
     }
@@ -61,6 +47,9 @@ const StorageManager = {
     if (!localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) {
       localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
     }
+
+    // Update version string without clearing anything
+    localStorage.setItem(STORAGE_KEYS.VERSION, CURRENT_VERSION);
   },
 
   getTripDetails() {
