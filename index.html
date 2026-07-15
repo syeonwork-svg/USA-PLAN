@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>미국 20일 여행 플래너</title>
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Leaflet CSS for API-key-free Maps -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div>
+        <div class="brand">
+          <span class="brand-icon">✈️</span>
+          <span class="brand-title">USA Travel Planner</span>
+        </div>
+        <nav>
+          <ul class="nav-menu">
+            <li class="nav-item active" data-tab="calendar-tab">
+              <a>📅 캘린더</a>
+            </li>
+            <li class="nav-item" data-tab="itinerary-tab">
+              <a>🕒 일정 계획</a>
+            </li>
+            <li class="nav-item" data-tab="expenses-tab">
+              <a>💳 경비 관리</a>
+            </li>
+            <li class="nav-item" data-tab="map-tab">
+              <a>🗺️ 지도 연동</a>
+            </li>
+            <li class="nav-item" data-tab="settings-tab">
+              <a>⚙️ 설정</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <div class="sidebar-footer">
+        <div class="theme-toggle-container">
+          <span>다크 모드</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="theme-checkbox">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div style="font-size: 11px; color: var(--text-secondary); text-align: center;">
+          © 2026 USA Planner
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- 1. CALENDAR TAB -->
+      <section id="calendar-tab" class="content-section active">
+        <div class="section-header">
+          <h1>여행 캘린더</h1>
+          <button class="btn btn-primary" id="add-calendar-event-btn">+ 일정 추가</button>
+        </div>
+        <div class="calendar-container">
+          <div class="calendar-nav-bar">
+            <div class="calendar-title-wrap">
+              <span class="calendar-month-title" id="calendar-month-title">2026년 10월</span>
+            </div>
+            <div class="calendar-controls">
+              <button class="btn" id="prev-month-btn">이전</button>
+              <button class="btn" id="today-btn">오늘</button>
+              <button class="btn" id="next-month-btn">다음</button>
+            </div>
+          </div>
+          <div class="calendar-grid" id="calendar-grid">
+            <!-- Day headers (일~토) and cells will be rendered here dynamically -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. ITINERARY TAB -->
+      <section id="itinerary-tab" class="content-section">
+        <div class="section-header">
+          <h1>날짜별 여행 계획</h1>
+          <button class="btn btn-primary" id="add-timeline-item-btn">+ 활동 추가</button>
+        </div>
+        <div class="itinerary-view">
+          <!-- Left side: Day selectors -->
+          <div class="days-list" id="days-selector-list">
+            <!-- Day tabs (Day 1 - Day 20) rendered here dynamically -->
+          </div>
+          <!-- Right side: Daily activities -->
+          <div class="day-details">
+            <div class="day-details-header">
+              <div>
+                <h2 class="day-title" id="current-day-title">Day 1: 10월 14일 (수)</h2>
+                <div class="day-subtitle" id="current-day-subtitle">애틀랜타 일정</div>
+              </div>
+            </div>
+            <div class="timeline" id="daily-timeline-list">
+              <!-- Timeline items rendered here dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3. EXPENSES TAB -->
+      <section id="expenses-tab" class="content-section">
+        <div class="section-header">
+          <h1>경비 관리</h1>
+          <button class="btn btn-primary" id="add-expense-btn">+ 경비 추가</button>
+        </div>
+        <div class="expenses-summary">
+          <div class="summary-card budget">
+            <span class="label">총 예산</span>
+            <span class="value" id="summary-budget">₩0</span>
+          </div>
+          <div class="summary-card spent">
+            <span class="label">총 지출액</span>
+            <span class="value" id="summary-spent">₩0</span>
+          </div>
+          <div class="summary-card remaining">
+            <span class="label">남은 금액</span>
+            <span class="value" id="summary-remaining">₩0</span>
+          </div>
+        </div>
+        <div class="expenses-grid">
+          <!-- Chart & Legend -->
+          <div class="card" style="text-align: center;">
+            <h3>카테고리별 비율</h3>
+            <div class="chart-container">
+              <svg width="220" height="220" class="donut-chart-svg" id="donut-chart-svg">
+                <!-- SVG paths will be injected dynamically -->
+              </svg>
+              <div class="chart-center-text">
+                <span class="title">총 지출</span>
+                <span class="val" id="chart-total-text">₩0</span>
+              </div>
+            </div>
+            <div class="chart-legend" id="chart-legend">
+              <!-- Legend items injected dynamically -->
+            </div>
+          </div>
+          
+          <!-- Expense Log List -->
+          <div class="card">
+            <h3>상세 지출 내역</h3>
+            <div class="expense-list-container" id="expense-list">
+              <!-- Expenses log list will be rendered here dynamically -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. MAP TAB -->
+      <section id="map-tab" class="content-section">
+        <div class="section-header">
+          <h1>지도 경로 연동</h1>
+        </div>
+        <div class="map-view-container">
+          <!-- Left side: Map wrapper -->
+          <div class="map-wrapper">
+            <div id="leaflet-map" class="map-element"></div>
+            <div id="google-map" class="map-element" style="display: none;"></div>
+          </div>
+          <!-- Right side: Destination pins log -->
+          <div class="map-sidebar">
+            <div class="card">
+              <h3>여행 동선 방문지</h3>
+              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">지도의 마커나 아래 방문지를 클릭하면 상세 경로와 정보를 확인하실 수 있습니다.</p>
+              <div class="map-place-list" id="map-places-list">
+                <!-- Map destinations list will be rendered here dynamically -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. SETTINGS TAB -->
+      <section id="settings-tab" class="content-section">
+        <div class="section-header">
+          <h1>설정</h1>
+        </div>
+        <div class="card settings-section">
+          <h3>지도 API 연동 설정</h3>
+          <p class="settings-description">
+            기본적으로 API 키가 필요 없는 Muted Blue 스타일의 OpenStreetMap(Leaflet)이 동작합니다. 
+            원하실 경우 구글 맵 API 키를 연동해 실시간 위성 뷰와 구글 로드뷰를 활용하실 수 있습니다.
+          </p>
+          <div class="form-group">
+            <label for="google-api-key">Google Maps API Key</label>
+            <input type="text" id="google-api-key" class="form-control" placeholder="AIzaSy...">
+          </div>
+          <button class="btn btn-primary" id="save-settings-btn" style="width: fit-content;">설정 저장</button>
+        </div>
+        
+        <div class="card settings-section" style="margin-top: 24px; border-color: rgba(255, 59, 48, 0.3);">
+          <h3 style="color: var(--color-red);">데이터 초기화</h3>
+          <p class="settings-description">
+            사용자님이 임의로 수정한 일정을 지우고 최초 기본 여행 일정(이미지 내 애틀랜타-올랜도-마이애미-뉴욕 20일 여행 정보)으로 재설정합니다.
+          </p>
+          <button class="btn btn-danger" id="reset-data-btn" style="width: fit-content;">데이터 전체 초기화</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Notification Alert Banner -->
+  <div class="notification" id="app-notification">
+    <span class="notification-icon">✓</span>
+    <span class="notification-text" id="notification-text">알림 메시지</span>
+  </div>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- A. Calendar Event Modal -->
+  <div class="modal-overlay" id="calendar-event-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="calendar-modal-title">일정 추가</h3>
+        <button class="btn-icon" id="close-calendar-modal-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="calendar-event-form">
+          <input type="hidden" id="cal-event-id">
+          <div class="form-group">
+            <label for="cal-event-title">일정 제목 / 도시명</label>
+            <input type="text" id="cal-event-title" class="form-control" placeholder="예: 애틀랜타, ⛳️ 골프 등" required>
+          </div>
+          <div class="form-group">
+            <label for="cal-event-type">구분</label>
+            <select id="cal-event-type" class="form-control" required>
+              <option value="city">도시 (Pill 형태)</option>
+              <option value="activity">활동/이벤트 (텍스트 형태)</option>
+              <option value="roadtrip">로드트립 (이동시간 표기)</option>
+              <option value="accommodation">숙박 (여러 날짜 바 형태)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cal-event-color">라벨 색상</label>
+            <select id="cal-event-color" class="form-control" required>
+              <option value="teal">Teal (애틀랜타)</option>
+              <option value="orange">Orange (올랜도)</option>
+              <option value="yellow">Yellow (마이애미)</option>
+              <option value="pink">Pink (뉴욕)</option>
+              <option value="blue">Blue (나이아가라)</option>
+              <option value="red">Red (할로윈/기타)</option>
+              <option value="green">Green (골프/액티비티)</option>
+              <option value="grey">Grey (숙박 바)</option>
+              <option value="black">Black (로드트립 바)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cal-event-date">시작일</label>
+            <input type="date" id="cal-event-date" class="form-control" required>
+          </div>
+          <!-- Only shown for accommodation -->
+          <div class="form-group" id="cal-event-end-date-group" style="display: none;">
+            <label for="cal-event-end-date">종료일</label>
+            <input type="date" id="cal-event-end-date" class="form-control">
+          </div>
+          <!-- Only shown for roadtrip -->
+          <div class="form-group" id="cal-event-duration-group" style="display: none;">
+            <label for="cal-event-duration">이동 소요 시간</label>
+            <input type="text" id="cal-event-duration" class="form-control" placeholder="예: 7시간 30분, 4시간">
+          </div>
+          <div class="form-group" id="cal-event-dest-group" style="display: none;">
+            <label for="cal-event-dest">목적지 도시</label>
+            <input type="text" id="cal-event-dest" class="form-control" placeholder="예: 올랜도, 마이애미">
+          </div>
+          <div class="form-group">
+            <label for="cal-event-label">추가 비고 (예: *아침 비행기표)</label>
+            <input type="text" id="cal-event-label" class="form-control" placeholder="캘린더에 별도로 표기될 꼬리 문구">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" id="delete-calendar-event-btn" style="display: none;">삭제</button>
+        <button class="btn" id="cancel-calendar-modal-btn">취소</button>
+        <button class="btn btn-primary" id="save-calendar-event-btn">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- B. Timeline Item Modal -->
+  <div class="modal-overlay" id="timeline-item-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="timeline-modal-title">활동 추가</h3>
+        <button class="btn-icon" id="close-timeline-modal-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="timeline-item-form">
+          <input type="hidden" id="timeline-item-index">
+          <div class="form-group">
+            <label for="timeline-item-date">날짜 선택</label>
+            <input type="date" id="timeline-item-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="timeline-item-time">시간</label>
+            <input type="time" id="timeline-item-time" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="timeline-item-title">활동 제목</label>
+            <input type="text" id="timeline-item-title" class="form-control" placeholder="예: 조지아 아쿠아리움 관람" required>
+          </div>
+          <div class="form-group">
+            <label for="timeline-item-desc">세부 설명</label>
+            <textarea id="timeline-item-desc" class="form-control" rows="3" placeholder="예: 고래상어 및 벨루가 관람"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="timeline-item-loc">장소 이름</label>
+            <input type="text" id="timeline-item-loc" class="form-control" placeholder="예: Georgia Aquarium" required>
+          </div>
+          <div class="form-group" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+            <div>
+              <label for="timeline-item-lat">위도 (Latitude)</label>
+              <input type="number" step="any" id="timeline-item-lat" class="form-control" placeholder="33.7634" required>
+            </div>
+            <div>
+              <label for="timeline-item-lng">경도 (Longitude)</label>
+              <input type="number" step="any" id="timeline-item-lng" class="form-control" placeholder="-84.3951" required>
+            </div>
+          </div>
+          <span style="font-size: 11px; color: var(--text-secondary);">* 주요 도시 위경도 참고: 애틀랜타 (33.749, -84.388), 올랜도 (28.538, -81.379), 마이애미 (25.761, -80.191), 뉴욕 (40.712, -74.006)</span>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" id="cancel-timeline-modal-btn">취소</button>
+        <button class="btn btn-primary" id="save-timeline-item-btn">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- C. Expense Modal -->
+  <div class="modal-overlay" id="expense-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="expense-modal-title">경비 항목 추가</h3>
+        <button class="btn-icon" id="close-expense-modal-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="expense-form">
+          <input type="hidden" id="expense-id">
+          <div class="form-group">
+            <label for="expense-category">카테고리</label>
+            <select id="expense-category" class="form-control" required>
+              <option value="accommodation">숙박 (Accommodation)</option>
+              <option value="transport">교통 (Transport)</option>
+              <option value="food">식비 (Food)</option>
+              <option value="activity">액티비티 (Activity)</option>
+              <option value="shopping">쇼핑 (Shopping)</option>
+              <option value="etc">기타 (Etc)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="expense-title">지출 항목명</label>
+            <input type="text" id="expense-title" class="form-control" placeholder="예: 뉴욕 랍스터 점심 식사" required>
+          </div>
+          <div class="form-group">
+            <label for="expense-amount">금액 (원)</label>
+            <input type="number" id="expense-amount" class="form-control" placeholder="예: 150000" required>
+          </div>
+          <div class="form-group">
+            <label for="expense-date">날짜</label>
+            <input type="date" id="expense-date" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="expense-memo">메모</label>
+            <input type="text" id="expense-memo" class="form-control" placeholder="기타 영수증 메모 등">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-danger" id="delete-expense-btn" style="display: none;">삭제</button>
+        <button class="btn" id="cancel-expense-modal-btn">취소</button>
+        <button class="btn btn-primary" id="save-expense-btn">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet Map Script -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""></script>
+  
+  <!-- App JS Files -->
+  <script src="js/mockData.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/calendar.js"></script>
+  <script src="js/itinerary.js"></script>
+  <script src="js/expenses.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
