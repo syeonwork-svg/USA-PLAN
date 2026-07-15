@@ -179,7 +179,10 @@ const DEFAULT_TICKETS = [
     time: "16:25",
     details: "편명: KE085 (공동운항) | 좌석등급: 일반석\n항공사 예약번호: EK859P | 여행사 예약번호: HA2635045264\n탑승인원: 4명 | 발권: 하나투어",
     imageUrl: "",
-    memo: "*수화물 규정 및 대한항공 마일리지 적립 체크 필수 (1인당 1,943,500원)"
+    memo: "*수화물 규정 및 대한항공 마일리지 적립 체크 필수 (1인당 1,943,500원)",
+    depCode: "ICN",
+    arrCode: "ATL",
+    flightNo: "KE085"
   },
   {
     id: "t2",
@@ -189,7 +192,10 @@ const DEFAULT_TICKETS = [
     time: "12:00",
     details: "편명: KE082 | 좌석등급: 일반석\n항공사 예약번호: EK859P | 여행사 예약번호: HA2635045264\n탑승인원: 4명 | 발권: 하나투어",
     imageUrl: "",
-    memo: "*수화물 규정 및 마일리지 적립 확인"
+    memo: "*수화물 규정 및 마일리지 적립 확인",
+    depCode: "JFK",
+    arrCode: "ICN",
+    flightNo: "KE082"
   },
   {
     id: "t3",

@@ -3,7 +3,7 @@
 <head>
   <script>
     (function() {
-      const targetVersion = "v16";
+      const targetVersion = "v17";
       localStorage.setItem("usa_travel_data_version", targetVersion);
     })();
   </script>
@@ -539,6 +539,21 @@
               <option value="etc">기타 예매 내역 (Other)</option>
             </select>
           </div>
+          <!-- Flight Specific Fields (only shown when category is 'flight') -->
+          <div id="flight-fields-group" style="display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 8px; margin-bottom: 15px;">
+            <div>
+              <label for="ticket-dep-code" style="font-size: 11px; font-weight:600;">출발지 (Departure)</label>
+              <input type="text" id="ticket-dep-code" class="form-control" placeholder="예: ICN, JFK" maxlength="10">
+            </div>
+            <div>
+              <label for="ticket-arr-code" style="font-size: 11px; font-weight:600;">도착지 (Destination)</label>
+              <input type="text" id="ticket-arr-code" class="form-control" placeholder="예: ATL, ICN" maxlength="10">
+            </div>
+            <div>
+              <label for="ticket-flight-no" style="font-size: 11px; font-weight:600;">항공편명 (Flight No.)</label>
+              <input type="text" id="ticket-flight-no" class="form-control" placeholder="예: KE085, DL2234">
+            </div>
+          </div>
           <div class="form-group">
             <label for="ticket-title">티켓/예약 명칭</label>
             <input type="text" id="ticket-title" class="form-control" placeholder="예: 대한항공 KE085 항공권" required>
@@ -654,15 +669,15 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""></script>
   
   <!-- App JS Files -->
-  <script src="js/mockData.js?v=16"></script>
-  <script src="js/storage.js?v=16"></script>
-  <script src="js/calendar.js?v=16"></script>
-  <script src="js/itinerary.js?v=16"></script>
-  <script src="js/expenses.js?v=16"></script>
-  <script src="js/map.js?v=16"></script>
-  <script src="js/tickets.js?v=16"></script>
-  <script src="js/passports.js?v=16"></script>
-  <script src="js/checklist.js?v=16"></script>
-  <script src="js/app.js?v=16"></script>
+  <script src="js/mockData.js?v=17"></script>
+  <script src="js/storage.js?v=17"></script>
+  <script src="js/calendar.js?v=17"></script>
+  <script src="js/itinerary.js?v=17"></script>
+  <script src="js/expenses.js?v=17"></script>
+  <script src="js/map.js?v=17"></script>
+  <script src="js/tickets.js?v=17"></script>
+  <script src="js/passports.js?v=17"></script>
+  <script src="js/checklist.js?v=17"></script>
+  <script src="js/app.js?v=17"></script>
 </body>
 </html>

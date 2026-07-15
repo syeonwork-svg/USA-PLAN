@@ -51,6 +51,20 @@ const TicketsComponent = {
       this.openModalForAdd();
     });
 
+    // Category Change Flight fields toggle
+    const categorySelect = document.getElementById("ticket-category");
+    const flightFields = document.getElementById("flight-fields-group");
+    
+    const toggleFlightFields = () => {
+      if (categorySelect.value === "flight") {
+        flightFields.style.display = "grid";
+      } else {
+        flightFields.style.display = "none";
+      }
+    };
+    
+    categorySelect.addEventListener("change", toggleFlightFields);
+
     // Image file upload handler (Convert to Base64)
     const fileInput = document.getElementById("ticket-image-file");
     const base64Input = document.getElementById("ticket-image-base64");
@@ -125,7 +139,7 @@ const TicketsComponent = {
       // Check if image exists
       const hasImage = ticket.imageUrl || ticket.imageBase64;
       const imgBtnHTML = hasImage ? `
-        <button class="btn btn-sm ticket-img-view-btn" style="padding: 4px 8px; font-size: 11px; margin-top: 8px;">
+        <button class="btn btn-sm ticket-img-view-btn" style="padding: 4px 8px; font-size: 11px; margin-top: 8px; cursor: pointer;">
           🖼️ 티켓 원본 보기
         </button>
       ` : `<span style="font-size: 11px; color: var(--text-tertiary); margin-top: 8px; display: inline-block;">첨부 이미지 없음</span>`;
@@ -133,6 +147,56 @@ const TicketsComponent = {
       // Date conversion to beautiful Korean format
       const dateParts = ticket.date.split("-");
       const formattedDate = `${dateParts[1]}월 ${dateParts[2]}일`;
+
+      let passBodyHTML = "";
+
+      if (ticket.category === "flight") {
+        const departure = ticket.depCode || "ICN";
+        const destination = ticket.arrCode || "ATL";
+        const flightNo = ticket.flightNo || "";
+
+        passBodyHTML = `
+          <!-- Boarding pass style FROM / TO -->
+          <div class="flight-segment" style="display: flex; align-items: center; justify-content: space-between; margin: 10px 0; padding: 4px 0; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+            <div style="text-align: left;">
+              <span style="display: block; font-size: 9px; color: var(--text-secondary); font-weight: 600; letter-spacing: 0.5px;">FROM</span>
+              <span style="font-size: 24px; font-weight: 800; color: var(--text-primary); letter-spacing: 0.5px;">${departure}</span>
+            </div>
+            <div style="font-size: 18px; color: var(--ticket-accent); display: flex; flex-direction: column; align-items: center; gap: 2px;">
+              <span>✈️</span>
+              ${flightNo ? `<span style="font-size: 8.5px; color: var(--ticket-accent); font-weight: 700; background: ${catInfo.bg}; padding: 1px 8px; border-radius: 10px; border: 1px solid ${catInfo.color};">${flightNo}</span>` : ""}
+            </div>
+            <div style="text-align: right;">
+              <span style="display: block; font-size: 9px; color: var(--text-secondary); font-weight: 600; letter-spacing: 0.5px;">TO</span>
+              <span style="font-size: 24px; font-weight: 800; color: var(--text-primary); letter-spacing: 0.5px;">${destination}</span>
+            </div>
+          </div>
+          
+          <div class="ticket-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px;">
+            <div>
+              <span class="label" style="display: block; font-size: 9px; color: var(--text-secondary); font-weight: 600;">DATE</span>
+              <span class="val" style="font-size: 13px; font-weight: 700;">${formattedDate}</span>
+            </div>
+            <div>
+              <span class="label" style="display: block; font-size: 9px; color: var(--text-secondary); font-weight: 600;">TIME</span>
+              <span class="val" style="font-size: 13px; font-weight: 700;">${ticket.time}</span>
+            </div>
+          </div>
+        `;
+      } else {
+        passBodyHTML = `
+          <div class="ticket-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;">
+            <div>
+              <span class="label" style="display: block; font-size: 9px; color: var(--text-secondary); font-weight: 600;">DATE</span>
+              <span class="val" style="font-size: 13px; font-weight: 700;">${formattedDate}</span>
+            </div>
+            <div>
+              <span class="label" style="display: block; font-size: 9px; color: var(--text-secondary); font-weight: 600;">TIME</span>
+              <span class="val" style="font-size: 13px; font-weight: 700;">${ticket.time}</span>
+            </div>
+          </div>
+        `;
+      }
 
       card.innerHTML = `
         <div class="ticket-header-strip">
@@ -147,19 +211,10 @@ const TicketsComponent = {
             <button class="btn-icon edit-tkt-btn" style="font-size: 12px;">✏️</button>
           </div>
           
-          <div class="ticket-info-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 12px;">
-            <div>
-              <span class="label" style="display: block; font-size: 10px; color: var(--text-secondary); font-weight: 600;">DATE</span>
-              <span class="val" style="font-size: 13px; font-weight: 700;">${formattedDate}</span>
-            </div>
-            <div>
-              <span class="label" style="display: block; font-size: 10px; color: var(--text-secondary); font-weight: 600;">TIME</span>
-              <span class="val" style="font-size: 13px; font-weight: 700;">${ticket.time}</span>
-            </div>
-          </div>
+          ${passBodyHTML}
           
           <div style="margin-top: 12px; border-top: 1px dashed var(--border-color); padding-top: 10px;">
-            <span class="label" style="display: block; font-size: 10px; color: var(--text-secondary); font-weight: 600; margin-bottom: 2px;">RESERVATION INFO</span>
+            <span class="label" style="display: block; font-size: 9px; color: var(--text-secondary); font-weight: 600; margin-bottom: 2px;">RESERVATION INFO</span>
             <div class="val" style="font-size: 12px; line-height: 1.4; color: var(--text-primary); white-space: pre-line; font-weight: 500;">${ticket.details}</div>
           </div>
 
@@ -220,6 +275,12 @@ const TicketsComponent = {
     document.getElementById("ticket-image-url").value = "";
     document.getElementById("ticket-memo").value = "";
 
+    // Reset flight specific fields
+    document.getElementById("ticket-dep-code").value = "";
+    document.getElementById("ticket-arr-code").value = "";
+    document.getElementById("ticket-flight-no").value = "";
+    document.getElementById("flight-fields-group").style.display = "grid";
+
     document.getElementById("delete-ticket-btn").style.display = "none";
     modal.classList.add("active");
   },
@@ -242,6 +303,17 @@ const TicketsComponent = {
     document.getElementById("ticket-image-url").value = ticket.imageUrl || "";
     document.getElementById("ticket-memo").value = ticket.memo || "";
 
+    // Load flight specific fields
+    document.getElementById("ticket-dep-code").value = ticket.depCode || "";
+    document.getElementById("ticket-arr-code").value = ticket.arrCode || "";
+    document.getElementById("ticket-flight-no").value = ticket.flightNo || "";
+    
+    if (ticket.category === "flight") {
+      document.getElementById("flight-fields-group").style.display = "grid";
+    } else {
+      document.getElementById("flight-fields-group").style.display = "none";
+    }
+
     document.getElementById("delete-ticket-btn").style.display = "inline-flex";
     modal.classList.add("active");
   },
@@ -261,6 +333,11 @@ const TicketsComponent = {
     const imageUrl = document.getElementById("ticket-image-url").value.trim();
     const memo = document.getElementById("ticket-memo").value.trim();
 
+    // Flight specific fields
+    const depCode = document.getElementById("ticket-dep-code").value.trim().toUpperCase();
+    const arrCode = document.getElementById("ticket-arr-code").value.trim().toUpperCase();
+    const flightNo = document.getElementById("ticket-flight-no").value.trim().toUpperCase();
+
     if (!title || !date || !time || !details) {
       alert("티켓 명칭, 날짜, 시간, 세부 정보를 모두 기입해 주세요.");
       return;
@@ -272,7 +349,7 @@ const TicketsComponent = {
       // Edit
       tickets = tickets.map(t => {
         if (t.id === id) {
-          return { ...t, category, title, date, time, details, imageBase64, imageUrl, memo };
+          return { ...t, category, title, date, time, details, imageBase64, imageUrl, memo, depCode, arrCode, flightNo };
         }
         return t;
       });
@@ -288,7 +365,10 @@ const TicketsComponent = {
         details,
         imageBase64,
         imageUrl,
-        memo
+        memo,
+        depCode,
+        arrCode,
+        flightNo
       };
       tickets.push(newTkt);
       App.showNotification("새 티켓이 성공적으로 등록되었습니다.");

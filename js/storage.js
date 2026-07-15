@@ -16,7 +16,7 @@ const STORAGE_KEYS = {
 const StorageManager = {
   // Initialize storage with mock data if empty
   init() {
-    const CURRENT_VERSION = "v16";
+    const CURRENT_VERSION = "v17";
     const savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
 
     // Non-destructive initialization: only set default if key doesn't exist
@@ -46,6 +46,26 @@ const StorageManager = {
     }
     if (!localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) {
       localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
+    }
+
+    // Smart Migration for v17: Inject depCode / arrCode to old flight presets if missing
+    try {
+      let tickets = JSON.parse(localStorage.getItem(STORAGE_KEYS.TICKETS));
+      if (tickets && Array.isArray(tickets)) {
+        let migrated = false;
+        tickets = tickets.map(t => {
+          if (t.category === "flight") {
+            if (!t.depCode && t.title.includes("인천 ➔ 애틀랜타")) { t.depCode = "ICN"; t.arrCode = "ATL"; t.flightNo = "KE085"; migrated = true; }
+            if (!t.depCode && t.title.includes("뉴욕 ➔ 인천")) { t.depCode = "JFK"; t.arrCode = "ICN"; t.flightNo = "KE082"; migrated = true; }
+          }
+          return t;
+        });
+        if (migrated) {
+          localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(tickets));
+        }
+      }
+    } catch (e) {
+      console.error("Migration error:", e);
     }
 
     // Update version string without clearing anything
