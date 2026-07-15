@@ -2,6 +2,8 @@
 const ItineraryComponent = {
   selectedDate: "2026-10-15", // Default starts on Day 1
   daysList: [],
+  editingIndex: null,
+  editingDate: null,
 
   init() {
     this.calculateDays();
@@ -146,6 +148,13 @@ const ItineraryComponent = {
         const item = document.createElement("div");
         item.className = "timeline-item";
 
+        const isDraft = act.isDraft !== false; // By default true unless set to false
+        if (isDraft) {
+          item.style.opacity = "0.62";
+        } else {
+          item.style.opacity = "1";
+        }
+
         const locBtnHTML = act.locName ? `
           <div class="timeline-location" data-lat="${act.lat}" data-lng="${act.lng}" data-name="${act.locName}">
             📍 ${act.locName}
@@ -157,12 +166,16 @@ const ItineraryComponent = {
           <div class="timeline-content">
             <div class="timeline-info">
               <span class="timeline-time">${act.time}</span>
-              <span class="timeline-title">${act.title}</span>
+              <span class="timeline-title">
+                ${act.title}
+                ${isDraft ? `<span style="font-size: 9px; color: #8e8e93; border: 1px solid #d1d1d6; background: var(--bg-secondary); padding: 1px 4px; border-radius: 4px; font-weight: 600; margin-left: 6px;">임시</span>` : ""}
+              </span>
               ${act.desc ? `<span class="timeline-desc">${act.desc}</span>` : ""}
               ${locBtnHTML}
             </div>
             <div class="timeline-actions">
-              <button class="btn-icon delete" title="삭제">🗑️</button>
+              <button class="btn-icon edit" title="수정" style="font-size: 11px; margin-right: 4px; cursor: pointer;">✏️</button>
+              <button class="btn-icon delete" title="삭제" style="font-size: 11px; cursor: pointer;">🗑️</button>
             </div>
           </div>
         `;
@@ -179,6 +192,10 @@ const ItineraryComponent = {
             }
           });
         }
+
+        item.querySelector(".btn-icon.edit").addEventListener("click", () => {
+          this.openModalForEdit(this.selectedDate, idx);
+        });
 
         item.querySelector(".btn-icon.delete").addEventListener("click", () => {
           this.deleteTimelineItem(idx);
@@ -204,6 +221,13 @@ const ItineraryComponent = {
       const item = document.createElement("div");
       item.className = "timeline-item";
 
+      const isDraft = act.isDraft !== false; // By default true unless set to false
+      if (isDraft) {
+        item.style.opacity = "0.62";
+      } else {
+        item.style.opacity = "1";
+      }
+
       const locBtnHTML = act.locName ? `
         <div class="timeline-location" data-lat="${act.lat}" data-lng="${act.lng}" data-name="${act.locName}">
           📍 ${act.locName}
@@ -215,12 +239,16 @@ const ItineraryComponent = {
         <div class="timeline-content">
           <div class="timeline-info">
             <span class="timeline-time">${act.time}</span>
-            <span class="timeline-title">${act.title}</span>
+            <span class="timeline-title">
+              ${act.title}
+              ${isDraft ? `<span style="font-size: 9px; color: #8e8e93; border: 1px solid #d1d1d6; background: var(--bg-secondary); padding: 1px 4px; border-radius: 4px; font-weight: 600; margin-left: 6px;">임시</span>` : ""}
+            </span>
             ${act.desc ? `<span class="timeline-desc">${act.desc}</span>` : ""}
             ${locBtnHTML}
           </div>
           <div class="timeline-actions">
-            <button class="btn-icon delete" title="삭제">🗑️</button>
+            <button class="btn-icon edit" title="수정" style="font-size: 11px; margin-right: 4px; cursor: pointer;">✏️</button>
+            <button class="btn-icon delete" title="삭제" style="font-size: 11px; cursor: pointer;">🗑️</button>
           </div>
         </div>
       `;
@@ -238,6 +266,10 @@ const ItineraryComponent = {
         });
       }
 
+      item.querySelector(".btn-icon.edit").addEventListener("click", () => {
+        this.openModalForEdit(this.selectedDate, idx);
+      });
+
       item.querySelector(".btn-icon.delete").addEventListener("click", () => {
         this.deleteTimelineItem(idx);
       });
@@ -247,6 +279,9 @@ const ItineraryComponent = {
   },
 
   openModalForAdd() {
+    this.editingIndex = null;
+    this.editingDate = null;
+
     const modal = document.getElementById("timeline-item-modal");
     document.getElementById("timeline-modal-title").innerText = "새 활동 추가";
     document.getElementById("timeline-item-index").value = "";
@@ -272,8 +307,34 @@ const ItineraryComponent = {
     modal.classList.add("active");
   },
 
+  openModalForEdit(date, idx) {
+    const timelineData = StorageManager.getTimeline();
+    const dayActivities = timelineData[date] || [];
+    dayActivities.sort((a, b) => a.time.localeCompare(b.time));
+    const act = dayActivities[idx];
+    if (!act) return;
+
+    this.editingIndex = idx;
+    this.editingDate = date;
+
+    const modal = document.getElementById("timeline-item-modal");
+    document.getElementById("timeline-modal-title").innerText = "활동 수정";
+    document.getElementById("timeline-item-index").value = idx;
+    document.getElementById("timeline-item-date").value = date;
+    document.getElementById("timeline-item-time").value = act.time;
+    document.getElementById("timeline-item-title").value = act.title;
+    document.getElementById("timeline-item-desc").value = act.desc || "";
+    document.getElementById("timeline-item-loc").value = act.locName || "";
+    document.getElementById("timeline-item-lat").value = act.lat || "";
+    document.getElementById("timeline-item-lng").value = act.lng || "";
+
+    modal.classList.add("active");
+  },
+
   closeModal() {
     document.getElementById("timeline-item-modal").classList.remove("active");
+    this.editingIndex = null;
+    this.editingDate = null;
   },
 
   saveTimelineItem() {
@@ -295,21 +356,53 @@ const ItineraryComponent = {
 
     const timelineData = StorageManager.getTimeline();
     
-    if (!timelineData[date]) {
-      timelineData[date] = [];
+    if (this.editingIndex !== null && this.editingDate !== null) {
+      // Editing Mode
+      const dayActivities = timelineData[this.editingDate] || [];
+      dayActivities.sort((a, b) => a.time.localeCompare(b.time));
+      
+      const updatedItem = {
+        time,
+        title,
+        desc,
+        locName,
+        lat,
+        lng,
+        isDraft: false // Mark as confirmed once edited!
+      };
+
+      if (date === this.editingDate) {
+        dayActivities[this.editingIndex] = updatedItem;
+      } else {
+        // Date changed
+        dayActivities.splice(this.editingIndex, 1);
+        if (!timelineData[date]) timelineData[date] = [];
+        timelineData[date].push(updatedItem);
+      }
+      
+      App.showNotification("일정이 수정되었습니다.");
+    } else {
+      // Adding Mode
+      if (!timelineData[date]) {
+        timelineData[date] = [];
+      }
+      const newItem = {
+        time,
+        title,
+        desc,
+        locName,
+        lat,
+        lng,
+        isDraft: false // Mark user additions as confirmed
+      };
+      timelineData[date].push(newItem);
+      App.showNotification("새 일정이 추가되었습니다.");
     }
 
-    const newItem = { time, title, desc, locName, lat, lng };
-
-    // Simply push (sorting is handled on render)
-    timelineData[date].push(newItem);
     StorageManager.saveTimeline(timelineData);
-
-    App.showNotification("일정 타임라인이 업데이트되었습니다.");
     this.render();
     this.closeModal();
 
-    // Trigger update on map marker
     if (window.MapComponent) {
       MapComponent.updateMarkers();
     }
