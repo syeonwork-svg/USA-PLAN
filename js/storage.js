@@ -8,13 +8,14 @@ const STORAGE_KEYS = {
   EXPENSES: "usa_travel_expenses",
   TICKETS: "usa_travel_tickets",
   PASSPORTS: "usa_travel_passports",
+  CHECKLIST: "usa_travel_checklist",
   MAP_CONFIG: "usa_travel_map_config"
 };
 
 const StorageManager = {
   // Initialize storage with mock data if empty
   init() {
-    const CURRENT_VERSION = "v5";
+    const CURRENT_VERSION = "v8";
     const savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
 
     if (savedVersion !== CURRENT_VERSION) {
@@ -25,6 +26,7 @@ const StorageManager = {
       localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(DEFAULT_EXPENSES));
       localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(DEFAULT_TICKETS));
       localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(DEFAULT_PASSPORTS));
+      localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(DEFAULT_CHECKLIST));
       if (!localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) {
         localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
       }
@@ -48,6 +50,9 @@ const StorageManager = {
     }
     if (!localStorage.getItem(STORAGE_KEYS.PASSPORTS)) {
       localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(DEFAULT_PASSPORTS));
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.CHECKLIST)) {
+      localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(DEFAULT_CHECKLIST));
     }
     if (!localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) {
       localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
@@ -102,6 +107,14 @@ const StorageManager = {
     localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(passports));
   },
 
+  getChecklist() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.CHECKLIST)) || DEFAULT_CHECKLIST;
+  },
+
+  saveChecklist(checklist) {
+    localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(checklist));
+  },
+
   getMapConfig() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) || { googleMapsApiKey: "" };
   },
@@ -118,6 +131,7 @@ const StorageManager = {
     localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(DEFAULT_EXPENSES));
     localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(DEFAULT_TICKETS));
     localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(DEFAULT_PASSPORTS));
+    localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(DEFAULT_CHECKLIST));
     localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
     window.location.reload();
   }

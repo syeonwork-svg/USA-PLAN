@@ -619,13 +619,16 @@ h1 {
   color: #f5f5f7;
 }
 
-/* Accommodation Span Bars (Shown continuous at the bottom of the cell) */
+/* Accommodation Span Bars (Shown continuous at the bottom of the cell - Sleek Thinner Style) */
 .badge-accommodation {
   background-color: rgba(142, 142, 147, 0.1) !important;
   color: #555558 !important;
-  border-left: 3.5px solid #8e8e93 !important;
+  border-left: 2px solid #8e8e93 !important;
   font-weight: 600;
-  font-size: 10px;
+  font-size: 9px !important;
+  padding: 1.5px 4px !important;
+  height: 15px;
+  line-height: 11px;
   margin-top: auto;
   box-shadow: none;
 }
@@ -635,22 +638,32 @@ h1 {
 }
 
 .badge-accommodation.span-start {
-  border-radius: 5px 0 0 5px;
+  border-radius: 4px 0 0 4px;
   margin-right: -9px;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
 }
 .badge-accommodation.span-mid {
   border-radius: 0;
   margin-left: -9px;
   margin-right: -9px;
   border-left: none !important;
-  box-shadow: none;
 }
 .badge-accommodation.span-end {
-  border-radius: 0 5px 5px 0;
+  border-radius: 0 4px 4px 0;
   margin-left: -9px;
   border-left: none !important;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+
+/* Special Halloween Event Thematic Styling */
+.badge-halloween {
+  border: 1.5px dashed #ff9500 !important;
+  background-color: rgba(255, 149, 0, 0.12) !important;
+  color: #a05000 !important;
+  border-left: 1.5px dashed #ff9500 !important;
+  font-weight: 700 !important;
+}
+[data-theme="dark"] .badge-halloween {
+  background-color: rgba(255, 149, 0, 0.2) !important;
+  color: #ffbe66 !important;
 }
 
 /* Itinerary Planner View */
@@ -1613,4 +1626,150 @@ h1 {
     grid-template-columns: 1fr;
     gap: 16px;
   }
+}
+
+/* Day 1 Split Timeline View */
+.timeline-split-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.timeline-column {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-secondary);
+  border: 1px dashed var(--border-color);
+  border-radius: 12px;
+  padding: 16px;
+  min-height: 180px;
+}
+
+.timeline-col-header {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid;
+  text-align: center;
+}
+
+.korea-header {
+  border-color: #007aff;
+  color: #007aff;
+}
+
+.usa-header {
+  border-color: #ff3b30;
+  color: #ff3b30;
+}
+
+@media (max-width: 768px) {
+  .timeline-split-wrapper {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+/* Checklist Reminders-Style Styling */
+.checklist-items-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.checklist-item-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.checklist-item-row:hover {
+  border-color: var(--border-focus);
+}
+
+.checklist-item-row.checked {
+  opacity: 0.65;
+}
+
+.checklist-label-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  width: 90%;
+  position: relative;
+}
+
+.checklist-checkbox-real {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Apple Reminders circular ring checkbox style */
+.checklist-checkbox-custom {
+  height: 18px;
+  width: 18px;
+  border: 2px solid #8e8e93;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.checklist-checkbox-real:checked ~ .checklist-checkbox-custom {
+  border-color: #34c759;
+  background-color: #34c759;
+}
+
+.checklist-checkbox-custom::after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.checklist-checkbox-real:checked ~ .checklist-checkbox-custom::after {
+  display: block;
+}
+
+.checklist-item-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: all 0.2s;
+}
+
+.checklist-checkbox-real:checked ~ .checklist-item-title {
+  text-decoration: line-through;
+  color: var(--text-secondary);
+}
+
+.delete-chk-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 12px;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.delete-chk-btn:hover {
+  color: #ff3b30;
 }

@@ -1,6 +1,6 @@
 // USA Travel Planner - Itinerary Component
 const ItineraryComponent = {
-  selectedDate: "2026-10-14", // Default starts on Day 1
+  selectedDate: "2026-10-15", // Default starts on Day 1
   daysList: [],
 
   init() {
@@ -10,8 +10,8 @@ const ItineraryComponent = {
   },
 
   calculateDays() {
-    // Generate dates from 2026-10-14 to 2026-11-02 (20 days)
-    const startDate = new Date(2026, 9, 14); // Oct 14
+    // Generate dates from 2026-10-15 to 2026-11-03 (20 days)
+    const startDate = new Date(2026, 9, 15); // Oct 15
     const daysCount = 20;
     this.daysList = [];
 
@@ -128,6 +128,77 @@ const ItineraryComponent = {
       return;
     }
 
+    // Special layout for Day 1: Split between Korea (Departure) and USA (Arrival)
+    if (dayInfo.dayIndex === 1) {
+      const splitWrapper = document.createElement("div");
+      splitWrapper.className = "timeline-split-wrapper";
+      
+      const leftCol = document.createElement("div");
+      leftCol.className = "timeline-column";
+      leftCol.innerHTML = `<h3 class="timeline-col-header korea-header">🇰🇷 한국 (출발)</h3>`;
+      
+      const rightCol = document.createElement("div");
+      rightCol.className = "timeline-column";
+      rightCol.innerHTML = `<h3 class="timeline-col-header usa-header">🇺🇸 미국 (도착)</h3>`;
+      
+      dayActivities.forEach((act, idx) => {
+        const item = document.createElement("div");
+        item.className = "timeline-item";
+
+        const locBtnHTML = act.locName ? `
+          <div class="timeline-location" data-lat="${act.lat}" data-lng="${act.lng}" data-name="${act.locName}">
+            📍 ${act.locName}
+          </div>
+        ` : "";
+
+        item.innerHTML = `
+          <div class="timeline-node"></div>
+          <div class="timeline-content">
+            <div class="timeline-info">
+              <span class="timeline-time">${act.time}</span>
+              <span class="timeline-title">${act.title}</span>
+              ${act.desc ? `<span class="timeline-desc">${act.desc}</span>` : ""}
+              ${locBtnHTML}
+            </div>
+            <div class="timeline-actions">
+              <button class="btn-icon delete" title="삭제">🗑️</button>
+            </div>
+          </div>
+        `;
+
+        const locBtn = item.querySelector(".timeline-location");
+        if (locBtn) {
+          locBtn.addEventListener("click", () => {
+            const lat = parseFloat(locBtn.dataset.lat);
+            const lng = parseFloat(locBtn.dataset.lng);
+            const name = locBtn.dataset.name;
+            App.switchTab("map-tab");
+            if (window.MapComponent) {
+              MapComponent.panTo(lat, lng, name);
+            }
+          });
+        }
+
+        item.querySelector(".btn-icon.delete").addEventListener("click", () => {
+          this.deleteTimelineItem(idx);
+        });
+
+        // Split criteria: Korea vs USA
+        const isKorea = act.title.includes("인천") || act.title.includes("대한항공") || act.title.includes("이륙") || act.title.includes("출발") || (act.locName && (act.locName.includes("Incheon") || act.locName.includes("인천")));
+        if (isKorea) {
+          leftCol.appendChild(item);
+        } else {
+          rightCol.appendChild(item);
+        }
+      });
+      
+      splitWrapper.appendChild(leftCol);
+      splitWrapper.appendChild(rightCol);
+      timelineContainer.appendChild(splitWrapper);
+      return;
+    }
+
+    // Default layout for other days
     dayActivities.forEach((act, idx) => {
       const item = document.createElement("div");
       item.className = "timeline-item";
@@ -153,7 +224,6 @@ const ItineraryComponent = {
         </div>
       `;
 
-      // Map Focus on click location
       const locBtn = item.querySelector(".timeline-location");
       if (locBtn) {
         locBtn.addEventListener("click", () => {
@@ -167,7 +237,6 @@ const ItineraryComponent = {
         });
       }
 
-      // Delete action
       item.querySelector(".btn-icon.delete").addEventListener("click", () => {
         this.deleteTimelineItem(idx);
       });

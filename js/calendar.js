@@ -184,8 +184,26 @@ const CalendarComponent = {
     const eventsContainer = document.createElement("div");
     eventsContainer.className = "events-list";
 
+    // Merge accommodations if there are multiple on the same day (e.g. checkout -> checkin)
+    let renderableEvents = [...dayEvents];
+    const dayAccommodations = renderableEvents.filter(ev => ev.type === "accommodation");
+    if (dayAccommodations.length > 1) {
+      const mergedTitle = `${dayAccommodations[0].title.replace(" 숙박", "")} ➔ ${dayAccommodations[1].title.replace(" 숙박", "")}`;
+      const mergedEvent = {
+        id: dayAccommodations[0].id,
+        title: mergedTitle,
+        type: "accommodation",
+        color: "grey",
+        date: dateStr,
+        endDate: dateStr,
+        isMerged: true
+      };
+      renderableEvents = renderableEvents.filter(ev => ev.type !== "accommodation");
+      renderableEvents.push(mergedEvent);
+    }
+
     // Sort events so that city/roadtrips are first, then activities, then accommodations
-    const sortedDayEvents = [...dayEvents].sort((a, b) => {
+    const sortedDayEvents = renderableEvents.sort((a, b) => {
       const typeOrder = { city: 1, roadtrip: 2, activity: 3, accommodation: 4 };
       return (typeOrder[a.type] || 9) - (typeOrder[b.type] || 9);
     });
@@ -194,11 +212,15 @@ const CalendarComponent = {
       const badge = document.createElement("div");
       badge.className = `badge-event color-${ev.color}`;
 
+      if (ev.title.includes("할로윈")) {
+        badge.classList.add("badge-halloween");
+      }
+
       if (ev.type === "accommodation") {
         badge.classList.add("badge-accommodation");
         // Determine flat-edges class for continuous span illusion
         if (ev.date === ev.endDate) {
-          // Single day
+          // Single day or merged day
         } else if (dateStr === ev.date) {
           badge.classList.add("span-start");
         } else if (dateStr === ev.endDate) {

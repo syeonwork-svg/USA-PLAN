@@ -44,6 +44,9 @@
             <li class="nav-item" data-tab="passports-tab">
               <a>🛂 여권 & 정보</a>
             </li>
+            <li class="nav-item" data-tab="checklist-tab">
+              <a>☑️ 체크리스트</a>
+            </li>
             <li class="nav-item" data-tab="settings-tab">
               <a>⚙️ 설정</a>
             </li>
@@ -224,7 +227,65 @@
         </div>
       </section>
 
-      <!-- 7. SETTINGS TAB -->
+      <!-- 7. CHECKLIST TAB -->
+      <section id="checklist-tab" class="content-section">
+        <div class="section-header">
+          <h1>여행 준비 체크리스트</h1>
+        </div>
+        
+        <!-- Apple Reminders style Progress bar card -->
+        <div class="card checklist-progress-card" style="margin-bottom: 24px; background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <span style="font-size: 14px; font-weight: 700; color: var(--text-primary);">전체 준비 진행도</span>
+            <span id="checklist-progress-text" style="font-size: 14px; font-weight: 700; color: var(--border-focus);">0% 완료 (0/0)</span>
+          </div>
+          <div class="progress-bar-container" style="background: rgba(0,0,0,0.05); height: 8px; border-radius: 4px; overflow: hidden; position: relative;">
+            <div id="checklist-progress-fill" style="background: linear-gradient(90deg, #007aff, #34c759); width: 0%; height: 100%; transition: width 0.3s ease;"></div>
+          </div>
+        </div>
+
+        <!-- Add Custom item bar -->
+        <div class="card" style="padding: 12px; margin-bottom: 24px; background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px;">
+          <form id="checklist-add-form" style="display: flex; gap: 8px;">
+            <select id="checklist-add-category" class="form-control" style="width: 140px; font-size: 13px;" required>
+              <option value="document">📄 서류/보험</option>
+              <option value="telecom">💳 금융/통신</option>
+              <option value="packing">🎒 짐싸기/소지품</option>
+            </select>
+            <input type="text" id="checklist-add-title" class="form-control" placeholder="새로운 체크리스트 항목 추가 (예: 환전하기)" style="flex-grow: 1; font-size: 13px;" required>
+            <button type="submit" class="btn btn-primary" style="padding: 8px 16px; font-size: 13px;">+ 추가</button>
+          </form>
+        </div>
+
+        <!-- Groups -->
+        <div style="display: grid; grid-template-columns: 1fr; gap: 20px;">
+          <!-- Category 1 -->
+          <div class="card checklist-group-card" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px;">
+            <h3 style="border-bottom: 2px solid #007aff; padding-bottom: 6px; margin-bottom: 12px; font-size: 14px; color: #007aff;">📄 필수 서류 및 보험</h3>
+            <div class="checklist-items-list" id="chk-list-document">
+              <!-- JS items -->
+            </div>
+          </div>
+          
+          <!-- Category 2 -->
+          <div class="card checklist-group-card" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px;">
+            <h3 style="border-bottom: 2px solid #af52de; padding-bottom: 6px; margin-bottom: 12px; font-size: 14px; color: #af52de;">💳 금융 및 통신</h3>
+            <div class="checklist-items-list" id="chk-list-telecom">
+              <!-- JS items -->
+            </div>
+          </div>
+          
+          <!-- Category 3 -->
+          <div class="card checklist-group-card" style="background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px; padding: 16px;">
+            <h3 style="border-bottom: 2px solid #34c759; padding-bottom: 6px; margin-bottom: 12px; font-size: 14px; color: #34c759;">🎒 개인 소지품 및 준비물</h3>
+            <div class="checklist-items-list" id="chk-list-packing">
+              <!-- JS items -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 8. SETTINGS TAB -->
       <section id="settings-tab" class="content-section">
         <div class="section-header">
           <h1>설정</h1>
@@ -581,6 +642,7 @@
   <script src="js/map.js"></script>
   <script src="js/tickets.js"></script>
   <script src="js/passports.js"></script>
+  <script src="js/checklist.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>
