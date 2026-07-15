@@ -52,6 +52,26 @@ const App = {
         StorageManager.resetAll();
       }
     });
+
+    // Backup & Restore
+    const exportBtn = document.getElementById("export-backup-btn");
+    const importTrigger = document.getElementById("import-backup-btn-trigger");
+    const importInput = document.getElementById("import-backup-file-input");
+
+    if (exportBtn && importTrigger && importInput) {
+      exportBtn.addEventListener("click", () => {
+        StorageManager.exportBackup();
+      });
+      importTrigger.addEventListener("click", () => {
+        importInput.click();
+      });
+      importInput.addEventListener("change", (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          StorageManager.importBackup(file);
+        }
+      });
+    }
   },
 
   switchTab(tabId) {

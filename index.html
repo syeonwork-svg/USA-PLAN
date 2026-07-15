@@ -3,7 +3,7 @@
 <head>
   <script>
     (function() {
-      const targetVersion = "v18";
+      const targetVersion = "v19";
       localStorage.setItem("usa_travel_data_version", targetVersion);
     })();
   </script>
@@ -244,6 +244,24 @@
         </p>
         <div class="passports-grid" id="passports-list-container">
           <!-- 4 Passport cards injected here dynamically -->
+        </div>
+
+        <!-- Data Backup & Restore Panel -->
+        <div class="card" style="margin-top: 30px; padding: 20px; border: 1px dashed var(--border-color); background-color: var(--bg-secondary); border-radius: 12px; display: flex; flex-direction: column; gap: 12px;">
+          <h3 style="margin: 0; font-size: 14px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 6px;">💾 데이터 안전 백업 및 복원 (수동 백업)</h3>
+          <p style="margin: 0; font-size: 11.5px; color: var(--text-secondary); line-height: 1.5;">
+            브라우저 캐시 삭제나 기기 변경으로 인해 입력하신 여행 데이터가 날아가는 것을 방지하기 위해 <strong>백업 파일(.json)로 저장</strong>해두실 수 있습니다. 언제든 이 백업 파일을 불러오면 원래대로 모든 정보가 1초 만에 복구됩니다.
+          </p>
+          <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 4px;">
+            <button id="export-backup-btn" class="btn btn-primary" style="font-size: 12.5px; padding: 10px 18px; display: flex; align-items: center; gap: 6px; cursor: pointer; border-radius: 8px; font-weight: 600;">
+              📥 백업 파일로 내보내기 (PC/폰에 저장)
+            </button>
+            <button id="import-backup-btn-trigger" class="btn" style="font-size: 12.5px; padding: 10px 18px; display: flex; align-items: center; gap: 6px; border: 1px solid var(--border-color); background: var(--bg-primary); cursor: pointer; border-radius: 8px; font-weight: 600;">
+              📤 백업 파일 불러오기 (복원하기)
+            </button>
+            <!-- Hidden File Input for Import -->
+            <input type="file" id="import-backup-file-input" accept=".json" style="display: none;">
+          </div>
         </div>
       </section>
 
@@ -669,15 +687,15 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""></script>
   
   <!-- App JS Files -->
-  <script src="js/mockData.js?v=18"></script>
-  <script src="js/storage.js?v=18"></script>
-  <script src="js/calendar.js?v=18"></script>
-  <script src="js/itinerary.js?v=18"></script>
-  <script src="js/expenses.js?v=18"></script>
-  <script src="js/map.js?v=18"></script>
-  <script src="js/tickets.js?v=18"></script>
-  <script src="js/passports.js?v=18"></script>
-  <script src="js/checklist.js?v=18"></script>
-  <script src="js/app.js?v=18"></script>
+  <script src="js/mockData.js?v=19"></script>
+  <script src="js/storage.js?v=19"></script>
+  <script src="js/calendar.js?v=19"></script>
+  <script src="js/itinerary.js?v=19"></script>
+  <script src="js/expenses.js?v=19"></script>
+  <script src="js/map.js?v=19"></script>
+  <script src="js/tickets.js?v=19"></script>
+  <script src="js/passports.js?v=19"></script>
+  <script src="js/checklist.js?v=19"></script>
+  <script src="js/app.js?v=19"></script>
 </body>
 </html>

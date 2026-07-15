@@ -16,7 +16,7 @@ const STORAGE_KEYS = {
 const StorageManager = {
   // Initialize storage with mock data if empty
   init() {
-    const CURRENT_VERSION = "v18";
+    const CURRENT_VERSION = "v19";
     const savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
 
     // Non-destructive initialization: only set default if key doesn't exist
@@ -156,5 +156,78 @@ const StorageManager = {
     localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(GOOGLE_MAPS_PLACES));
     localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
     window.location.reload();
+  },
+
+  exportBackup() {
+    const keys = [
+      "usa_travel_trip_details",
+      "usa_travel_events",
+      "usa_travel_timeline",
+      "usa_travel_expenses",
+      "usa_travel_tickets",
+      "usa_travel_passports",
+      "usa_travel_checklist",
+      "usa_travel_google_places",
+      "usa_travel_map_config"
+    ];
+    const backupData = {};
+    keys.forEach(key => {
+      backupData[key] = localStorage.getItem(key);
+    });
+
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(backupData, null, 2));
+    const downloadAnchor = document.createElement("a");
+    downloadAnchor.setAttribute("href", dataStr);
+
+    const today = new Date().toISOString().split("T")[0];
+    downloadAnchor.setAttribute("download", `usa_travel_planner_backup_${today}.json`);
+
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+
+    App.showNotification("백업 파일이 다운로드되었습니다!");
+  },
+
+  importBackup(file) {
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      try {
+        const backupData = JSON.parse(event.target.result);
+        const keys = [
+          "usa_travel_trip_details",
+          "usa_travel_events",
+          "usa_travel_timeline",
+          "usa_travel_expenses",
+          "usa_travel_tickets",
+          "usa_travel_passports",
+          "usa_travel_checklist",
+          "usa_travel_google_places",
+          "usa_travel_map_config"
+        ];
+
+        const hasKeys = keys.some(key => key in backupData);
+        if (!hasKeys) {
+          alert("올바른 백업 파일이 아닙니다. 파일 형식을 확인해주세요.");
+          return;
+        }
+
+        keys.forEach(key => {
+          if (backupData[key] !== undefined && backupData[key] !== null) {
+            localStorage.setItem(key, backupData[key]);
+          }
+        });
+
+        // Sync local storage versions to prevent mismatches
+        localStorage.setItem("usa_travel_data_version", "v19");
+        localStorage.setItem(this.VERSION || "usa_travel_version", "v19");
+
+        alert("성공적으로 데이터가 복원되었습니다! 페이지를 새로고침하여 적용합니다.");
+        window.location.reload();
+      } catch (err) {
+        alert("백업 파일 복원 오류: " + err.message);
+      }
+    };
+    reader.readAsText(file);
   }
 };
