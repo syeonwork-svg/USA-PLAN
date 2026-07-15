@@ -4,7 +4,7 @@
   <script>
     (function() {
       try {
-        const targetVersion = "v32";
+        const targetVersion = "v33";
         localStorage.setItem("usa_travel_data_version", targetVersion);
       } catch (e) {
         console.warn("Storage version check bypassed due to browser security restrictions:", e);
@@ -67,6 +67,9 @@
             <li class="nav-item" data-tab="tickets-tab">
               <a>🎟️ 티켓 관리</a>
             </li>
+            <li class="nav-item" data-tab="candidates-tab">
+              <a>🛒 결제 후보</a>
+            </li>
             <li class="nav-item" data-tab="passports-tab">
               <a>🛂 여권 & 정보</a>
             </li>
@@ -86,6 +89,11 @@
             <input type="checkbox" id="theme-checkbox">
             <span class="slider"></span>
           </label>
+        </div>
+        <div class="pdf-print-container" style="margin-top: 10px; width: 100%;">
+          <button class="btn btn-block" id="sidebar-print-btn" style="background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-primary); font-size: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 8px 0; border-radius: 6px; cursor: pointer; transition: all 0.2s; font-weight: 600;">
+            <span>🖨️ PDF 인쇄 / 저장</span>
+          </button>
         </div>
         <div style="font-size: 11px; color: var(--text-secondary); text-align: center;">
           © 2026 USA Planner
@@ -251,6 +259,36 @@
 
         <div class="tickets-grid" id="tickets-list-container">
           <!-- Ticket cards will be injected dynamically -->
+        </div>
+      </section>
+
+      <!-- 5.5 CANDIDATES TAB -->
+      <section id="candidates-tab" class="content-section">
+        <div class="section-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h1>결제 후보 관리</h1>
+            <p style="font-size: 13px; color: var(--text-secondary); margin-top: 4px;">
+              예매할 항공권, 미술관 입장권, 액티비티 투어 등의 링크와 예상 금액을 기록하고 비교하는 곳입니다. 카드를 클릭하면 즉시 연결됩니다.
+            </p>
+          </div>
+          <button class="btn btn-primary" id="add-candidate-btn" style="padding: 10px 18px; border-radius: 8px; font-weight: 600; display: flex; align-items: center; gap: 6px; font-size: 13.5px;">
+            <span>+ 후보 등록</span>
+          </button>
+        </div>
+
+        <!-- Filter bar -->
+        <div class="card" style="padding: 12px; margin-bottom: 20px; background-color: var(--bg-secondary); border: 1px solid var(--border-color); border-radius: 12px;">
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;" id="candidate-filters">
+            <button class="btn filter-btn active" data-cat="all">전체</button>
+            <button class="btn filter-btn" data-cat="flight">✈️ 항공</button>
+            <button class="btn filter-btn" data-cat="museum">🏛️ 미술관/문화</button>
+            <button class="btn filter-btn" data-cat="activity">🧗 액티비티</button>
+            <button class="btn filter-btn" data-cat="other">🎫 기타</button>
+          </div>
+        </div>
+
+        <div class="candidates-grid" id="candidates-list-container">
+          <!-- Candidates cards injected dynamically -->
         </div>
       </section>
 
@@ -685,6 +723,51 @@
     </div>
   </div>
 
+  <!-- E.5 Candidates Modal -->
+  <div class="modal-overlay" id="candidate-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title" id="candidate-modal-title">결제 후보 등록</h3>
+        <button class="btn-icon" id="close-candidate-modal-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <form id="candidate-form">
+          <input type="hidden" id="candidate-id">
+          <div class="form-group">
+            <label for="candidate-title">후보 이름 / 상품명</label>
+            <input type="text" id="candidate-title" class="form-control" placeholder="예: 대한항공 KE085편 일반석, MoMA 미술관 입장권(클룩)" required>
+          </div>
+          <div class="form-group">
+            <label for="candidate-category">카테고리</label>
+            <select id="candidate-category" class="form-control" required>
+              <option value="flight">✈️ 항공</option>
+              <option value="museum">🏛️ 미술관/문화</option>
+              <option value="activity">🧗 액티비티</option>
+              <option value="other">🎫 기타</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="candidate-url">링크 주소 (URL)</label>
+            <input type="url" id="candidate-url" class="form-control" placeholder="예: https://www.klook.com/..." required>
+            <span style="font-size: 11px; color: var(--text-secondary); margin-top: 4px; display: block;">* 올바른 웹사이트 주소(https:// 포함)를 입력해 주세요.</span>
+          </div>
+          <div class="form-group">
+            <label for="candidate-price">예상 금액 / 가격</label>
+            <input type="text" id="candidate-price" class="form-control" placeholder="예: 1,940,000원, 38,000원 등">
+          </div>
+          <div class="form-group">
+            <label for="candidate-memo">메모 / 특이사항</label>
+            <textarea id="candidate-memo" class="form-control" rows="3" placeholder="예: 공식 홈페이지보다 할인 혜택 있음, 수하물 포함 여부 확인 필요 등" style="resize: vertical;"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn" id="cancel-candidate-modal-btn">취소</button>
+        <button class="btn btn-primary" id="save-candidate-btn">저장</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Snapshot Restore Modal -->
   <div class="modal-overlay" id="snapshot-modal">
     <div class="modal" style="max-width: 440px;">
@@ -713,15 +796,16 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""></script>
   
   <!-- App JS Files -->
-  <script src="js/mockData.js?v=32"></script>
-  <script src="js/storage.js?v=32"></script>
-  <script src="js/calendar.js?v=32"></script>
-  <script src="js/itinerary.js?v=32"></script>
-  <script src="js/expenses.js?v=32"></script>
-  <script src="js/map.js?v=32"></script>
-  <script src="js/tickets.js?v=32"></script>
-  <script src="js/passports.js?v=32"></script>
-  <script src="js/checklist.js?v=32"></script>
-  <script src="js/app.js?v=32"></script>
+  <script src="js/mockData.js?v=33"></script>
+  <script src="js/storage.js?v=33"></script>
+  <script src="js/calendar.js?v=33"></script>
+  <script src="js/itinerary.js?v=33"></script>
+  <script src="js/expenses.js?v=33"></script>
+  <script src="js/map.js?v=33"></script>
+  <script src="js/tickets.js?v=33"></script>
+  <script src="js/candidates.js?v=33"></script>
+  <script src="js/passports.js?v=33"></script>
+  <script src="js/checklist.js?v=33"></script>
+  <script src="js/app.js?v=33"></script>
 </body>
 </html>

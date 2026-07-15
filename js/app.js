@@ -17,6 +17,7 @@ const App = {
     try { if (window.TicketsComponent) TicketsComponent.init(); } catch (e) { console.error("Tickets init error:", e); }
     try { if (window.PassportsComponent) PassportsComponent.init(); } catch (e) { console.error("Passports init error:", e); }
     try { if (window.ChecklistComponent) ChecklistComponent.init(); } catch (e) { console.error("Checklist init error:", e); }
+    try { if (window.CandidatesComponent) CandidatesComponent.init(); } catch (e) { console.error("Candidates init error:", e); }
 
     // 4. Bind overall event listeners
     this.bindEvents();
@@ -40,6 +41,14 @@ const App = {
     themeCheckbox.addEventListener("change", (e) => {
       this.toggleTheme(e.target.checked);
     });
+
+    // PDF Print Button
+    const printBtn = document.getElementById("sidebar-print-btn");
+    if (printBtn) {
+      printBtn.addEventListener("click", () => {
+        window.print();
+      });
+    }
 
     // Settings save
     document.getElementById("save-settings-btn").addEventListener("click", () => {

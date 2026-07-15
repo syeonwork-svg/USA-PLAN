@@ -9,6 +9,7 @@ const STORAGE_KEYS = {
   TICKETS: "usa_travel_tickets",
   PASSPORTS: "usa_travel_passports",
   CHECKLIST: "usa_travel_checklist",
+  CANDIDATES: "usa_travel_candidates",
   GOOGLE_PLACES: "usa_travel_google_places",
   MAP_CONFIG: "usa_travel_map_config"
 };
@@ -17,7 +18,7 @@ const StorageManager = {
   // Initialize storage with mock data if empty
   init() {
     try {
-      const CURRENT_VERSION = "v32";
+      const CURRENT_VERSION = "v33";
       let savedVersion = null;
       try {
         savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
@@ -26,7 +27,7 @@ const StorageManager = {
       }
 
       if (savedVersion !== CURRENT_VERSION) {
-        // Version 32 reset: Overwrite with fresh screenshot-aligned defaults
+        // Version 33 reset: Overwrite with fresh screenshot-aligned defaults
         this.saveTripDetails(DEFAULT_TRIP_DETAILS);
         this.saveEvents(DEFAULT_EVENTS);
         this.saveTimeline(DEFAULT_TIMELINE);
@@ -34,6 +35,7 @@ const StorageManager = {
         this.saveTickets(DEFAULT_TICKETS);
         this.savePassports(DEFAULT_PASSPORTS);
         this.saveChecklist(DEFAULT_CHECKLIST);
+        this.saveCandidates(DEFAULT_CANDIDATES);
         this.saveGooglePlaces(GOOGLE_MAPS_PLACES);
         this.saveMapConfig({ googleMapsApiKey: "" });
         
@@ -63,6 +65,9 @@ const StorageManager = {
         }
         if (!this.getItemRaw(STORAGE_KEYS.CHECKLIST)) {
           this.saveChecklist(DEFAULT_CHECKLIST);
+        }
+        if (!this.getItemRaw(STORAGE_KEYS.CANDIDATES)) {
+          this.saveCandidates(DEFAULT_CANDIDATES);
         }
         if (!this.getItemRaw(STORAGE_KEYS.GOOGLE_PLACES)) {
           this.saveGooglePlaces(GOOGLE_MAPS_PLACES);
@@ -238,6 +243,23 @@ const StorageManager = {
     }
   },
 
+  getCandidates() {
+    try {
+      const data = JSON.parse(this.getItemRaw(STORAGE_KEYS.CANDIDATES));
+      return Array.isArray(data) ? data : DEFAULT_CANDIDATES;
+    } catch (e) {
+      return DEFAULT_CANDIDATES;
+    }
+  },
+
+  saveCandidates(candidates) {
+    try {
+      localStorage.setItem(STORAGE_KEYS.CANDIDATES, JSON.stringify(candidates));
+    } catch (e) {
+      console.warn("Storage write failed for candidates:", e);
+    }
+  },
+
   // Reset to default
   resetAll() {
     try {
@@ -248,6 +270,7 @@ const StorageManager = {
       localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(DEFAULT_TICKETS));
       localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(DEFAULT_PASSPORTS));
       localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(DEFAULT_CHECKLIST));
+      localStorage.setItem(STORAGE_KEYS.CANDIDATES, JSON.stringify(DEFAULT_CANDIDATES));
       localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(GOOGLE_MAPS_PLACES));
       localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
     } catch (e) {
@@ -265,6 +288,7 @@ const StorageManager = {
       "usa_travel_tickets",
       "usa_travel_passports",
       "usa_travel_checklist",
+      "usa_travel_candidates",
       "usa_travel_google_places",
       "usa_travel_map_config"
     ];
@@ -300,6 +324,7 @@ const StorageManager = {
           "usa_travel_tickets",
           "usa_travel_passports",
           "usa_travel_checklist",
+          "usa_travel_candidates",
           "usa_travel_google_places",
           "usa_travel_map_config"
         ];
@@ -346,6 +371,7 @@ const StorageManager = {
       "usa_travel_tickets",
       "usa_travel_passports",
       "usa_travel_checklist",
+      "usa_travel_candidates",
       "usa_travel_google_places",
       "usa_travel_map_config"
     ];
@@ -419,6 +445,7 @@ const StorageManager = {
       "usa_travel_tickets",
       "usa_travel_passports",
       "usa_travel_checklist",
+      "usa_travel_candidates",
       "usa_travel_google_places",
       "usa_travel_map_config"
     ];

@@ -322,9 +322,37 @@ const GOOGLE_MAPS_PLACES = [
 
 window.DEFAULT_TRIP_DETAILS = DEFAULT_TRIP_DETAILS;
 window.DEFAULT_EVENTS = DEFAULT_EVENTS;
+const DEFAULT_CANDIDATES = [
+  {
+    id: "cand1",
+    category: "flight",
+    title: "델타항공 KE 공동운항 (인천 ➔ 애틀랜타)",
+    url: "https://www.delta.com",
+    price: "1,250,000원",
+    memo: "애틀랜타행 직항 비교 노선\n스카이팀 마일리지 적립 100% 가능 후보"
+  },
+  {
+    id: "cand2",
+    category: "museum",
+    title: "클룩 (Klook) - 뉴욕 MoMA 미술관 입장권",
+    url: "https://www.klook.com/ko/activity/1653-museum-of-modern-art-moma-new-york/",
+    price: "35,000원",
+    memo: "공식 홈페이지 예매 대비 10% 저렴\n구매 즉시 모바일 QR코드 발급"
+  },
+  {
+    id: "cand3",
+    category: "activity",
+    title: "마이리얼트립 - 애틀랜타 스톤마운틴 공원 투어",
+    url: "https://www.myrealtrip.com",
+    price: "85,000원",
+    memo: "가이드 포함 케이블카 패키지\n아빠 골프 가시는 동안 엄마와 함께 참여할 후보"
+  }
+];
+
 window.DEFAULT_TIMELINE = DEFAULT_TIMELINE;
 window.DEFAULT_EXPENSES = DEFAULT_EXPENSES;
 window.DEFAULT_TICKETS = DEFAULT_TICKETS;
 window.DEFAULT_PASSPORTS = DEFAULT_PASSPORTS;
 window.DEFAULT_CHECKLIST = DEFAULT_CHECKLIST;
 window.GOOGLE_MAPS_PLACES = GOOGLE_MAPS_PLACES;
+window.DEFAULT_CANDIDATES = DEFAULT_CANDIDATES;
