@@ -15,6 +15,7 @@ const App = {
     if (window.ExpensesComponent) ExpensesComponent.init();
     if (window.MapComponent) MapComponent.init();
     if (window.TicketsComponent) TicketsComponent.init();
+    if (window.PassportsComponent) PassportsComponent.init();
 
     // 4. Bind overall event listeners
     this.bindEvents();

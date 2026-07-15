@@ -226,3 +226,54 @@ const DEFAULT_TICKETS = [
     memo: "클럽하우스 30분 전 도착하여 체크인 요망"
   }
 ];
+
+const DEFAULT_PASSPORTS = [
+  {
+    id: "p1",
+    relationship: "본인",
+    nameKo: "임세연",
+    nameEn: "LIM SEYEON",
+    passportNo: "M12345678",
+    birthdate: "1998-05-15",
+    issueDate: "2022-05-15",
+    expiryDate: "2032-05-15",
+    photoBase64: "",
+    memo: "대표 연락처"
+  },
+  {
+    id: "p2",
+    relationship: "가족 1",
+    nameKo: "가족 1 (예시)",
+    nameEn: "FAMILY ONE",
+    passportNo: "M22345678",
+    birthdate: "1972-03-20",
+    issueDate: "2023-01-10",
+    expiryDate: "2033-01-10",
+    photoBase64: "",
+    memo: "부모님"
+  },
+  {
+    id: "p3",
+    relationship: "가족 2",
+    nameKo: "가족 2 (예시)",
+    nameEn: "FAMILY TWO",
+    passportNo: "M32345678",
+    birthdate: "1974-07-15",
+    issueDate: "2024-05-20",
+    expiryDate: "2034-05-20",
+    photoBase64: "",
+    memo: "부모님"
+  },
+  {
+    id: "p4",
+    relationship: "가족 3",
+    nameKo: "가족 3 (예시)",
+    nameEn: "FAMILY THREE",
+    passportNo: "M42345678",
+    birthdate: "2002-11-25",
+    issueDate: "2026-09-10",
+    expiryDate: "2036-09-10",
+    photoBase64: "",
+    memo: "동생"
+  }
+];
