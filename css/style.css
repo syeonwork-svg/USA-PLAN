@@ -1948,6 +1948,7 @@ h1 {
     font-size: 12px;
   }
   
+  /* Hide all UI elements, controls, forms, buttons, sidebars and map/settings tabs */
   .sidebar,
   .sidebar-footer,
   .pdf-print-container,
@@ -1956,11 +1957,22 @@ h1 {
   nav,
   .btn,
   button,
+  form,
+  input,
+  select,
+  textarea,
   .candidate-card-actions,
   .timeline-actions,
   .action-buttons,
   .map-container,
-  #map-tab {
+  .ticket-card-actions,
+  .expense-actions,
+  .passport-actions,
+  .delete-chk-btn,
+  #candidate-filters,
+  .checklist-progress-card,
+  #map-tab,
+  #settings-tab {
     display: none !important;
   }
 
@@ -1978,16 +1990,19 @@ h1 {
     max-width: 100% !important;
   }
 
+  /* Print all sections sequentially on new pages */
   .content-section {
-    display: none !important;
-    opacity: 0 !important;
-    padding: 0 !important;
-  }
-
-  /* Only print the active section */
-  .content-section.active {
     display: block !important;
     opacity: 1 !important;
+    padding: 0 !important;
+    margin-bottom: 50px !important;
+    page-break-after: always;
+    break-after: page;
+  }
+
+  .content-section:last-of-type {
+    page-break-after: avoid;
+    break-after: avoid;
   }
 
   /* Make sure calendar fits on print */

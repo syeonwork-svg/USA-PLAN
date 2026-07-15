@@ -15,10 +15,10 @@ const STORAGE_KEYS = {
 };
 
 const StorageManager = {
-  // Initialize storage with mock data if empty
+  // Initialize storage with mock data if empty (non-destructive)
   init() {
     try {
-      const CURRENT_VERSION = "v33";
+      const CURRENT_VERSION = "v34";
       let savedVersion = null;
       try {
         savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
@@ -26,56 +26,43 @@ const StorageManager = {
         console.warn("localStorage version read failed:", e);
       }
 
-      if (savedVersion !== CURRENT_VERSION) {
-        // Version 33 reset: Overwrite with fresh screenshot-aligned defaults
+      // Check each storage table non-destructively
+      if (!this.getItemRaw(STORAGE_KEYS.TRIP_DETAILS)) {
         this.saveTripDetails(DEFAULT_TRIP_DETAILS);
-        this.saveEvents(DEFAULT_EVENTS);
-        this.saveTimeline(DEFAULT_TIMELINE);
-        this.saveExpenses(DEFAULT_EXPENSES);
-        this.saveTickets(DEFAULT_TICKETS);
-        this.savePassports(DEFAULT_PASSPORTS);
-        this.saveChecklist(DEFAULT_CHECKLIST);
-        this.saveCandidates(DEFAULT_CANDIDATES);
-        this.saveGooglePlaces(GOOGLE_MAPS_PLACES);
-        this.saveMapConfig({ googleMapsApiKey: "" });
-        
-        try {
-          localStorage.setItem(STORAGE_KEYS.VERSION, CURRENT_VERSION);
-          localStorage.setItem("usa_travel_data_version", CURRENT_VERSION);
-        } catch (e) {}
-      } else {
-        // Non-destructive fallback using secure wrappers
-        if (!this.getItemRaw(STORAGE_KEYS.TRIP_DETAILS)) {
-          this.saveTripDetails(DEFAULT_TRIP_DETAILS);
-        }
-        if (!this.getItemRaw(STORAGE_KEYS.EVENTS)) {
-          this.saveEvents(DEFAULT_EVENTS);
-        }
-        if (!this.getItemRaw(STORAGE_KEYS.TIMELINE)) {
-          this.saveTimeline(DEFAULT_TIMELINE);
-        }
-        if (!this.getItemRaw(STORAGE_KEYS.EXPENSES)) {
-          this.saveExpenses(DEFAULT_EXPENSES);
-        }
-        if (!this.getItemRaw(STORAGE_KEYS.TICKETS)) {
-          this.saveTickets(DEFAULT_TICKETS);
-        }
-        if (!this.getItemRaw(STORAGE_KEYS.PASSPORTS)) {
-          this.savePassports(DEFAULT_PASSPORTS);
-        }
-        if (!this.getItemRaw(STORAGE_KEYS.CHECKLIST)) {
-          this.saveChecklist(DEFAULT_CHECKLIST);
-        }
-        if (!this.getItemRaw(STORAGE_KEYS.CANDIDATES)) {
-          this.saveCandidates(DEFAULT_CANDIDATES);
-        }
-        if (!this.getItemRaw(STORAGE_KEYS.GOOGLE_PLACES)) {
-          this.saveGooglePlaces(GOOGLE_MAPS_PLACES);
-        }
-        if (!this.getItemRaw(STORAGE_KEYS.MAP_CONFIG)) {
-          this.saveMapConfig({ googleMapsApiKey: "" });
-        }
       }
+      if (!this.getItemRaw(STORAGE_KEYS.EVENTS)) {
+        this.saveEvents(DEFAULT_EVENTS);
+      }
+      if (!this.getItemRaw(STORAGE_KEYS.TIMELINE)) {
+        this.saveTimeline(DEFAULT_TIMELINE);
+      }
+      if (!this.getItemRaw(STORAGE_KEYS.EXPENSES)) {
+        this.saveExpenses(DEFAULT_EXPENSES);
+      }
+      if (!this.getItemRaw(STORAGE_KEYS.TICKETS)) {
+        this.saveTickets(DEFAULT_TICKETS);
+      }
+      if (!this.getItemRaw(STORAGE_KEYS.PASSPORTS)) {
+        this.savePassports(DEFAULT_PASSPORTS);
+      }
+      if (!this.getItemRaw(STORAGE_KEYS.CHECKLIST)) {
+        this.saveChecklist(DEFAULT_CHECKLIST);
+      }
+      if (!this.getItemRaw(STORAGE_KEYS.CANDIDATES)) {
+        this.saveCandidates(DEFAULT_CANDIDATES);
+      }
+      if (!this.getItemRaw(STORAGE_KEYS.GOOGLE_PLACES)) {
+        this.saveGooglePlaces(GOOGLE_MAPS_PLACES);
+      }
+      if (!this.getItemRaw(STORAGE_KEYS.MAP_CONFIG)) {
+        this.saveMapConfig({ googleMapsApiKey: "" });
+      }
+
+      // Always update saved version flag to allow software updates without formatting
+      try {
+        localStorage.setItem(STORAGE_KEYS.VERSION, CURRENT_VERSION);
+        localStorage.setItem("usa_travel_data_version", CURRENT_VERSION);
+      } catch (e) {}
     } catch (e) {
       console.error("StorageManager init failed:", e);
     }
@@ -342,8 +329,8 @@ const StorageManager = {
         });
 
         // Sync local storage versions to prevent mismatches
-        localStorage.setItem("usa_travel_data_version", "v32");
-        localStorage.setItem(this.VERSION || "usa_travel_version", "v32");
+        localStorage.setItem("usa_travel_data_version", "v34");
+        localStorage.setItem(this.VERSION || "usa_travel_version", "v34");
 
         alert("성공적으로 데이터가 복원되었습니다! 페이지를 새로고침하여 적용합니다.");
         window.location.reload();
@@ -457,8 +444,8 @@ const StorageManager = {
     });
 
     // Make sure versions stay matched
-    localStorage.setItem("usa_travel_data_version", "v32");
-    localStorage.setItem("usa_travel_version", "v32");
+    localStorage.setItem("usa_travel_data_version", "v34");
+    localStorage.setItem("usa_travel_version", "v34");
 
     alert(`${snap.timestamp} 시점의 백업으로 복원 완료되었습니다! 페이지를 새로고침합니다.`);
     window.location.reload();
