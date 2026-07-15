@@ -18,7 +18,7 @@ const StorageManager = {
   // Initialize storage with mock data if empty (non-destructive)
   init() {
     try {
-      const CURRENT_VERSION = "v37";
+      const CURRENT_VERSION = "v38";
       let savedVersion = null;
       try {
         savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
@@ -79,6 +79,24 @@ const StorageManager = {
         }
       } catch (e) {
         console.warn("Migration for t2 return ticket failed:", e);
+      }
+
+      // Non-destructively inject new mock hotel candidate if missing from active database
+      try {
+        const activeCandidates = JSON.parse(localStorage.getItem(STORAGE_KEYS.CANDIDATES) || "[]");
+        if (Array.isArray(activeCandidates) && !activeCandidates.some(c => c.id === "cand4")) {
+          activeCandidates.push({
+            id: "cand4",
+            category: "accommodation",
+            title: "부킹닷컴 (Booking.com) - 하얏트 하우스 저지시티",
+            url: "https://www.booking.com/hotel/us/hyatt-house-jersey-city.ko.html",
+            price: "320,000원 / 1박",
+            memo: "맨해튼 전망 킹베드 스튜디오\n무료 조식 뷔페 제공 및 무료 취소 가능 후보"
+          });
+          localStorage.setItem(STORAGE_KEYS.CANDIDATES, JSON.stringify(activeCandidates));
+        }
+      } catch (e) {
+        console.warn("Migration for cand4 hotel candidate failed:", e);
       }
 
       // Always update saved version flag to allow software updates without formatting
@@ -352,8 +370,8 @@ const StorageManager = {
         });
 
         // Sync local storage versions to prevent mismatches
-        localStorage.setItem("usa_travel_data_version", "v37");
-        localStorage.setItem(this.VERSION || "usa_travel_version", "v37");
+        localStorage.setItem("usa_travel_data_version", "v38");
+        localStorage.setItem(this.VERSION || "usa_travel_version", "v38");
 
         alert("성공적으로 데이터가 복원되었습니다! 페이지를 새로고침하여 적용합니다.");
         window.location.reload();
@@ -467,8 +485,8 @@ const StorageManager = {
     });
 
     // Make sure versions stay matched
-    localStorage.setItem("usa_travel_data_version", "v37");
-    localStorage.setItem("usa_travel_version", "v37");
+    localStorage.setItem("usa_travel_data_version", "v38");
+    localStorage.setItem("usa_travel_version", "v38");
 
     alert(`${snap.timestamp} 시점의 백업으로 복원 완료되었습니다! 페이지를 새로고침합니다.`);
     window.location.reload();

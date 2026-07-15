@@ -346,6 +346,14 @@ const DEFAULT_CANDIDATES = [
     url: "https://www.myrealtrip.com",
     price: "85,000원",
     memo: "가이드 포함 케이블카 패키지\n아빠 골프 가시는 동안 엄마와 함께 참여할 후보"
+  },
+  {
+    id: "cand4",
+    category: "accommodation",
+    title: "부킹닷컴 (Booking.com) - 하얏트 하우스 저지시티",
+    url: "https://www.booking.com/hotel/us/hyatt-house-jersey-city.ko.html",
+    price: "320,000원 / 1박",
+    memo: "맨해튼 전망 킹베드 스튜디오\n무료 조식 뷔페 제공 및 무료 취소 가능 후보"
   }
 ];
 

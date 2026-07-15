@@ -201,6 +201,11 @@ const CandidatesComponent = {
         catIcon = "✈️";
         gradStart = "#ff2d55";
         gradEnd = "#ff3b30";
+      } else if (item.category === "accommodation") {
+        catText = "숙박";
+        catIcon = "🏨";
+        gradStart = "#5856d6";
+        gradEnd = "#007aff";
       } else if (item.category === "museum") {
         catText = "미술관/문화";
         catIcon = "🏛️";
