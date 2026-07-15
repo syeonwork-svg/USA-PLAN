@@ -15,46 +15,46 @@ const DEFAULT_EVENTS = [
   { id: "c3", title: "애틀랜타", date: "2026-10-17", color: "teal", type: "city" },
   { id: "c4", title: "애틀랜타", date: "2026-10-18", color: "teal", type: "city" },
   { id: "c5", title: "애틀랜타", date: "2026-10-19", color: "teal", type: "city" },
-  { id: "c6", title: "애틀랜타", date: "2026-10-20", color: "teal", type: "city" },
   
   // Road trips
-  { id: "rt1", title: "애틀랜타", date: "2026-10-21", color: "teal", type: "city" },
-  { id: "rt2", title: "로드트립", date: "2026-10-21", color: "black", type: "roadtrip", duration: "7시간 30분", destination: "올랜도" },
-  { id: "rt3", title: "올랜도", date: "2026-10-21", color: "orange", type: "city" },
+  { id: "rt1", title: "애틀랜타", date: "2026-10-20", color: "teal", type: "city" },
+  { id: "rt2", title: "로드트립", date: "2026-10-20", color: "black", type: "roadtrip", duration: "7시간 30분", destination: "올랜도" },
+  { id: "rt3", title: "올랜도", date: "2026-10-20", color: "orange", type: "city" },
 
-  { id: "rt4", title: "올랜도", date: "2026-10-22", color: "orange", type: "city" },
-  { id: "rt5", title: "로드트립", date: "2026-10-22", color: "black", type: "roadtrip", duration: "4시간", destination: "마이애미" },
-  { id: "rt6", title: "마이애미", date: "2026-10-22", color: "yellow", type: "city" },
+  { id: "rt4", title: "올랜도", date: "2026-10-21", color: "orange", type: "city" },
+  { id: "rt5", title: "로드트립", date: "2026-10-21", color: "black", type: "roadtrip", duration: "4시간", destination: "마이애미" },
+  { id: "rt6", title: "마이애미", date: "2026-10-21", color: "yellow", type: "city" },
 
-  { id: "c7", title: "마이애미", date: "2026-10-23", color: "yellow", type: "city" },
-  { id: "c8", title: "마이애미", date: "2026-10-24", color: "yellow", type: "city" },
+  { id: "c7", title: "마이애미", date: "2026-10-22", color: "yellow", type: "city" },
+  { id: "c8", title: "마이애미", date: "2026-10-23", color: "yellow", type: "city" },
   
-  { id: "c9", title: "마이애미", date: "2026-10-25", color: "yellow", type: "city" },
-  { id: "c10", title: "✈️ 뉴욕", date: "2026-10-25", color: "pink", type: "city", label: "*아침 비행기표" },
+  { id: "c9", title: "마이애미", date: "2026-10-24", color: "yellow", type: "city" },
+  { id: "c10", title: "✈️ 뉴욕", date: "2026-10-24", color: "pink", type: "city", label: "*아침 비행기표" },
 
-  { id: "c11", title: "뉴욕", date: "2026-10-26", color: "pink", type: "city" },
-  { id: "c12", title: "뉴욕", date: "2026-10-27", color: "pink", type: "city" },
-  { id: "c13", title: "뉴욕", date: "2026-10-28", color: "pink", type: "city" },
-  { id: "c14", title: "뉴욕", date: "2026-10-29", color: "pink", type: "city" },
-  { id: "c15", title: "뉴욕", date: "2026-10-30", color: "pink", type: "city" },
-  { id: "c16", title: "뉴욕", date: "2026-10-31", color: "pink", type: "city" },
-  { id: "c17", title: "뉴욕", date: "2026-11-01", color: "pink", type: "city" },
-  { id: "c18", title: "✈️ 뉴욕 ➔ 인천", date: "2026-11-02", color: "pink", type: "city" },
-  { id: "c19", title: "🇰🇷 인천공항 도착", date: "2026-11-03", color: "pink", type: "city" },
+  { id: "c11", title: "뉴욕", date: "2026-10-25", color: "pink", type: "city" },
+  { id: "c12", title: "뉴욕", date: "2026-10-26", color: "pink", type: "city" },
+  { id: "c13", title: "뉴욕", date: "2026-10-27", color: "pink", type: "city" },
+  { id: "c14", title: "뉴욕", date: "2026-10-28", color: "pink", type: "city" },
+  { id: "c15", title: "뉴욕", date: "2026-10-29", color: "pink", type: "city" },
+  { id: "c16", title: "뉴욕", date: "2026-10-30", color: "pink", type: "city" },
+  { id: "c17", title: "뉴욕", date: "2026-10-31", color: "pink", type: "city" },
+  { id: "c18", title: "뉴욕", date: "2026-11-01", color: "pink", type: "city" },
+  { id: "c19", title: "✈️ 뉴욕 ➔ 인천", date: "2026-11-02", color: "pink", type: "city" },
+  { id: "c20", title: "🇰🇷 인천공항 도착", date: "2026-11-03", color: "pink", type: "city" },
   
   // Activities (Small color badges)
   { id: "a1", title: "⛳️ 골프 라운딩", date: "2026-10-18", color: "green", type: "activity" },
-  { id: "a2", title: "🌊 나이아가라 폭포", date: "2026-10-31", color: "blue", type: "activity" },
+  { id: "a2", title: "🌊 나이아가라 폭포", date: "2026-10-30", color: "blue", type: "activity" },
   { id: "a3", title: "🏌️ 골프 라운딩", date: "2026-10-19", color: "green", type: "activity" },
   { id: "a4", title: "🎃 할로윈", date: "2026-10-31", color: "red", type: "activity" },
 
   // Accommodations (Multi-day spans, shown as grey bar at the bottom)
-  { id: "ac1", title: "저지시티", date: "2026-10-25", endDate: "2026-10-30", color: "grey", type: "accommodation", hotel: "하얏트 하우스 저지시티 (예약번호: HY12948)", checkin: "체크인 15:00 / 체크아웃 11:00", address: "1 Exchange Pl, Jersey City, NJ 07302" },
-  { id: "ac2", title: "뉴욕 중심가", date: "2026-10-30", endDate: "2026-11-03", color: "grey", type: "accommodation", hotel: "밀레니엄 힐튼 뉴욕 원 디엔디 (예약번호: MH88471)", checkin: "체크인 16:00 / 체크아웃 11:00", address: "One United Nations Plaza, New York, NY 10017" }
+  { id: "ac1", title: "저지시티", date: "2026-10-24", endDate: "2026-10-29", color: "grey", type: "accommodation", hotel: "하얏트 하우스 저지시티 (예약번호: HY12948)", checkin: "체크인 15:00 / 체크아웃 11:00", address: "1 Exchange Pl, Jersey City, NJ 07302" },
+  { id: "ac2", title: "뉴욕 중심가", date: "2026-10-29", endDate: "2026-11-02", color: "grey", type: "accommodation", hotel: "밀레니엄 힐튼 뉴욕 원 디엔디 (예약번호: MH88471)", checkin: "체크인 16:00 / 체크아웃 11:00", address: "One United Nations Plaza, New York, NY 10017" }
 ];
 
 const DEFAULT_TIMELINE = {
-  // Atlanta Days (10/15 - 10/20)
+  // Atlanta Days (10/15 - 10/19)
   "2026-10-15": [
     { time: "13:30", title: "인천공항 T2 도착 및 체크인", desc: "대한항공 KE085 항공편 수하물 부치기 및 보안검색", locName: "인천국제공항 제2여객터미널", lat: 37.4602, lng: 126.4407 },
     { time: "16:25", title: "대한항공 KE085 이륙 (인천 출발)", desc: "애틀랜타(ATL)행 14시간 비행 출발 (예약코드: EK859P)", locName: "인천국제공항", lat: 37.4602, lng: 126.4407 },
@@ -75,87 +75,89 @@ const DEFAULT_TIMELINE = {
   "2026-10-18": [
     { time: "08:00", title: "⛳️ 라운딩: 골프 (아빠, 엄마 & 작은아빠)", desc: "애틀랜타 인근 골프클럽 라운딩", locName: "Heritage Golf Links", lat: 33.8828, lng: -84.2185 },
     { time: "14:30", title: "점심 식사 및 휴식", desc: "클럽하우스 또는 주변 한식당에서 식사", locName: "Duluth Korean Town", lat: 33.9535, lng: -84.1430 },
-    { time: "18:00", title: "가족 저녁 식사 및 마트 장보기", desc: "H-Mart 둘루스점에서 한식 장보기", locName: "H Mart Duluth", lat: 33.9599, lng: -84.1235 }
+    { time: "16:00", title: "스톤 마운틴 공원 케이블카 관람", desc: "거대한 바위산 정상에 올라가 애틀랜타 전망 감상", locName: "Stone Mountain Park", lat: 33.8083, lng: -84.1444 },
+    { time: "18:30", title: "가족 저녁 식사 및 마트 장보기", desc: "H-Mart 둘루스점에서 한식 장보기", locName: "H Mart Duluth", lat: 33.9599, lng: -84.1235 }
   ],
   "2026-10-19": [
     { time: "08:00", title: "⛳️ 라운딩: 골프 2일차 (아빠, 엄마 & 작은아빠)", desc: "다른 코스에서 두 번째 가족 라운딩", locName: "Stone Mountain Golf Club", lat: 33.8055, lng: -84.1481 },
-    { time: "15:00", title: "스톤 마운틴 공원 케이블카 관람", desc: "거대한 바위산 정상에 올라가 애틀랜타 전망 감상", locName: "Stone Mountain Park", lat: 33.8083, lng: -84.1444 }
-  ],
-  "2026-10-20": [
-    { time: "10:30", title: "하이 미술관 (High Museum of Art) 관람", desc: "아름다운 백색 건축물과 근현대 미술품 감상", locName: "High Museum of Art", lat: 33.7901, lng: -84.3856 },
     { time: "13:00", title: "점심 식사 (South City Kitchen)", desc: "세련된 남부 스타일 런치", locName: "South City Kitchen Midtown", lat: 33.7850, lng: -84.3840 },
-    { time: "15:00", title: "애틀랜타 식물원 산책", desc: "실내 온실과 숲속 공중 산책로 걷기", locName: "Atlanta Botanical Garden", lat: 33.7904, lng: -84.3736 }
+    { time: "14:30", title: "하이 미술관 (High Museum of Art) 관람", desc: "아름다운 백색 건축물과 근현대 미술품 감상", locName: "High Museum of Art", lat: 33.7901, lng: -84.3856 },
+    { time: "16:30", title: "애틀랜타 식물원 산책", desc: "실내 온실과 숲속 공중 산책로 걷기", locName: "Atlanta Botanical Garden", lat: 33.7904, lng: -84.3736 }
   ],
 
-  // Road trip to Orlando (10/21)
-  "2026-10-21": [
+  // Road trip to Orlando (10/20)
+  "2026-10-20": [
     { time: "08:00", title: "애틀랜타 출발 및 로드트립 시작 (🚗7시간 30분)", desc: "올랜도를 향해 남쪽으로 출발 (약 440마일)", locName: "Atlanta, GA", lat: 33.7490, lng: -84.3880 },
     { time: "12:30", title: "Valdosta (중간 지점) 점심 식사 및 주유", desc: "조지아-플로리다 경계 근처 조용한 도시에서 휴식", locName: "Valdosta, GA", lat: 30.8327, lng: -83.2784 },
-    { time: "16:30", title: "올랜도 숙소 도착 및 체크인", desc: "디즈니월드 인근 리조트 체크인 및 짐 풀기", locName: "Orlando, FL", lat: 28.5383, lng: -81.3792 },
+    { time: "16:30", title: "올랜도 숙소 도착 및 체크인", desc: "디즈니월드 인근 리조체크인 및 짐 풀기", locName: "Orlando, FL", lat: 28.5383, lng: -81.3792 },
     { time: "18:30", title: "디즈니 스프링스 (Disney Springs) 산책", desc: "무료 입장 쇼핑몰가에서 저녁 식사 및 기념품 구경", locName: "Disney Springs", lat: 28.3713, lng: -81.5168 }
   ],
 
-  // Road trip to Miami (10/22)
-  "2026-10-22": [
+  // Road trip to Miami (10/21)
+  "2026-10-21": [
     { time: "09:00", title: "올랜도 출발 및 로드트립 (🚗4시간)", desc: "마이애미를 향해 플로리다 턴파이크 고속도로 주행 (약 230마일)", locName: "Orlando, FL", lat: 28.5383, lng: -81.3792 },
     { time: "11:30", title: "West Palm Beach 휴게소 점심 식사", desc: "시원한 에어컨 아래에서 간단한 샌드위치 식사", locName: "West Palm Beach Service Plaza", lat: 26.6850, lng: -80.1333 },
     { time: "14:30", title: "마이애미 비치 숙소 체크인", desc: "사우스 비치 근처 호텔 체크인 및 휴식", locName: "Miami Beach, FL", lat: 25.7907, lng: -80.1300 },
     { time: "16:30", title: "사우스 비치 오션 드라이브 산책", desc: "아르데코 역사 지구의 파스텔톤 건물과 바다 구경", locName: "Ocean Drive", lat: 25.7797, lng: -80.1302 }
   ],
 
-  // Miami Days (10/23 - 10/24)
-  "2026-10-23": [
+  // Miami Days (10/22 - 10/23)
+  "2026-10-22": [
     { time: "09:30", title: "에버글레이즈 국립공원 에어보트 투어", desc: "야생 악어 관찰 및 아열대 늪지대 탐험", locName: "Everglades Safari Park", lat: 25.7615, lng: -80.6044 },
     { time: "13:30", title: "리틀 하바나 (Little Havana) 구경 및 식사", desc: "쿠바 음악을 들으며 쿠바 샌드위치 시식", locName: "Calle Ocho, Little Havana", lat: 25.7656, lng: -80.2228 },
     { time: "16:00", title: "윈우드 월스 (Wynwood Walls) 그래피티 예술 감상", desc: "화려한 야외 벽화 박물관 구경 및 카페 거리 투어", locName: "Wynwood Walls", lat: 25.8018, lng: -80.1992 }
   ],
-  "2026-10-24": [
+  "2026-10-23": [
     { time: "10:00", title: "키 비스케인 (Key Biscayne) 빌 벅스 주립공원", desc: "아름다운 해변과 역사적인 등대 하이킹", locName: "Bill Baggs Cape Florida State Park", lat: 25.6792, lng: -80.1565 },
     { time: "13:30", title: "점심 식사 (Rusty Pelican)", desc: "바다 건너 마이애미 다운타운 스카이라인을 보며 식사", locName: "Rusty Pelican Miami", lat: 25.7483, lng: -80.1772 },
     { time: "16:00", title: "베이사이드 마켓플레이스 및 유람선 투어", desc: "연예인들의 저택이 있는 아일랜드 주변 보트 크루즈", locName: "Bayside Marketplace", lat: 25.7785, lng: -80.1866 }
   ],
 
-  // New York City Days (10/25 - 11/03)
-  "2026-10-25": [
+  // New York City Days (10/24 - 11/03)
+  "2026-10-24": [
     { time: "06:30", title: "마이애미 공항으로 이동 및 렌터카 반납", desc: "마이애미 국제공항 국내선 터미널", locName: "Miami International Airport", lat: 25.7959, lng: -80.2870 },
     { time: "08:30", title: "🛫 아침 비행기로 뉴욕 라구아디아 공항 출발", desc: "델타항공 DL2234편 (08:30 출발 -> 11:30 도착)", locName: "LaGuardia Airport", lat: 40.7769, lng: -73.8740 },
     { time: "13:00", title: "뉴욕 숙소(저지시티) 이동 및 체크인", desc: "맨해튼이 한눈에 보이는 저지시티 숙소 체크인", locName: "Jersey City, NJ", lat: 40.7178, lng: -74.0431 },
     { time: "16:30", title: "첼시 마켓 및 하이라인 파크", desc: "폐철길을 도심 공원으로 꾸민 하이라인 산책 및 랍스터 식사", locName: "The High Line", lat: 40.7480, lng: -74.0048 }
   ],
-  "2026-10-26": [
+  "2026-10-25": [
     { time: "09:30", title: "자유의 여신상 크루즈 탑승", desc: "리버티 아일랜드와 엘리스 아일랜드 방문", locName: "Statue of Liberty National Monument", lat: 40.6892, lng: -74.0445 },
     { time: "13:00", title: "점심 식사 (월스트리트 주변)", desc: "황소 동상(Charging Bull) 앞에서 기념사진 촬영 후 델리 식사", locName: "Wall Street", lat: 40.7074, lng: -74.0113 },
     { time: "15:00", title: "원월드 전망대 (One World Observatory)", desc: "미국에서 가장 높은 건물 전망대에서 전경 감상", locName: "One World Trade Center", lat: 40.7127, lng: -74.0134 }
   ],
-  "2026-10-27": [
+  "2026-10-26": [
     { time: "10:00", title: "메트로폴리탄 미술관 (The Met) 관람", desc: "세계적인 미술관의 엄청난 소장품 관람", locName: "The Metropolitan Museum of Art", lat: 40.7794, lng: -73.9632 },
     { time: "14:00", title: "센트럴 파크 샌드위치 피크닉 및 산책", desc: "쉼터에서 조용한 공원 산책 및 요한 레논 추모 광장 구경", locName: "Central Park", lat: 40.7851, lng: -73.9683 },
     { time: "17:00", title: "5번가 쇼핑 및 세인트 패트릭 대성당", desc: "맨해튼의 중심가 매장 구경", locName: "St. Patrick's Cathedral", lat: 40.7586, lng: -73.9762 }
   ],
-  "2026-10-28": [
+  "2026-10-27": [
     { time: "10:00", title: "브루클린 브릿지 도보 건너기", desc: "맨해튼에서 브루클린 방향으로 다리 건너기 (뷰 최고)", locName: "Brooklyn Bridge", lat: 40.7061, lng: -73.9969 },
     { time: "12:30", title: "덤보 (DUMBO) 사진 촬영 및 피자 식사", desc: "무한도전 촬영지 골목 포토존 및 그리말디 피자 점심", locName: "DUMBO, Brooklyn", lat: 40.7033, lng: -73.9896 },
     { time: "15:00", title: "브루클린 헤이츠 산책로 야경 감상", desc: "맨해튼 다운타운 빌딩 숲의 스카이라인 조망", locName: "Brooklyn Heights Promenade", lat: 40.6970, lng: -73.9976 }
   ],
-  "2026-10-29": [
+  "2026-10-28": [
     { time: "10:00", title: "자연사 박물관 (AMNH) 관람", desc: "영화 '박물관이 살아있다' 배경의 공룡 화석 관람", locName: "American Museum of Natural History", lat: 40.7813, lng: -73.9740 },
     { time: "13:30", title: "점심 식사 (Shake Shack)", desc: "자연사박물관 바로 옆 원조 쉐이크쉑 버거 시식", locName: "Shake Shack Upper West Side", lat: 40.7808, lng: -73.9767 },
     { time: "15:00", title: "링컨 센터 투어 및 주변 쇼핑", desc: "공연 예술 예술의 전당 링컨 센터 구경", locName: "Lincoln Center for the Performing Arts", lat: 40.7725, lng: -73.9835 }
   ],
-  "2026-10-30": [
+  "2026-10-29": [
     { time: "10:00", title: "그랜드 센트럴 터미널 관람", desc: "세계에서 가장 승강장이 많은 유서 깊은 기차역 광장", locName: "Grand Central Terminal", lat: 40.7527, lng: -73.9772 },
     { time: "11:00", title: "숙소 이동: 뉴욕 중심가 숙소 체크인", desc: "저지시티 숙소 퇴실 후 맨해튼 미드타운 호텔 체크인", locName: "Midtown Manhattan, NY", lat: 40.7549, lng: -73.9840 },
     { time: "13:00", title: "뉴욕 공립 도서관 및 브라이언트 파크", desc: "아름다운 열람실 투어 및 잔디 광장에서 커피 브레이크", locName: "New York Public Library", lat: 40.7532, lng: -73.9822 },
     { time: "15:00", title: "엠파이어 스테이트 빌딩 전망대", desc: "뉴욕의 클래식 랜드마크 86층 야외 전망대 관람", locName: "Empire State Building", lat: 40.7484, lng: -73.9857 }
   ],
-  "2026-10-31": [
+  "2026-10-30": [
     { time: "07:00", title: "나이아가라 폭포 당일치기 비행기 투어", desc: "라구아디아 공항 -> 버팔로 나이아가라 공항 이동", locName: "Buffalo Niagara International Airport", lat: 42.9405, lng: -78.7322 },
     { time: "09:30", title: "나이아가라 폭포 국립공원 관광", desc: "‘안개 속의 숙녀호(Maid of the Mist)’ 보트를 타고 낙하하는 폭포 바로 밑까지 진입", locName: "Niagara Falls State Park", lat: 43.0815, lng: -79.0642 },
-    { time: "18:00", title: "뉴욕 귀환 및 저녁 식사", desc: "버팔로 공항 -> 라구아디아 복귀 후 숙소 복귀", locName: "LaGuardia Airport", lat: 40.7769, lng: -73.8740 },
+    { time: "18:00", title: "뉴욕 귀환 및 저녁 식사", desc: "버팔로 공항 -> 라구아디아 복귀 후 숙소 복귀", locName: "LaGuardia Airport", lat: 40.7769, lng: -73.8740 }
+  ],
+  "2026-10-31": [
+    { time: "13:00", title: "소호 (SOHO) 명품 및 쇼핑 스트리트 투어", desc: "아기자기한 벽돌 건물 사이 쇼핑 샵 구경", locName: "Soho, New York", lat: 40.7233, lng: -74.0030 },
     { time: "19:00", title: "🎃 뉴욕 빌리지 할로윈 퍼레이드 관람", desc: "그리니치 빌리지에서 열리는 전세계 최대 규모 할로윈 분장 행진 관람", locName: "Greenwich Village Halloween Parade", lat: 40.7336, lng: -74.0027 }
   ],
   "2026-11-01": [
-    { time: "13:00", title: "소호 (SOHO) 명품 및 쇼핑 스트리트 투어", desc: "아기자기한 벽돌 건물 사이 쇼핑 샵 구경", locName: "Soho, New York", lat: 40.7233, lng: -74.0030 }
+    { time: "14:00", title: "뉴욕 근대 미술관 (MoMA) 관람", desc: "고흐의 '별이 빛나는 밤', 피카소의 작품 등 거장들의 미술품 감상", locName: "The Museum of Modern Art", lat: 40.7614, lng: -73.9776 },
+    { time: "18:30", title: "👨‍👩‍👧‍👦 지인 가족과 저녁 식사", desc: "코리아타운 삼원가든에서 한식 갈비 저녁 식사", locName: "New York Korea Town", lat: 40.7477, lng: -73.9869 }
   ],
   "2026-11-02": [
     { time: "09:00", title: "JFK 공항 이동 및 출국 준비", desc: "인천행 대한항공 KE082편 출국 예약 수속", locName: "John F. Kennedy International Airport", lat: 40.6413, lng: -73.7781 },
@@ -193,7 +195,7 @@ const DEFAULT_TICKETS = [
     id: "t3",
     category: "museum",
     title: "뉴욕 근대 미술관 (MoMA) 입장권",
-    date: "2026-11-02",
+    date: "2026-11-01",
     time: "14:00",
     details: "티켓 구분: 성인 일반 입장권 (3매)\n예약 번호: MoMA-99283-UN | 입장시간: 14:00",
     imageUrl: "",
