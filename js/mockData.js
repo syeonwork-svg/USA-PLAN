@@ -166,33 +166,7 @@ const DEFAULT_TIMELINE = {
   ]
 };
 
-const DEFAULT_EXPENSES = [
-  // Accommodation
-  { id: "e1", category: "accommodation", title: "애틀랜타 숙소 (Airbnb 6박)", amount: 1550000, date: "2026-10-15", memo: "에어비앤비 독채" },
-  { id: "e2", category: "accommodation", title: "올랜도 디즈니 리조트 1박", amount: 350000, date: "2026-10-21", memo: "디즈니 월드 근처" },
-  { id: "e3", category: "accommodation", title: "마이애미 비치 호텔 3박", amount: 980000, date: "2026-10-22", memo: "사우스비치 오션뷰" },
-  { id: "e4", category: "accommodation", title: "저지시티 아파트먼트 5박", amount: 1500000, date: "2026-10-25", memo: "맨해튼 뷰 독채" },
-  { id: "e5", category: "accommodation", title: "맨해튼 미드타운 호텔 4박", amount: 1920000, date: "2026-10-30", memo: "출국 전날 맨해튼 중심가" },
-
-  // Transport
-  { id: "e6", category: "transport", title: "인천-애틀랜타 / 뉴욕-인천 왕복 항공권 (4인)", amount: 7774000, date: "2026-10-15", memo: "하나투어 예매 (1인당 1,943,500원) | 수화물, 마일리지 체크" },
-  { id: "e7", category: "transport", title: "애틀랜타 렌터카 (7일, SUV)", amount: 720000, date: "2026-10-15", memo: "Hertz, 자차 포함" },
-  { id: "e8", category: "transport", title: "마이애미 렌터카 (4일, SUV)", amount: 450000, date: "2026-10-22", memo: "마이애미 반납" },
-  { id: "e9", category: "transport", title: "마이애미 -> 뉴욕 편도 국내선 (3인)", amount: 380000, date: "2026-10-25", memo: "델타항공 아침 비행기" },
-  { id: "e10", category: "transport", title: "미국 내 고속도로 톨게이트 및 기름값", amount: 250000, date: "2026-10-21", memo: "애틀랜타-올랜도-마이애미 로드트립" },
-
-  // Food
-  { id: "e11", category: "food", title: "애틀랜타 식비 (가족 식사 모음)", amount: 650000, date: "2026-10-16", memo: "Mary Mac's, 한식 둘루스 등" },
-  { id: "e12", category: "food", title: "올랜도 및 마이애미 식비", amount: 550000, date: "2026-10-22", memo: "쿠바식당, 러스티펠리컨 등" },
-  { id: "e13", category: "food", title: "뉴욕 식비 (맛집 탐방)", amount: 1200000, date: "2026-10-26", memo: "랍스터, 덤보 피자, 스테이크 등" },
-
-  // Activities
-  { id: "e14", category: "activity", title: "⛳️ 골프 라운딩 그린피 (2회, 3인)", amount: 950000, date: "2026-10-18", memo: "Heritage, Stone Mountain" },
-  { id: "e15", category: "activity", title: "조지아 아쿠아리움 & 코카콜라 티켓", amount: 280000, date: "2026-10-16", memo: "3인 입장권 패키지" },
-  { id: "e16", category: "activity", title: "마이애미 악어 투어 & 보트 크루즈", amount: 180000, date: "2026-10-23", memo: "3인 예약" },
-  { id: "e17", category: "activity", title: "뉴욕 자유의 여신상 & 원월드 & 미술관 티켓", amount: 480000, date: "2026-10-26", memo: "Met, MoMA, 자유의 여신상" },
-  { id: "e18", category: "activity", title: "나이아가라 폭포 당일치기 항공&투어", amount: 1100000, date: "2026-10-31", memo: "당일 왕복 비행기표 및 투어선 탑승" }
-];
+const DEFAULT_EXPENSES = [];
 
 const DEFAULT_TICKETS = [
   {

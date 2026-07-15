@@ -34,6 +34,18 @@ const ExpensesComponent = {
     document.querySelector(".summary-card.budget").addEventListener("click", () => {
       this.promptChangeBudget();
     });
+
+    // Clear all expenses
+    const clearAllBtn = document.getElementById("clear-all-expenses-btn");
+    if (clearAllBtn) {
+      clearAllBtn.addEventListener("click", () => {
+        if (confirm("모든 경비 상세 내역을 삭제하시겠습니까? (이 작업은 되돌릴 수 없습니다)")) {
+          StorageManager.saveExpenses([]);
+          App.showNotification("모든 경비 내역이 삭제되었습니다.");
+          this.render();
+        }
+      });
+    }
   },
 
   promptChangeBudget() {
@@ -194,9 +206,12 @@ const ExpensesComponent = {
             <span class="expense-item-meta">${exp.date} ${exp.memo ? `| ${exp.memo}` : ""}</span>
           </div>
         </div>
-        <div class="expense-item-value">
-          <span class="expense-item-amount">₩${this.formatCurrency(exp.amount)}</span>
-          <button class="btn-icon edit-exp-btn">✏️</button>
+        <div class="expense-item-value" style="display: flex; align-items: center; gap: 8px;">
+          <span class="expense-item-amount" style="font-weight: 700; color: var(--text-primary);">₩${this.formatCurrency(exp.amount)}</span>
+          <div style="display: flex; gap: 4px;">
+            <button class="btn-icon edit-exp-btn" title="수정" style="padding: 4px;">✏️</button>
+            <button class="btn-icon delete-exp-btn-quick" title="삭제" style="padding: 4px; color: #ff3b30; background: transparent; border: none; cursor: pointer;">🗑️</button>
+          </div>
         </div>
       `;
 
@@ -204,8 +219,23 @@ const ExpensesComponent = {
         this.openModalForEdit(exp.id);
       });
 
+      item.querySelector(".delete-exp-btn-quick").addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (confirm(`'${exp.title}' 경비 항목을 삭제하시겠습니까?`)) {
+          this.deleteExpenseById(exp.id);
+        }
+      });
+
       listContainer.appendChild(item);
     });
+  },
+
+  deleteExpenseById(id) {
+    let expenses = StorageManager.getExpenses();
+    expenses = expenses.filter(item => item.id !== id);
+    StorageManager.saveExpenses(expenses);
+    App.showNotification("경비 항목이 삭제되었습니다.");
+    this.render();
   },
 
   openModalForAdd() {
