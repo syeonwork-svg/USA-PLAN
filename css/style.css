@@ -1938,6 +1938,10 @@ h1 {
   border-color: rgba(255, 59, 48, 0.2);
 }
 
+.print-only-itinerary {
+  display: none;
+}
+
 /* ==========================================
    Print Stylesheet
    ========================================== */
@@ -2048,6 +2052,21 @@ h1 {
   }
 
   .timeline-item {
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+
+  /* Hide regular itinerary split view on print */
+  .itinerary-view {
+    display: none !important;
+  }
+
+  /* Show full print-friendly sequential itinerary */
+  .print-only-itinerary {
+    display: block !important;
+  }
+
+  .print-day-wrapper {
     page-break-inside: avoid;
     break-inside: avoid;
   }

@@ -63,6 +63,7 @@ const ItineraryComponent = {
   render() {
     this.renderDaysSelector();
     this.renderTimeline();
+    this.renderPrintItinerary();
   },
 
   renderDaysSelector() {
@@ -438,6 +439,105 @@ const ItineraryComponent = {
     if (window.MapComponent) {
       MapComponent.updateMarkers();
     }
+  },
+
+  renderPrintItinerary() {
+    const printContainer = document.getElementById("print-only-itinerary-container");
+    if (!printContainer) return;
+
+    printContainer.innerHTML = "";
+    
+    // Header for the print section
+    const mainHeader = document.createElement("div");
+    mainHeader.style.marginBottom = "20px";
+    mainHeader.style.borderBottom = "2px solid #333";
+    mainHeader.style.paddingBottom = "8px";
+    mainHeader.innerHTML = `<h2 style="margin: 0; font-size: 16px; color: #333;">📋 날짜별 상세 일정 계획 (전체)</h2>`;
+    printContainer.appendChild(mainHeader);
+
+    const timelineData = StorageManager.getTimeline();
+    const events = StorageManager.getEvents();
+
+    this.daysList.forEach(dayInfo => {
+      const dayWrapper = document.createElement("div");
+      dayWrapper.className = "print-day-wrapper";
+      dayWrapper.style.marginBottom = "25px";
+      dayWrapper.style.pageBreakInside = "avoid";
+      dayWrapper.style.breakInside = "avoid";
+      
+      const cityEvent = events.find(ev => ev.type === "city" && ev.date === dayInfo.dateStr);
+      const cityName = cityEvent ? `${cityEvent.title} 일정` : "자유 일정";
+
+      // Day Title Banner
+      const titleBanner = document.createElement("div");
+      titleBanner.style.background = "#f4f4f4";
+      titleBanner.style.padding = "6px 10px";
+      titleBanner.style.borderRadius = "6px";
+      titleBanner.style.borderLeft = "4px solid #007aff";
+      titleBanner.style.marginBottom = "10px";
+      titleBanner.style.display = "flex";
+      titleBanner.style.justifyContent = "space-between";
+      titleBanner.style.alignItems = "center";
+      titleBanner.innerHTML = `
+        <span style="font-weight: 700; font-size: 13px; color: #333;">Day ${dayInfo.dayIndex}: ${dayInfo.displayLabel}</span>
+        <span style="font-size: 11px; color: #666; font-weight: 600;">${cityName}</span>
+      `;
+      dayWrapper.appendChild(titleBanner);
+
+      const dayActivities = [...(timelineData[dayInfo.dateStr] || [])];
+      dayActivities.sort((a, b) => a.time.localeCompare(b.time));
+
+      if (dayActivities.length === 0) {
+        const emptyMsg = document.createElement("div");
+        emptyMsg.style.fontSize = "11px";
+        emptyMsg.style.color = "#999";
+        emptyMsg.style.paddingLeft = "10px";
+        emptyMsg.style.fontStyle = "italic";
+        emptyMsg.innerText = "등록된 일정이 없습니다.";
+        dayWrapper.appendChild(emptyMsg);
+      } else {
+        const printTimelineList = document.createElement("div");
+        printTimelineList.className = "timeline";
+        
+        dayActivities.forEach(act => {
+          const item = document.createElement("div");
+          item.className = "timeline-item";
+          item.style.paddingBottom = "10px";
+          item.style.borderLeft = "2px solid #ddd";
+          item.style.marginLeft = "6px";
+          item.style.position = "relative";
+          
+          const isDraft = act.isDraft !== false;
+          if (isDraft) {
+            item.style.opacity = "0.7";
+          }
+
+          const locHTML = act.locName ? `<div style="font-size: 10.5px; color: #555; margin-top: 2px;">📍 ${act.locName}</div>` : "";
+
+          item.innerHTML = `
+            <div class="timeline-node" style="width: 8px; height: 8px; left: -5px; top: 4px; border-width: 2px; background: white; border-style: solid; border-color: #007aff; border-radius: 50%; position: absolute;"></div>
+            <div class="timeline-content" style="padding-left: 15px;">
+              <div class="timeline-info" style="display: flex; flex-direction: column;">
+                <div>
+                  <span class="timeline-time" style="font-size: 11.5px; font-weight: 700; color: #007aff;">${act.time}</span>
+                  <span class="timeline-title" style="font-size: 11.5px; font-weight: 700; color: #333; margin-left: 6px;">
+                    ${act.title}
+                    ${isDraft ? `<span style="font-size: 8px; color: #8e8e93; border: 1px solid #d1d1d6; padding: 0px 3px; border-radius: 3px; margin-left: 4px;">임시</span>` : ""}
+                  </span>
+                </div>
+                ${act.desc ? `<div class="timeline-desc" style="font-size: 10.5px; color: #666; margin-top: 2px;">${act.desc}</div>` : ""}
+                ${locHTML}
+              </div>
+            </div>
+          `;
+          printTimelineList.appendChild(item);
+        });
+
+        dayWrapper.appendChild(printTimelineList);
+      }
+
+      printContainer.appendChild(dayWrapper);
+    });
   }
 };
 window.ItineraryComponent = ItineraryComponent;
