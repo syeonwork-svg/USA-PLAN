@@ -26,8 +26,8 @@ const App = {
             save("usa_travel_candidates", sharedObj.candidates);
             save("usa_travel_checklist", sharedObj.checklist);
             save("usa_travel_passports", sharedObj.passports);
-            save("usa_travel_version", "v39");
-            save("usa_travel_data_version", "v39");
+            save("usa_travel_version", "v40");
+            save("usa_travel_data_version", "v40");
 
             window.location.hash = "";
             window.location.reload();
@@ -107,7 +107,7 @@ const App = {
           const shareUrl = window.location.origin + window.location.pathname + "#share=" + base64Str;
           
           navigator.clipboard.writeText(shareUrl).then(() => {
-            this.showNotification("공유 링크가 클립보드에 복사되었습니다! 카톡으로 동생에게 보내주세요. 🔗");
+            this.showNotification("공유 링크가 클립보드에 복사되었습니다! 필요한 사람에게 보내주세요. 🔗");
           }).catch(err => {
             // Fallback for browsers with restricted clipboard permission
             const textarea = document.createElement("textarea");
