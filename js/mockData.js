@@ -301,3 +301,26 @@ const DEFAULT_CHECKLIST = [
   { id: "chk10", category: "packing", title: "비상 약품 (감기약, 진통제, 소화제, 밴드)", checked: false },
   { id: "chk11", category: "packing", title: "여권 사본 및 예약 확정서 인쇄본 준비", checked: false }
 ];
+
+const GOOGLE_MAPS_PLACES = [
+  { name: "Sandy Liang", lat: 40.7155802, lng: -73.9914295, category: "shopping", address: "28 Orchard St, New York, NY 10002", note: "" },
+  { name: "프린스 스트릿 핏자", lat: 40.7230777, lng: -73.9945444, category: "food", address: "27 Prince St, New York, NY 10012", note: "" },
+  { name: "솔로몬 R. 구겐하임 미술관", lat: 40.7829796, lng: -73.9589706, category: "sightseeing", address: "1071 5th Ave, New York, NY 10128", note: "" },
+  { name: "Partners Coffee - Bedford", lat: 40.7189284, lng: -73.9562766, category: "food", address: "125 N 6th St, Brooklyn, NY 11249", note: "" },
+  { name: "Brooklyn Ice Cream Factory", lat: 40.7026518, lng: -73.9945911, category: "food", address: "14 Old Fulton St, Brooklyn, NY 11201", note: "" },
+  { name: "하버 뷰 론", lat: 40.7016568, lng: -73.9972614, category: "sightseeing", address: "Brooklyn Bridge Park, Brooklyn, NY 11201", note: "*멘헤튼뷰를 볼 수 있음" },
+  { name: "Ess-a-Bagel Time Out Market New York", lat: 40.7034191, lng: -73.9916072, category: "food", address: "55 Water St, Brooklyn, NY 11201", note: "" },
+  { name: "Time Out Market New York", lat: 40.7034205, lng: -73.9921457, category: "food", address: "55 Water St, Brooklyn, NY 11201", note: "*ESS-A-BAGEL" },
+  { name: "Pommes Frites", lat: 40.7301312, lng: -74.0003005, category: "food", address: "128 MacDougal St, New York, NY 10012", note: "*감자튀김\n*갈릭소스 맛있다고 함" },
+  { name: "뉴욕 현대 미술관", lat: 40.7614327, lng: -73.9776216, category: "sightseeing", address: "11 W 53rd St, New York, NY 10019", note: "" },
+  { name: "Raku", lat: 40.7272479, lng: -74.0025495, category: "food", address: "48 MacDougal St, New York, NY 10012", note: "*오프런" },
+  { name: "Aimé Leon Dore", lat: 40.7222993, lng: -73.9959041, category: "shopping", address: "224 Mulberry St, New York, NY 10012", note: "" },
+  { name: "Glossier NYC", lat: 40.7224343, lng: -73.997891, category: "shopping", address: "72 Spring St, New York, NY 10012", note: "" },
+  { name: "Sadelle's New York", lat: 40.7263129, lng: -74.0002679, category: "food", address: "463 W Broadway, New York, NY 10012", note: "*아침식사\n*프렌치 토스트 & 토마토 스프\n*예약확인" },
+  { name: "Vesuvio Bakery", lat: 40.7258889, lng: -74.001428, category: "food", address: "160 Prince St, New York, NY 10012", note: "" },
+  { name: "Quality Bistro", lat: 40.7632028, lng: -73.979167, category: "food", address: "120 W 55th St, New York, NY 10019", note: "*버터가 맛있음" },
+  { name: "뉴욕 공립도서관", lat: 40.7531823, lng: -73.9822534, category: "sightseeing", address: "476 5th Ave, New York, NY 10018", note: "*투어시간 확인" },
+  { name: "브라이언트 공원", lat: 40.7535367, lng: -73.9829529, category: "sightseeing", address: "New York, NY 10018", note: "" },
+  { name: "Leon's Bagels", lat: 40.7276755, lng: -74.0004378, category: "food", address: "169 Thompson St, New York, NY 10012", note: "" },
+  { name: "McNally Jackson Books SoHo", lat: 40.725538, lng: -74.000592, category: "shopping", address: "134 Prince St, New York, NY 10012", note: "" }
+];

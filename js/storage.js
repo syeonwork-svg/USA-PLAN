@@ -9,16 +9,18 @@ const STORAGE_KEYS = {
   TICKETS: "usa_travel_tickets",
   PASSPORTS: "usa_travel_passports",
   CHECKLIST: "usa_travel_checklist",
+  GOOGLE_PLACES: "usa_travel_google_places",
   MAP_CONFIG: "usa_travel_map_config"
 };
 
 const StorageManager = {
   // Initialize storage with mock data if empty
   init() {
-    const CURRENT_VERSION = "v8";
+    const CURRENT_VERSION = "v9";
     const savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
 
     if (savedVersion !== CURRENT_VERSION) {
+      localStorage.clear(); // Force complete clear to populate newest items
       localStorage.setItem(STORAGE_KEYS.VERSION, CURRENT_VERSION);
       localStorage.setItem(STORAGE_KEYS.TRIP_DETAILS, JSON.stringify(DEFAULT_TRIP_DETAILS));
       localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(DEFAULT_EVENTS));
@@ -27,9 +29,8 @@ const StorageManager = {
       localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(DEFAULT_TICKETS));
       localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(DEFAULT_PASSPORTS));
       localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(DEFAULT_CHECKLIST));
-      if (!localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) {
-        localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
-      }
+      localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(GOOGLE_MAPS_PLACES));
+      localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
       return;
     }
 
@@ -53,6 +54,9 @@ const StorageManager = {
     }
     if (!localStorage.getItem(STORAGE_KEYS.CHECKLIST)) {
       localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(DEFAULT_CHECKLIST));
+    }
+    if (!localStorage.getItem(STORAGE_KEYS.GOOGLE_PLACES)) {
+      localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(GOOGLE_MAPS_PLACES));
     }
     if (!localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) {
       localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
@@ -115,6 +119,14 @@ const StorageManager = {
     localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(checklist));
   },
 
+  getGooglePlaces() {
+    return JSON.parse(localStorage.getItem(STORAGE_KEYS.GOOGLE_PLACES)) || GOOGLE_MAPS_PLACES;
+  },
+
+  saveGooglePlaces(places) {
+    localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(places));
+  },
+
   getMapConfig() {
     return JSON.parse(localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) || { googleMapsApiKey: "" };
   },
@@ -132,6 +144,7 @@ const StorageManager = {
     localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(DEFAULT_TICKETS));
     localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(DEFAULT_PASSPORTS));
     localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(DEFAULT_CHECKLIST));
+    localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(GOOGLE_MAPS_PLACES));
     localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
     window.location.reload();
   }

@@ -170,7 +170,7 @@
       <!-- 4. MAP TAB -->
       <section id="map-tab" class="content-section">
         <div class="section-header">
-          <h1>지도 경로 연동</h1>
+          <h1>여행 지도 (구글 리스트 연동)</h1>
         </div>
         <div class="map-view-container">
           <!-- Left side: Map wrapper -->
@@ -179,11 +179,22 @@
             <div id="google-map" class="map-element" style="display: none;"></div>
           </div>
           <!-- Right side: Destination pins log -->
-          <div class="map-sidebar">
-            <div class="card">
-              <h3>여행 동선 방문지</h3>
-              <p style="font-size: 12px; color: var(--text-secondary); margin-bottom: 12px;">지도의 마커나 아래 방문지를 클릭하면 상세 경로와 정보를 확인하실 수 있습니다.</p>
-              <div class="map-place-list" id="map-places-list">
+          <div class="map-sidebar" style="display: flex; flex-direction: column;">
+            <div class="card" style="display: flex; flex-direction: column; height: 100%; min-height: 400px; padding: 16px;">
+              <h3 style="font-size: 14px; margin-bottom: 4px; font-weight: 700;">📍 구글맵 저장 목록</h3>
+              <p style="font-size: 11px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.4;">
+                구글맵 앱에서 저장하신 New York 핫플레이스 리스트입니다. 카테고리를 누르면 필터링 되며, 장소를 클릭 시 해당 위치로 이동 및 상세 메모가 활성화됩니다.
+              </p>
+              
+              <!-- Category Filter Buttons inside sidebar -->
+              <div class="map-category-tabs" style="display: flex; gap: 4px; margin-bottom: 12px; flex-shrink: 0; width: 100%;">
+                <button class="map-cat-tab active" data-category="all" style="flex: 1; padding: 6px 2px; font-size: 10.5px; font-weight: 700; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-primary); cursor: pointer; color: var(--text-primary);">전체</button>
+                <button class="map-cat-tab" data-category="food" style="flex: 1; padding: 6px 2px; font-size: 10.5px; font-weight: 700; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-primary); cursor: pointer; color: var(--text-primary);">🍩 맛집</button>
+                <button class="map-cat-tab" data-category="shopping" style="flex: 1; padding: 6px 2px; font-size: 10.5px; font-weight: 700; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-primary); cursor: pointer; color: var(--text-primary);">🛍️ 쇼핑</button>
+                <button class="map-cat-tab" data-category="sightseeing" style="flex: 1; padding: 6px 2px; font-size: 10.5px; font-weight: 700; border-radius: 6px; border: 1px solid var(--border-color); background: var(--bg-primary); cursor: pointer; color: var(--text-primary);">🗽 명소</button>
+              </div>
+
+              <div class="map-place-list" id="map-places-list" style="flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px;">
                 <!-- Map destinations list will be rendered here dynamically -->
               </div>
             </div>
@@ -634,15 +645,15 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""></script>
   
   <!-- App JS Files -->
-  <script src="js/mockData.js"></script>
-  <script src="js/storage.js"></script>
-  <script src="js/calendar.js"></script>
-  <script src="js/itinerary.js"></script>
-  <script src="js/expenses.js"></script>
-  <script src="js/map.js"></script>
-  <script src="js/tickets.js"></script>
-  <script src="js/passports.js"></script>
-  <script src="js/checklist.js"></script>
-  <script src="js/app.js"></script>
+  <script src="js/mockData.js?v=9"></script>
+  <script src="js/storage.js?v=9"></script>
+  <script src="js/calendar.js?v=9"></script>
+  <script src="js/itinerary.js?v=9"></script>
+  <script src="js/expenses.js?v=9"></script>
+  <script src="js/map.js?v=9"></script>
+  <script src="js/tickets.js?v=9"></script>
+  <script src="js/passports.js?v=9"></script>
+  <script src="js/checklist.js?v=9"></script>
+  <script src="js/app.js?v=9"></script>
 </body>
 </html>

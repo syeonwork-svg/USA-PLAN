@@ -4,11 +4,31 @@ const MapComponent = {
   googleMap: null,
   leafletMarkers: [],
   googleMarkers: [],
-  routeLine: null,
+  selectedCategory: "all",
   isGoogleLoaded: false,
 
   init() {
+    this.bindCategoryEvents();
     this.updateMapMode();
+  },
+
+  bindCategoryEvents() {
+    // Category tabs filter
+    document.querySelectorAll(".map-cat-tab").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".map-cat-tab").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        this.selectedCategory = btn.dataset.category;
+        this.updateMarkers();
+      });
+    });
+
+    const refreshBtn = document.getElementById("refresh-map-btn");
+    if (refreshBtn) {
+      refreshBtn.addEventListener("click", () => {
+        this.updateMapMode();
+      });
+    }
   },
 
   updateMapMode() {
@@ -53,9 +73,8 @@ const MapComponent = {
       this.leafletMap = null;
     }
 
-    // Default center at US east coast / mid-atlantic to show all points
-    // Center between Atlanta, Orlando, Miami and New York
-    this.leafletMap = L.map("leaflet-map").setView([34.0, -80.0], 5);
+    // Default center at New York City Midtown to show saved places
+    this.leafletMap = L.map("leaflet-map").setView([40.73, -73.99], 13);
 
     // Apply CartoDB Positron style (Muted Gray Apple style)
     const isDark = document.documentElement.getAttribute("data-theme") === "dark";
@@ -92,8 +111,8 @@ const MapComponent = {
   initGoogleMap() {
     const isDark = document.documentElement.getAttribute("data-theme") === "dark";
     const mapOptions = {
-      center: { lat: 34.0, lng: -80.0 },
-      zoom: 5,
+      center: { lat: 40.73, lng: -73.99 },
+      zoom: 13,
       // Minimalist Clean Apple-like Theme Style for Google Maps
       styles: isDark ? [
         { elementType: "geometry", stylers: [{ color: "#212121" }] },
@@ -114,115 +133,75 @@ const MapComponent = {
     this.updateMarkers();
   },
 
-  // 3. MARKERS & ROUTES RE-DRAW
+  // 3. MARKERS RE-DRAW
   updateMarkers() {
-    const timeline = StorageManager.getTimeline();
-    const sortedActivities = [];
-
-    // Collect all activities with coordinates
-    Object.entries(timeline).forEach(([dateStr, activities]) => {
-      // Find matching Day index
-      const dayIndex = ItineraryComponent.daysList.findIndex(d => d.dateStr === dateStr) + 1;
-      
-      activities.forEach(act => {
-        if (act.lat && act.lng) {
-          sortedActivities.push({
-            ...act,
-            dateStr,
-            dayIndex
-          });
-        }
-      });
-    });
-
-    // Sort chronologically (date, then time)
-    sortedActivities.sort((a, b) => {
-      const dateCompare = a.dateStr.localeCompare(b.dateStr);
-      if (dateCompare !== 0) return dateCompare;
-      return a.time.localeCompare(b.time);
-    });
+    const places = StorageManager.getGooglePlaces();
+    
+    // Filter by selected category
+    const filteredPlaces = this.selectedCategory === "all" 
+      ? places 
+      : places.filter(p => p.category === this.selectedCategory);
 
     // Update places log in sidebar
-    this.renderPlacesSidebar(sortedActivities);
+    this.renderPlacesSidebar(filteredPlaces);
 
     const isGoogle = (this.googleMap && document.getElementById("google-map").style.display === "block");
 
     if (isGoogle) {
-      this.drawGoogleMarkersAndRoutes(sortedActivities);
+      this.drawGoogleMarkers(filteredPlaces);
     } else {
-      this.drawLeafletMarkersAndRoutes(sortedActivities);
+      this.drawLeafletMarkers(filteredPlaces);
     }
   },
 
-  drawLeafletMarkersAndRoutes(activities) {
+  drawLeafletMarkers(places) {
     if (typeof L === "undefined" || !this.leafletMap) return;
+    
     // Clear old markers
     this.leafletMarkers.forEach(m => this.leafletMap.removeLayer(m));
     this.leafletMarkers = [];
-    
-    if (this.routeLine) {
-      this.leafletMap.removeLayer(this.routeLine);
-      this.routeLine = null;
-    }
 
-    const latlngs = [];
-
-    activities.forEach(act => {
-      const marker = L.marker([act.lat, act.lng]);
+    places.forEach(p => {
+      const marker = L.marker([p.lat, p.lng]);
       
+      const catLabel = p.category === "food" ? "🍩 맛집/카페" : p.category === "shopping" ? "🛍️ 쇼핑" : "🗽 명소/미술관";
+      const catColor = p.category === "food" ? "#af52de" : p.category === "shopping" ? "#007aff" : "#34c759";
+
       marker.bindPopup(`
-        <div style="font-family: -apple-system, sans-serif; padding: 4px;">
-          <h4 style="margin: 0 0 4px 0; color: var(--border-focus);">Day ${act.dayIndex} | ${act.time}</h4>
-          <strong style="font-size:13px;">${act.title}</strong>
-          <p style="margin: 4px 0 0 0; font-size:11px; color:#555;">📍 ${act.locName}</p>
+        <div style="font-family: -apple-system, sans-serif; padding: 4px; min-width: 160px; line-height: 1.4;">
+          <h4 style="margin: 0 0 4px 0; color: ${catColor}; font-size: 11px; font-weight: 700;">${catLabel}</h4>
+          <strong style="font-size: 13px; color: #1d1d1f; display: block; margin-bottom: 2px;">${p.name}</strong>
+          ${p.note ? `<p style="margin: 4px 0; font-size: 11px; background: rgba(0,0,0,0.04); padding: 4px 6px; border-radius: 4px; border-left: 2px solid ${catColor}; color: #333; font-weight: 500;">${p.note.replace(/\n/g, '<br>')}</p>` : ""}
+          <p style="margin: 4px 0 0 0; font-size: 10px; color: #666;">📍 ${p.address}</p>
         </div>
       `);
 
       marker.addTo(this.leafletMap);
       
-      // Store reference to marker by details
-      marker.customData = { lat: act.lat, lng: act.lng, name: act.locName };
+      // Store custom data reference
+      marker.customData = { lat: p.lat, lng: p.lng, name: p.name };
       this.leafletMarkers.push(marker);
-
-      latlngs.push([act.lat, act.lng]);
     });
-
-    // Draw route connecting lines
-    if (latlngs.length > 1) {
-      this.routeLine = L.polyline(latlngs, {
-        color: "#007aff",
-        weight: 3,
-        opacity: 0.6,
-        dashArray: "6, 6"
-      }).addTo(this.leafletMap);
-      
-      // Auto zoom/fit bounds
-      this.leafletMap.fitBounds(this.routeLine.getBounds(), { padding: [40, 40] });
-    }
   },
 
-  drawGoogleMarkersAndRoutes(activities) {
+  drawGoogleMarkers(places) {
     // Clear old markers
     this.googleMarkers.forEach(m => m.setMap(null));
     this.googleMarkers = [];
 
-    if (this.routeLine) {
-      this.routeLine.setMap(null);
-      this.routeLine = null;
-    }
-
-    const bounds = new google.maps.LatLngBounds();
-    const coords = [];
-
-    activities.forEach(act => {
-      const latlng = { lat: act.lat, lng: act.lng };
+    places.forEach(p => {
+      const latlng = { lat: p.lat, lng: p.lng };
       
+      const catLabel = p.category === "food" ? "🍩 맛집/카페" : p.category === "shopping" ? "🛍️ 쇼핑" : "🗽 명소/미술관";
+      const catColor = p.category === "food" ? "#af52de" : p.category === "shopping" ? "#007aff" : "#34c759";
+
       const infoWindow = new google.maps.InfoWindow({
         content: `
-          <div style="font-family: -apple-system, sans-serif; padding: 4px;">
-            <h4 style="margin: 0 0 4px 0; color: #007aff;">Day ${act.dayIndex} | ${act.time}</h4>
-            <strong style="font-size:13px;">${act.title}</strong>
-            <p style="margin: 4px 0 0 0; font-size:11px; color:#555;">📍 ${act.locName}</p>
+          <div style="font-family: -apple-system, sans-serif; padding: 4px; min-width: 160px; line-height: 1.4;">
+            <h4 style="margin: 0 0 4px 0; color: ${catColor}; font-size: 11px; font-weight: 700;">${catLabel}</h4>
+            <strong style="font-size: 13px; color: #1d1d1f; display: block; margin-bottom: 2px;">${p.name}</strong>
+            ${p.note ? `<p style="margin: 4px 0; font-size: 11px; background: rgba(0,0,0,0.04); padding: 4px 6px; border-radius: 4px; border-left: 2px solid ${catColor}; color: #333; font-weight: 500;">${p.note.replace(/\n/g, '<br>')}</p>` : ""}
+            <p style="margin: 4px 0 0 0; font-size: 10px; color: #666;">📍 ${p.address}</p>
           </div>
         `
       });
@@ -230,62 +209,55 @@ const MapComponent = {
       const marker = new google.maps.Marker({
         position: latlng,
         map: this.googleMap,
-        title: act.title
+        title: p.name
       });
 
       marker.addListener("click", () => {
+        // Close other open info windows first
+        this.googleMarkers.forEach(m => {
+          if (m.customData && m.customData.infoWindow) m.customData.infoWindow.close();
+        });
         infoWindow.open(this.googleMap, marker);
       });
 
-      marker.customData = { lat: act.lat, lng: act.lng, name: act.locName, infoWindow };
+      marker.customData = { lat: p.lat, lng: p.lng, name: p.name, infoWindow };
       this.googleMarkers.push(marker);
-
-      coords.push(latlng);
-      bounds.extend(latlng);
     });
-
-    // Draw route lines
-    if (coords.length > 1) {
-      this.routeLine = new google.maps.Polyline({
-        path: coords,
-        geodesic: true,
-        strokeColor: "#007aff",
-        strokeOpacity: 0.6,
-        strokeWeight: 3,
-        map: this.googleMap
-      });
-
-      this.googleMap.fitBounds(bounds);
-    }
   },
 
-  renderPlacesSidebar(activities) {
+  renderPlacesSidebar(places) {
     const listContainer = document.getElementById("map-places-list");
     listContainer.innerHTML = "";
 
-    if (activities.length === 0) {
+    if (places.length === 0) {
       listContainer.innerHTML = `
-        <div style="text-align: center; padding: 24px; color: var(--text-secondary); font-size: 13px;">
-          등록된 방문지가 없습니다. 일정 계획에서 위치를 포함한 활동을 입력해주세요.
+        <div style="text-align: center; padding: 24px; color: var(--text-secondary); font-size: 12px;">
+          선택된 카테고리에 등록된 장소가 없습니다.
         </div>
       `;
       return;
     }
 
-    activities.forEach(act => {
+    places.forEach(p => {
       const card = document.createElement("div");
       card.className = "map-place-card";
+      
+      const catIcon = p.category === "food" ? "🍩" : p.category === "shopping" ? "🛍️" : "🗽";
+      const catBadgeClass = p.category; // CSS helper
+
       card.innerHTML = `
-        <div class="map-place-info">
-          <span class="map-place-day">Day ${act.dayIndex} | ${act.time}</span>
-          <span class="map-place-title">${act.title}</span>
-          <span class="map-place-address">${act.locName}</span>
+        <div class="map-place-info" style="display: flex; flex-direction: column; gap: 3px; width: 100%;">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <span class="map-place-cat-icon" style="font-size: 14px;">${catIcon}</span>
+            <span class="map-place-title" style="font-size: 13px; font-weight: 700; color: var(--text-primary);">${p.name}</span>
+          </div>
+          ${p.note ? `<span class="map-place-note" style="font-size: 11px; color: #bf5f00; font-weight: 500;">💡 ${p.note.replace(/\n/g, ' ')}</span>` : ""}
+          <span class="map-place-address" style="font-size: 10px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${p.address}</span>
         </div>
-        <span style="font-size: 14px;">🧭</span>
       `;
 
       card.addEventListener("click", () => {
-        this.panTo(act.lat, act.lng, act.locName);
+        this.panTo(p.lat, p.lng, p.name);
       });
 
       listContainer.appendChild(card);
@@ -298,61 +270,26 @@ const MapComponent = {
 
     if (isGoogle) {
       if (!this.googleMap) return;
-      this.googleMap.setCenter({ lat, lng });
-      this.googleMap.setZoom(13);
-
-      // Open infowindow
+      this.googleMap.panTo({ lat, lng });
+      this.googleMap.setZoom(15);
+      
+      // Auto trigger infowindow
       const marker = this.googleMarkers.find(m => m.customData.lat === lat && m.customData.lng === lng);
       if (marker && marker.customData.infoWindow) {
+        // Close others
+        this.googleMarkers.forEach(m => {
+          if (m.customData && m.customData.infoWindow) m.customData.infoWindow.close();
+        });
         marker.customData.infoWindow.open(this.googleMap, marker);
       }
     } else {
-      if (typeof L === "undefined" || !this.leafletMap) return;
-      this.leafletMap.setView([lat, lng], 13);
-
-      // Open popup
+      if (!this.leafletMap) return;
+      this.leafletMap.setView([lat, lng], 15);
+      
+      // Auto trigger popup
       const marker = this.leafletMarkers.find(m => m.customData.lat === lat && m.customData.lng === lng);
       if (marker) {
         marker.openPopup();
-      }
-    }
-  },
-
-  // Fit bounds to all activities on a specific day
-  focusOnDay(dateStr) {
-    const isGoogle = (this.googleMap && document.getElementById("google-map").style.display === "block");
-    
-    if (isGoogle) {
-      if (!this.googleMap) return;
-      const bounds = new google.maps.LatLngBounds();
-      let count = 0;
-      
-      this.googleMarkers.forEach(m => {
-        // Find matching activity date
-        const timeline = StorageManager.getTimeline();
-        const dayActivities = timeline[dateStr] || [];
-        const matches = dayActivities.some(act => act.lat === m.position.lat() && act.lng === m.position.lng());
-        
-        if (matches) {
-          bounds.extend(m.position);
-          count++;
-        }
-      });
-
-      if (count > 0) {
-        this.googleMap.fitBounds(bounds);
-      }
-    } else {
-      if (typeof L === "undefined" || !this.leafletMap) return;
-      const dayMarkers = this.leafletMarkers.filter(m => {
-        const timeline = StorageManager.getTimeline();
-        const dayActivities = timeline[dateStr] || [];
-        return dayActivities.some(act => act.lat === m.customData.lat && act.lng === m.customData.lng);
-      });
-
-      if (dayMarkers.length > 0) {
-        const group = L.featureGroup(dayMarkers);
-        this.leafletMap.fitBounds(group.getBounds(), { padding: [50, 50] });
       }
     }
   }
