@@ -458,7 +458,7 @@ h1 {
 }
 
 .calendar-cell.today .day-number {
-  background-color: var(--border-focus);
+  background-color: #ff3b30;
   color: white;
   width: 24px;
   height: 24px;
@@ -492,11 +492,11 @@ h1 {
   overflow-y: auto;
 }
 
-/* Event Badges */
+/* Event Badges - Premium Apple Calendar Style */
 .badge-event {
-  font-size: 11px;
+  font-size: 10px;
   padding: 4px 6px;
-  border-radius: 4px;
+  border-radius: 5px;
   font-weight: 600;
   display: flex;
   align-items: center;
@@ -505,68 +505,153 @@ h1 {
   overflow: hidden;
   text-overflow: ellipsis;
   cursor: pointer;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  transition: transform 0.1s ease, filter 0.2s ease;
+  margin-bottom: 2px;
+  border: 1px solid transparent;
 }
 
-/* City Badges (Pills) */
-.badge-city {
-  display: inline-block;
-  padding: 2px 6px;
-  border-radius: 4px;
-  font-size: 11px;
-  font-weight: 700;
-  color: #ffffff;
-  text-align: center;
-  width: fit-content;
+.badge-event:hover {
+  transform: translateY(-0.5px);
+  filter: brightness(0.95);
 }
 
-.badge-city.color-teal { background-color: var(--color-teal); color: white; }
-.badge-city.color-orange { background-color: var(--color-orange); color: white; }
-.badge-city.color-yellow { background-color: var(--color-yellow); color: #1d1d1f; }
-.badge-city.color-pink { background-color: var(--color-pink); color: white; }
-
-/* Roadtrip */
-.badge-roadtrip {
-  background-color: var(--color-black-bg);
-  border-left: 3px solid var(--color-black);
-  color: var(--text-primary);
-  font-weight: 500;
+[data-theme="dark"] .badge-event:hover {
+  filter: brightness(1.1);
 }
 
-.badge-activity {
-  font-weight: 500;
+/* Apply light background + left border layout */
+.badge-event.color-teal {
+  background-color: rgba(0, 162, 138, 0.1);
+  border-left: 3.5px solid #00a28a;
+  color: #007361;
+}
+[data-theme="dark"] .badge-event.color-teal {
+  background-color: rgba(0, 162, 138, 0.2);
+  border-left: 3.5px solid #00a28a;
+  color: #33c2ae;
 }
 
-.badge-activity.color-green {
-  background-color: var(--color-green-bg);
-  color: var(--color-green);
-  border-left: 2px solid var(--color-green);
+.badge-event.color-orange {
+  background-color: rgba(255, 149, 0, 0.1);
+  border-left: 3.5px solid #ff9500;
+  color: #a05000;
 }
-.badge-activity.color-blue {
-  background-color: var(--color-blue-bg);
-  color: var(--color-blue);
-  border-left: 2px solid var(--color-blue);
-}
-.badge-activity.color-red {
-  background-color: var(--color-red-bg);
-  color: var(--color-red);
-  border-left: 2px solid var(--color-red);
+[data-theme="dark"] .badge-event.color-orange {
+  background-color: rgba(255, 149, 0, 0.2);
+  border-left: 3.5px solid #ff9500;
+  color: #ffbe66;
 }
 
-/* Accommodation Span Bars (Rendered continuous) */
+.badge-event.color-yellow {
+  background-color: rgba(255, 204, 0, 0.15);
+  border-left: 3.5px solid #ffcc00;
+  color: #7a6100;
+}
+[data-theme="dark"] .badge-event.color-yellow {
+  background-color: rgba(255, 204, 0, 0.2);
+  border-left: 3.5px solid #ffcc00;
+  color: #ffe680;
+}
+
+.badge-event.color-pink {
+  background-color: rgba(255, 45, 85, 0.1);
+  border-left: 3.5px solid #ff2d55;
+  color: #b01230;
+}
+[data-theme="dark"] .badge-event.color-pink {
+  background-color: rgba(255, 45, 85, 0.2);
+  border-left: 3.5px solid #ff2d55;
+  color: #ff7a93;
+}
+
+.badge-event.color-blue {
+  background-color: rgba(0, 122, 255, 0.1);
+  border-left: 3.5px solid #007aff;
+  color: #0052b3;
+}
+[data-theme="dark"] .badge-event.color-blue {
+  background-color: rgba(0, 122, 255, 0.2);
+  border-left: 3.5px solid #007aff;
+  color: #66aaff;
+}
+
+.badge-event.color-red {
+  background-color: rgba(255, 59, 48, 0.1);
+  border-left: 3.5px solid #ff3b30;
+  color: #b31a12;
+}
+[data-theme="dark"] .badge-event.color-red {
+  background-color: rgba(255, 59, 48, 0.2);
+  border-left: 3.5px solid #ff3b30;
+  color: #ff857f;
+}
+
+.badge-event.color-green {
+  background-color: rgba(52, 199, 89, 0.1);
+  border-left: 3.5px solid #34c759;
+  color: #1e7534;
+}
+[data-theme="dark"] .badge-event.color-green {
+  background-color: rgba(52, 199, 89, 0.2);
+  border-left: 3.5px solid #34c759;
+  color: #7ee298;
+}
+
+.badge-event.color-grey {
+  background-color: rgba(142, 142, 147, 0.1);
+  border-left: 3.5px solid #8e8e93;
+  color: #555558;
+}
+[data-theme="dark"] .badge-event.color-grey {
+  background-color: rgba(142, 142, 147, 0.2);
+  border-left: 3.5px solid #8e8e93;
+  color: #c7c7cc;
+}
+
+.badge-event.color-black {
+  background-color: rgba(29, 29, 31, 0.08);
+  border-left: 3.5px solid #1d1d1f;
+  color: #1d1d1f;
+}
+[data-theme="dark"] .badge-event.color-black {
+  background-color: rgba(255, 255, 255, 0.12);
+  border-left: 3.5px solid #f5f5f7;
+  color: #f5f5f7;
+}
+
+/* Accommodation Span Bars (Shown continuous at the bottom of the cell) */
 .badge-accommodation {
-  background-color: var(--color-grey-bg);
-  color: var(--color-grey);
-  border-left: 3px solid var(--color-grey);
-  font-weight: 500;
+  background-color: rgba(142, 142, 147, 0.1) !important;
+  color: #555558 !important;
+  border-left: 3.5px solid #8e8e93 !important;
+  font-weight: 600;
   font-size: 10px;
-  margin-top: auto; /* Push accommodation to the bottom */
+  margin-top: auto;
+  box-shadow: none;
+}
+[data-theme="dark"] .badge-accommodation {
+  background-color: rgba(142, 142, 147, 0.2) !important;
+  color: #c7c7cc !important;
 }
 
-/* Spans adjustments */
-.badge-accommodation.span-start { border-radius: 4px 0 0 4px; margin-right: -9px; }
-.badge-accommodation.span-mid { border-radius: 0; margin-left: -9px; margin-right: -9px; border-left: none; }
-.badge-accommodation.span-end { border-radius: 0 4px 4px 0; margin-left: -9px; border-left: none; }
+.badge-accommodation.span-start {
+  border-radius: 5px 0 0 5px;
+  margin-right: -9px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
+.badge-accommodation.span-mid {
+  border-radius: 0;
+  margin-left: -9px;
+  margin-right: -9px;
+  border-left: none !important;
+  box-shadow: none;
+}
+.badge-accommodation.span-end {
+  border-radius: 0 5px 5px 0;
+  margin-left: -9px;
+  border-left: none !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+}
 
 /* Itinerary Planner View */
 .itinerary-view {
@@ -1175,50 +1260,163 @@ h1 {
   font-weight: 500;
 }
 
-/* Responsive adjustments */
-@media (max-width: 992px) {
+/* Responsive adjustments (iPhone & Mobile Bottom Tab Bar) */
+@media (max-width: 768px) {
   body {
     flex-direction: column;
-    overflow-y: auto;
-    height: auto;
+    height: 100vh;
+    overflow: hidden;
   }
   
   .sidebar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
     width: 100%;
-    height: auto;
+    height: 64px;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 0;
     border-right: none;
-    border-bottom: 1px solid var(--border-color);
-    padding: 16px;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-sidebar);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 1000;
   }
   
   .brand {
-    margin-bottom: 16px;
+    display: none; /* Hide brand logo on bottom bar */
   }
   
   .nav-menu {
-    flex-direction: row;
-    overflow-x: auto;
-    padding-bottom: 8px;
+    flex-direction: row !important;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+    margin-bottom: 0;
+  }
+  
+  .nav-item {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
   }
   
   .nav-item a {
-    white-space: nowrap;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 0;
+    font-size: 10px;
+    font-weight: 500;
+    background: none !important;
+    box-shadow: none !important;
+    border-radius: 0;
+    width: 100%;
+    text-align: center;
+    color: var(--text-secondary);
+  }
+  
+  .nav-item.active a {
+    color: var(--border-focus);
+    font-weight: 600;
   }
   
   .sidebar-footer {
-    display: none; /* Hide bottom tools on tablet/mobile header */
+    display: none; /* Hide footer tools on mobile bottom bar */
   }
   
   .main-content {
-    height: auto;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+    padding-bottom: 24px;
   }
   
-  .itinerary-view, .expenses-grid, .map-view-container {
+  .content-section {
+    padding: 16px; /* Less padding on phone */
+  }
+  
+  h1 {
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+  
+  /* Calendar cell mobile optimization */
+  .calendar-cell {
+    min-height: 80px; /* Shorter cells on mobile */
+    padding: 4px;
+  }
+  
+  .day-number {
+    font-size: 11px;
+  }
+  
+  .badge-event {
+    font-size: 8px;
+    padding: 2px 4px;
+  }
+  
+  .badge-accommodation {
+    font-size: 8px;
+  }
+  
+  /* Itinerary responsive tab bar */
+  .itinerary-view {
     grid-template-columns: 1fr;
     height: auto;
+    overflow: visible;
+  }
+  
+  .days-list {
+    flex-direction: row;
+    overflow-x: auto;
+    height: auto;
+    padding: 8px;
+    margin-bottom: 12px;
+  }
+  
+  .day-tab {
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    white-space: nowrap;
+  }
+  
+  .day-tab-num {
+    font-size: 12px;
+  }
+  
+  .day-tab-info {
+    font-size: 10px;
+    gap: 4px;
+  }
+  
+  /* Expenses responsive */
+  .expenses-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .expenses-summary {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  /* Map responsive */
+  .map-view-container {
+    grid-template-columns: 1fr;
+    height: calc(100vh - 180px);
   }
   
   .map-wrapper {
-    height: 400px;
+    height: 320px;
+  }
+  
+  .map-sidebar {
+    height: auto;
   }
 }

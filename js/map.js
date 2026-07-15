@@ -33,6 +33,21 @@ const MapComponent = {
 
   // 1. LEAFLET MAP FUNCTIONS
   initLeaflet() {
+    if (typeof L === "undefined") {
+      console.warn("Leaflet library is not loaded.");
+      const leafletEl = document.getElementById("leaflet-map");
+      if (leafletEl) {
+        leafletEl.innerHTML = `
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; padding: 24px; text-align: center; color: var(--text-secondary);">
+            <span style="font-size: 32px; margin-bottom: 8px;">🌐</span>
+            <strong style="font-size: 14px;">지도를 로드할 수 없습니다.</strong>
+            <span style="font-size: 11px; margin-top: 4px; line-height:1.4;">인터넷 연결이 원활하지 않거나 오프라인 상태일 수 있습니다. 설정에서 Google Maps API 키를 연동해 보십시오.</span>
+          </div>
+        `;
+      }
+      return;
+    }
+
     if (this.leafletMap) {
       this.leafletMap.remove();
       this.leafletMap = null;
@@ -140,6 +155,7 @@ const MapComponent = {
   },
 
   drawLeafletMarkersAndRoutes(activities) {
+    if (typeof L === "undefined" || !this.leafletMap) return;
     // Clear old markers
     this.leafletMarkers.forEach(m => this.leafletMap.removeLayer(m));
     this.leafletMarkers = [];
@@ -291,7 +307,7 @@ const MapComponent = {
         marker.customData.infoWindow.open(this.googleMap, marker);
       }
     } else {
-      if (!this.leafletMap) return;
+      if (typeof L === "undefined" || !this.leafletMap) return;
       this.leafletMap.setView([lat, lng], 13);
 
       // Open popup
@@ -327,7 +343,7 @@ const MapComponent = {
         this.googleMap.fitBounds(bounds);
       }
     } else {
-      if (!this.leafletMap) return;
+      if (typeof L === "undefined" || !this.leafletMap) return;
       const dayMarkers = this.leafletMarkers.filter(m => {
         const timeline = StorageManager.getTimeline();
         const dayActivities = timeline[dateStr] || [];

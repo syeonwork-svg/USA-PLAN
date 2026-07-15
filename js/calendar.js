@@ -177,98 +177,46 @@ const CalendarComponent = {
     const eventsContainer = document.createElement("div");
     eventsContainer.className = "events-list";
 
-    // 1. Group City / Roadtrip Badges for side-by-side rendering (exactly like the screenshot)
-    const cityRoadEvents = dayEvents.filter(ev => ev.type === "city" || ev.type === "roadtrip");
-    if (cityRoadEvents.length > 0) {
-      const badgeRow = document.createElement("div");
-      badgeRow.className = "badge-row";
-      badgeRow.style.display = "flex";
-      badgeRow.style.flexWrap = "wrap";
-      badgeRow.style.gap = "3px";
-      badgeRow.style.alignItems = "center";
-
-      cityRoadEvents.forEach(ev => {
-        const badge = document.createElement("span");
-        badge.className = `badge-city color-${ev.color}`;
-        badge.innerText = ev.title;
-        badge.title = ev.title;
-
-        // Custom roadtrip styling
-        if (ev.type === "roadtrip") {
-          badge.className = "badge-event badge-roadtrip";
-          badge.innerHTML = `🏁 ${ev.title}`;
-          badge.style.padding = "2px 4px";
-          badge.style.fontSize = "10px";
-        }
-
-        badge.addEventListener("click", (e) => {
-          e.stopPropagation();
-          this.openModalForEdit(ev.id);
-        });
-
-        badgeRow.appendChild(badge);
-      });
-      eventsContainer.appendChild(badgeRow);
-
-      // 2. Sub-labels (e.g., Roadtrip duration "🚗7시간 30분", Flight info "*아침 비행기표")
-      cityRoadEvents.forEach(ev => {
-        if (ev.type === "roadtrip" && ev.duration) {
-          const subText = document.createElement("div");
-          subText.style.fontSize = "10px";
-          subText.style.fontWeight = "600";
-          subText.style.marginTop = "2px";
-          subText.innerHTML = `🚗${ev.duration}`;
-          eventsContainer.appendChild(subText);
-        }
-        if (ev.label) {
-          const labelText = document.createElement("div");
-          labelText.style.fontSize = "10px";
-          labelText.style.color = ev.color === "pink" ? "var(--color-pink)" : "var(--text-secondary)";
-          labelText.style.fontWeight = "600";
-          labelText.style.marginTop = "2px";
-          labelText.innerText = ev.label;
-          eventsContainer.appendChild(labelText);
-        }
-      });
-    }
-
-    // 3. Other Events (Activities: Golf, Niagara Falls, Halloween)
-    const activityEvents = dayEvents.filter(ev => ev.type === "activity");
-    activityEvents.forEach(ev => {
-      const badge = document.createElement("div");
-      badge.className = `badge-event badge-activity color-${ev.color}`;
-      badge.innerText = ev.title;
-
-      badge.addEventListener("click", (e) => {
-        e.stopPropagation();
-        this.openModalForEdit(ev.id);
-      });
-      eventsContainer.appendChild(badge);
+    // Sort events so that city/roadtrips are first, then activities, then accommodations
+    const sortedDayEvents = [...dayEvents].sort((a, b) => {
+      const typeOrder = { city: 1, roadtrip: 2, activity: 3, accommodation: 4 };
+      return (typeOrder[a.type] || 9) - (typeOrder[b.type] || 9);
     });
 
-    // 4. Accommodations (Banners spanning multiple days, bottom aligned)
-    const accommodationEvents = dayEvents.filter(ev => ev.type === "accommodation");
-    accommodationEvents.forEach(ev => {
+    sortedDayEvents.forEach(ev => {
       const badge = document.createElement("div");
-      badge.className = `badge-event badge-accommodation`;
-      
-      // Determine flat-edges class for continuous span illusion
-      if (ev.date === ev.endDate) {
-        // Single day
-      } else if (dateStr === ev.date) {
-        badge.classList.add("span-start");
-      } else if (dateStr === ev.endDate) {
-        badge.classList.add("span-end");
+      badge.className = `badge-event color-${ev.color}`;
+
+      if (ev.type === "accommodation") {
+        badge.classList.add("badge-accommodation");
+        // Determine flat-edges class for continuous span illusion
+        if (ev.date === ev.endDate) {
+          // Single day
+        } else if (dateStr === ev.date) {
+          badge.classList.add("span-start");
+        } else if (dateStr === ev.endDate) {
+          badge.classList.add("span-end");
+        } else {
+          badge.classList.add("span-mid");
+        }
+        badge.innerHTML = `🏨 ${ev.title}`;
+      } else if (ev.type === "city") {
+        badge.innerHTML = `📍 ${ev.title}`;
+        if (ev.label) {
+          badge.innerHTML += ` <span style="font-size: 9px; opacity: 0.7; margin-left: 2px;">${ev.label}</span>`;
+        }
+      } else if (ev.type === "roadtrip") {
+        badge.innerHTML = `🚗 ${ev.title} (${ev.duration || ''})`;
       } else {
-        badge.classList.add("span-mid");
+        // Activity
+        badge.innerHTML = `${ev.title}`;
       }
-      
-      badge.innerText = ev.title;
 
       badge.addEventListener("click", (e) => {
         e.stopPropagation();
         this.openModalForEdit(ev.id);
       });
+
       eventsContainer.appendChild(badge);
     });
 

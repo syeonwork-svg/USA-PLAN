@@ -49,8 +49,8 @@ const DEFAULT_EVENTS = [
   { id: "a4", title: "🎃 할로윈", date: "2026-10-31", color: "red", type: "activity" },
 
   // Accommodations (Multi-day spans, shown as grey bar at the bottom)
-  { id: "ac1", title: "저지시티 숙박", date: "2026-10-24", endDate: "2026-10-31", color: "grey", type: "accommodation" },
-  { id: "ac2", title: "뉴욕 중심가 숙박", date: "2026-11-01", endDate: "2026-11-07", color: "grey", type: "accommodation" }
+  { id: "ac1", title: "저지시티 숙박", date: "2026-10-24", endDate: "2026-10-29", color: "grey", type: "accommodation" },
+  { id: "ac2", title: "뉴욕 중심가 숙박", date: "2026-10-29", endDate: "2026-11-02", color: "grey", type: "accommodation" }
 ];
 
 const DEFAULT_TIMELINE = {
@@ -142,8 +142,9 @@ const DEFAULT_TIMELINE = {
   ],
   "2026-10-29": [
     { time: "10:00", title: "그랜드 센트럴 터미널 관람", desc: "세계에서 가장 승강장이 많은 유서 깊은 기차역 광장", locName: "Grand Central Terminal", lat: 40.7527, lng: -73.9772 },
-    { time: "11:30", title: "뉴욕 공립 도서관 및 브라이언트 파크", desc: "아름다운 열람실 투어 및 잔디 광장에서 커피 브레이크", locName: "New York Public Library", lat: 40.7532, lng: -73.9822 },
-    { time: "14:00", title: "엠파이어 스테이트 빌딩 전망대", desc: "뉴욕의 클래식 랜드마크 86층 야외 전망대 관람", locName: "Empire State Building", lat: 40.7484, lng: -73.9857 }
+    { time: "11:00", title: "숙소 이동: 뉴욕 중심가 숙소 체크인", desc: "저지시티 숙소 퇴실 후 맨해튼 미드타운 호텔 체크인", locName: "Midtown Manhattan, NY", lat: 40.7549, lng: -73.9840 },
+    { time: "13:00", title: "뉴욕 공립 도서관 및 브라이언트 파크", desc: "아름다운 열람실 투어 및 잔디 광장에서 커피 브레이크", locName: "New York Public Library", lat: 40.7532, lng: -73.9822 },
+    { time: "15:00", title: "엠파이어 스테이트 빌딩 전망대", desc: "뉴욕의 클래식 랜드마크 86층 야외 전망대 관람", locName: "Empire State Building", lat: 40.7484, lng: -73.9857 }
   ],
   "2026-10-30": [
     { time: "07:00", title: "나이아가라 폭포 당일치기 비행기 투어", desc: "라구아디아 공항 -> 버팔로 나이아가라 공항 이동", locName: "Buffalo Niagara International Airport", lat: 42.9405, lng: -78.7322 },
@@ -155,7 +156,6 @@ const DEFAULT_TIMELINE = {
     { time: "19:00", title: "🎃 뉴욕 빌리지 할로윈 퍼레이드 관람", desc: "그리니치 빌리지에서 열리는 전세계 최대 규모 할로윈 분장 행진 관람", locName: "Greenwich Village Halloween Parade", lat: 40.7336, lng: -74.0027 }
   ],
   "2026-11-01": [
-    { time: "11:00", title: "숙소 이동: 뉴욕 중심가 숙박 체크인", desc: "저지시티 숙소 퇴실 후 맨해튼 미드타운 호텔 체크인", locName: "Midtown Manhattan, NY", lat: 40.7549, lng: -73.9840 },
     { time: "14:00", title: "뉴욕 근대 미술관 (MoMA) 관람", desc: "고흐의 '별이 빛나는 밤', 피카소의 작품 등 거장들의 미술품 감상", locName: "The Museum of Modern Art", lat: 40.7614, lng: -73.9776 },
     { time: "18:30", title: "👨‍👩‍👧‍👦 *뉴욕으로 오실 수 있다면 같이 저녁 식사", desc: "지인 가족 합류 시 코리아타운 삼원가든에서 한식 갈비 저녁", locName: "New York Korea Town", lat: 40.7477, lng: -73.9869 }
   ],
@@ -171,8 +171,8 @@ const DEFAULT_EXPENSES = [
   { id: "e1", category: "accommodation", title: "애틀랜타 숙소 (Airbnb 6박)", amount: 1550000, date: "2026-10-14", memo: "에어비앤비 독채" },
   { id: "e2", category: "accommodation", title: "올랜도 디즈니 리조트 1박", amount: 350000, date: "2026-10-20", memo: "디즈니 월드 근처" },
   { id: "e3", category: "accommodation", title: "마이애미 비치 호텔 3박", amount: 980000, date: "2026-10-21", memo: "사우스비치 오션뷰" },
-  { id: "e4", category: "accommodation", title: "저지시티 아파트먼트 8박", amount: 2400000, date: "2026-10-24", memo: "맨해튼 뷰 독채" },
-  { id: "e5", category: "accommodation", title: "맨해튼 미드타운 호텔 1박", amount: 480000, date: "2026-11-01", memo: "출국 전날 맨해튼 중심가" },
+  { id: "e4", category: "accommodation", title: "저지시티 아파트먼트 5박", amount: 1500000, date: "2026-10-24", memo: "맨해튼 뷰 독채" },
+  { id: "e5", category: "accommodation", title: "맨해튼 미드타운 호텔 4박", amount: 1920000, date: "2026-10-29", memo: "출국 전날 맨해튼 중심가" },
 
   // Transport
   { id: "e6", category: "transport", title: "인천-애틀랜타 / 뉴욕-인천 항공권 (3인)", amount: 4650000, date: "2026-10-14", memo: "대한항공 다구간 예약" },
