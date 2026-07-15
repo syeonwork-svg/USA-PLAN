@@ -19,57 +19,50 @@ const StorageManager = {
     const CURRENT_VERSION = "v26";
     const savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
 
-    // Non-destructive initialization: only set default if key doesn't exist
-    if (!localStorage.getItem(STORAGE_KEYS.TRIP_DETAILS)) {
+    if (savedVersion !== CURRENT_VERSION) {
+      // Version 26 reset: Overwrite with fresh screenshot-aligned defaults
       localStorage.setItem(STORAGE_KEYS.TRIP_DETAILS, JSON.stringify(DEFAULT_TRIP_DETAILS));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.EVENTS)) {
       localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(DEFAULT_EVENTS));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.TIMELINE)) {
       localStorage.setItem(STORAGE_KEYS.TIMELINE, JSON.stringify(DEFAULT_TIMELINE));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.EXPENSES)) {
       localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(DEFAULT_EXPENSES));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.TICKETS)) {
       localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(DEFAULT_TICKETS));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.PASSPORTS)) {
       localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(DEFAULT_PASSPORTS));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.CHECKLIST)) {
       localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(DEFAULT_CHECKLIST));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.GOOGLE_PLACES)) {
       localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(GOOGLE_MAPS_PLACES));
-    }
-    if (!localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) {
       localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
-    }
-
-    // Smart Migration for v17: Inject depCode / arrCode to old flight presets if missing
-    try {
-      let tickets = JSON.parse(localStorage.getItem(STORAGE_KEYS.TICKETS));
-      if (tickets && Array.isArray(tickets)) {
-        let migrated = false;
-        tickets = tickets.map(t => {
-          if (t.category === "flight") {
-            if (!t.depCode && t.title.includes("인천 ➔ 애틀랜타")) { t.depCode = "ICN"; t.arrCode = "ATL"; t.flightNo = "KE085"; migrated = true; }
-            if (!t.depCode && t.title.includes("뉴욕 ➔ 인천")) { t.depCode = "JFK"; t.arrCode = "ICN"; t.flightNo = "KE082"; migrated = true; }
-          }
-          return t;
-        });
-        if (migrated) {
-          localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(tickets));
-        }
+      
+      localStorage.setItem(STORAGE_KEYS.VERSION, CURRENT_VERSION);
+      localStorage.setItem("usa_travel_data_version", CURRENT_VERSION);
+    } else {
+      // Non-destructive fallback
+      if (!localStorage.getItem(STORAGE_KEYS.TRIP_DETAILS)) {
+        localStorage.setItem(STORAGE_KEYS.TRIP_DETAILS, JSON.stringify(DEFAULT_TRIP_DETAILS));
       }
-    } catch (e) {
-      console.error("Migration error:", e);
+      if (!localStorage.getItem(STORAGE_KEYS.EVENTS)) {
+        localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(DEFAULT_EVENTS));
+      }
+      if (!localStorage.getItem(STORAGE_KEYS.TIMELINE)) {
+        localStorage.setItem(STORAGE_KEYS.TIMELINE, JSON.stringify(DEFAULT_TIMELINE));
+      }
+      if (!localStorage.getItem(STORAGE_KEYS.EXPENSES)) {
+        localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(DEFAULT_EXPENSES));
+      }
+      if (!localStorage.getItem(STORAGE_KEYS.TICKETS)) {
+        localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(DEFAULT_TICKETS));
+      }
+      if (!localStorage.getItem(STORAGE_KEYS.PASSPORTS)) {
+        localStorage.setItem(STORAGE_KEYS.PASSPORTS, JSON.stringify(DEFAULT_PASSPORTS));
+      }
+      if (!localStorage.getItem(STORAGE_KEYS.CHECKLIST)) {
+        localStorage.setItem(STORAGE_KEYS.CHECKLIST, JSON.stringify(DEFAULT_CHECKLIST));
+      }
+      if (!localStorage.getItem(STORAGE_KEYS.GOOGLE_PLACES)) {
+        localStorage.setItem(STORAGE_KEYS.GOOGLE_PLACES, JSON.stringify(GOOGLE_MAPS_PLACES));
+      }
+      if (!localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) {
+        localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
+      }
     }
-
-    // Update version string without clearing anything
-    localStorage.setItem(STORAGE_KEYS.VERSION, CURRENT_VERSION);
   },
 
   getTripDetails() {
@@ -297,10 +290,6 @@ const StorageManager = {
     }
 
     localStorage.setItem("usa_travel_planner_snapshots", JSON.stringify(snapshots));
-    
-    if (window.App && typeof App.renderSnapshotsList === "function") {
-      App.renderSnapshotsList();
-    }
     
     if (window.App && typeof App.showNotification === "function") {
       App.showNotification("현재 상태가 성공적으로 저장되었습니다!");

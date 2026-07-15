@@ -53,35 +53,26 @@ const App = {
       }
     });
 
-    // Tab Snapshot Backup & Restore bindings
-    const tabSaveBtn = document.getElementById("tab-save-snapshot-btn");
-    if (tabSaveBtn) {
-      tabSaveBtn.addEventListener("click", () => {
+    // Sidebar Snapshot Backup & Restore
+    const sbSaveBtn = document.getElementById("sb-save-snapshot-btn");
+    const sbRestoreTrigger = document.getElementById("sb-restore-snapshot-btn");
+
+    if (sbSaveBtn) {
+      sbSaveBtn.addEventListener("click", () => {
         StorageManager.saveSnapshot();
       });
     }
-
-    // File backup export / import bindings
-    const fileExportBtn = document.getElementById("file-export-btn");
-    const fileImportTrigger = document.getElementById("file-import-btn-trigger");
-    const fileImportInput = document.getElementById("file-import-input");
-
-    if (fileExportBtn) {
-      fileExportBtn.addEventListener("click", () => {
-        StorageManager.exportBackup();
+    if (sbRestoreTrigger) {
+      sbRestoreTrigger.addEventListener("click", () => {
+        this.openSnapshotModal();
       });
     }
-    if (fileImportTrigger && fileImportInput) {
-      fileImportTrigger.addEventListener("click", () => {
-        fileImportInput.click();
-      });
-      fileImportInput.addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          StorageManager.importBackup(file);
-        }
-      });
-    }
+
+    // Modal Close Bindings
+    const closeBtn = document.getElementById("close-snapshot-modal-btn");
+    const closeFooterBtn = document.getElementById("close-snapshot-modal-footer-btn");
+    if (closeBtn) closeBtn.addEventListener("click", () => this.closeSnapshotModal());
+    if (closeFooterBtn) closeFooterBtn.addEventListener("click", () => this.closeSnapshotModal());
 
     // Intercept Ctrl+S / Cmd+S globally
     document.addEventListener("keydown", (e) => {
@@ -107,15 +98,7 @@ const App = {
     document.querySelectorAll(".content-section").forEach(sec => {
       sec.classList.remove("active");
     });
-    const targetSec = document.getElementById(tabId);
-    if (targetSec) {
-      targetSec.classList.add("active");
-    }
-
-    // Render snapshot list when opening backup tab
-    if (tabId === "backup-tab") {
-      this.renderSnapshotsList();
-    }
+    document.getElementById(tabId).classList.add("active");
 
     // 3. Leaflet/Google Map resize fix (Crucial for maps loaded in hidden containers)
     if (tabId === "map-tab" && window.MapComponent) {
@@ -199,8 +182,23 @@ const App = {
     }
   },
 
+  openSnapshotModal() {
+    const modal = document.getElementById("snapshot-modal");
+    if (modal) {
+      this.renderSnapshotsList();
+      modal.classList.add("active");
+    }
+  },
+
+  closeSnapshotModal() {
+    const modal = document.getElementById("snapshot-modal");
+    if (modal) {
+      modal.classList.remove("active");
+    }
+  },
+
   renderSnapshotsList() {
-    const container = document.getElementById("tab-snapshot-list-container");
+    const container = document.getElementById("snapshot-list-container");
     if (!container) return;
     container.innerHTML = "";
 
@@ -211,7 +209,7 @@ const App = {
           <span style="font-size: 24px; display: block; margin-bottom: 6px;">📭</span>
           저장된 내부 백업이 없습니다.<br>
           <span style="font-size: 11px; color: var(--text-tertiary); margin-top: 4px; display: block;">
-            상단의 '저장하기' 버튼이나 단축키 Ctrl+S를 눌러 현재 입력 상태를 백업해 두세요.
+            사이드바의 '저장' 버튼이나 단축키 Ctrl+S를 눌러 현재 입력 상태를 백업해 두세요.
           </span>
         </div>
       `;
@@ -220,26 +218,25 @@ const App = {
 
     snapshots.forEach((snap, idx) => {
       const item = document.createElement("div");
-      item.className = "snapshot-item";
-      item.style.padding = "12px 16px";
+      item.style.padding = "10px 12px";
       item.style.background = "var(--bg-secondary)";
       item.style.border = "1px solid var(--border-color)";
       item.style.borderRadius = "8px";
       item.style.display = "flex";
       item.style.justifyContent = "space-between";
       item.style.alignItems = "center";
-      item.style.gap = "12px";
+      item.style.gap = "8px";
 
       item.innerHTML = `
-        <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1; min-width: 0; text-align: left;">
-          <span style="font-size: 14px; font-weight: 700; color: var(--text-primary);">${snap.timestamp}</span>
-          <span style="font-size: 11.5px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0; text-align: left;">
+          <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">${snap.timestamp}</span>
+          <span style="font-size: 11px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
             ${snap.summary}
           </span>
         </div>
-        <div style="display: flex; gap: 6px; flex-shrink: 0;">
-          <button class="btn btn-sm restore-btn" style="font-size: 11.5px; padding: 5px 10px; font-weight:600; background: var(--accent-color); color: white; border: none; border-radius: 6px; cursor: pointer;">복원</button>
-          <button class="btn btn-sm delete-btn" style="font-size: 11.5px; padding: 5px 8px; font-weight:600; border: 1px solid var(--border-color); background: var(--bg-primary); border-radius: 6px; cursor: pointer; color: var(--text-secondary);">✕</button>
+        <div style="display: flex; gap: 4px; flex-shrink: 0;">
+          <button class="btn btn-sm restore-btn" style="font-size: 11px; padding: 4px 8px; font-weight:600; background: var(--accent-color); color: white; border: none; border-radius: 4px; cursor: pointer;">복원</button>
+          <button class="btn btn-sm delete-btn" style="font-size: 11px; padding: 4px 6px; font-weight:600; border: 1px solid var(--border-color); background: var(--bg-primary); border-radius: 4px; cursor: pointer; color: var(--text-secondary);">✕</button>
         </div>
       `;
 

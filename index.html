@@ -33,6 +33,21 @@
         
         <nav>
           <ul class="nav-menu">
+            <!-- Sidebar Backup & Restore Item -->
+            <li class="sidebar-backup-menu-item" style="padding: 0 16px 12px 16px; border-bottom: 1px solid var(--border-color); margin-bottom: 12px; list-style-type: none;">
+              <div style="font-size: 10px; font-weight: 700; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; gap: 4px;">
+                💾 백업 및 복구
+              </div>
+              <div style="display: flex; gap: 6px;">
+                <button id="sb-save-snapshot-btn" class="btn btn-sm" style="flex: 1; font-size: 11px; padding: 6px 0; font-weight: 600; background: var(--accent-color); color: #fff; border: none; cursor: pointer; border-radius: 6px; text-align: center; display: inline-block;">
+                  저장
+                </button>
+                <button id="sb-restore-snapshot-btn" class="btn btn-sm" style="flex: 1; font-size: 11px; padding: 6px 0; font-weight: 600; border: 1px solid var(--border-color); background: var(--bg-primary); cursor: pointer; border-radius: 6px; text-align: center; display: inline-block; color: var(--text-primary);">
+                  불러오기
+                </button>
+              </div>
+            </li>
+
             <li class="nav-item active" data-tab="calendar-tab">
               <a>📅 캘린더</a>
             </li>
@@ -53,9 +68,6 @@
             </li>
             <li class="nav-item" data-tab="checklist-tab">
               <a>☑️ 체크리스트</a>
-            </li>
-            <li class="nav-item" data-tab="backup-tab">
-              <a>💾 백업 & 복구</a>
             </li>
             <li class="nav-item" data-tab="settings-tab">
               <a>⚙️ 설정</a>
@@ -337,57 +349,6 @@
             사용자님이 임의로 수정한 일정을 지우고 최초 기본 여행 일정(이미지 내 애틀랜타-올랜도-마이애미-뉴욕 20일 여행 정보)으로 재설정합니다.
           </p>
           <button class="btn btn-danger" id="reset-data-btn" style="width: fit-content;">데이터 전체 초기화</button>
-        </div>
-      </section>
-
-      <!-- 9. BACKUP & RESTORE TAB -->
-      <section id="backup-tab" class="content-section">
-        <div class="section-header">
-          <h1>백업 및 복구</h1>
-          <p class="section-subtitle">수정하신 일정을 수동으로 저장하거나, 저장된 이전 스냅샷 시점으로 데이터를 복원할 수 있습니다.</p>
-        </div>
-        
-        <div style="display: flex; flex-direction: column; gap: 20px; max-width: 650px; margin: 0 auto;">
-          <!-- Save Card -->
-          <div class="card" style="padding: 24px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 12px; background: linear-gradient(135deg, var(--bg-secondary) 0%, rgba(142, 142, 147, 0.03) 100%); border: 1px solid var(--border-color); border-radius: 12px;">
-            <div style="font-size: 36px; margin-bottom: 4px;">💾</div>
-            <h3 style="font-size: 16px; font-weight: 700; margin: 0;">현재 상태 저장하기</h3>
-            <p style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin: 0 0 8px 0; max-width: 460px;">
-              지금까지 입력한 일정과 변경사항을 안전한 로컬 저장공간에 즉시 저장합니다. (단축키 Ctrl + S 또는 Cmd + S)
-            </p>
-            <button id="tab-save-snapshot-btn" class="btn btn-primary" style="font-size: 13px; padding: 10px 24px; font-weight: 600; display: flex; align-items: center; gap: 6px; border-radius: 8px;">
-              💾 저장하기
-            </button>
-          </div>
-
-          <!-- Restore List Card -->
-          <div class="card" style="padding: 24px; border: 1px solid var(--border-color); border-radius: 12px;">
-            <h3 style="font-size: 15px; font-weight: 700; margin: 0 0 16px 0; display: flex; align-items: center; gap: 6px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
-              <span>🔄</span> 저장된 스냅샷 목록 (최대 10개)
-            </h3>
-            <div id="tab-snapshot-list-container" style="display: flex; flex-direction: column; gap: 10px;">
-              <!-- JS injected snapshot list -->
-            </div>
-          </div>
-
-          <!-- Secondary Offline JSON Backup -->
-          <div class="card" style="padding: 20px; border: 1px dashed var(--border-color); border-radius: 12px; background: rgba(142,142,147,0.01);">
-            <h4 style="font-size: 13.5px; font-weight: 700; color: var(--text-secondary); margin: 0 0 6px 0; display: flex; align-items: center; gap: 6px;">
-              <span>📦</span> 영구 보관용 JSON 파일 백업
-            </h4>
-            <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.4; margin: 0 0 12px 0;">
-              브라우저 캐시 삭제 등에 대비하여 현재 데이터를 하나의 백업 파일(.json) 형태로 다운로드하거나 불러옵니다.
-            </p>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <button id="file-export-btn" class="btn" style="font-size: 11px; padding: 6px 12px; border: 1px solid var(--border-color); background: var(--bg-primary); border-radius: 6px; color: var(--text-primary);">
-                📥 파일 내보내기 (JSON)
-              </button>
-              <button id="file-import-btn-trigger" class="btn" style="font-size: 11px; padding: 6px 12px; border: 1px solid var(--border-color); background: var(--bg-primary); border-radius: 6px; color: var(--text-primary);">
-                📤 파일 불러오기
-              </button>
-              <input type="file" id="file-import-input" accept=".json" style="display: none;">
-            </div>
-          </div>
         </div>
       </section>
     </main>
@@ -720,6 +681,30 @@
       <div class="modal-footer">
         <button class="btn" id="cancel-passport-modal-btn">취소</button>
         <button class="btn btn-primary" id="save-passport-btn">저장</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Snapshot Restore Modal -->
+  <div class="modal-overlay" id="snapshot-modal">
+    <div class="modal" style="max-width: 440px;">
+      <div class="modal-header">
+        <h3 class="modal-title">💾 백업 및 복원 스냅샷</h3>
+        <button class="btn-icon" id="close-snapshot-modal-btn">✕</button>
+      </div>
+      <div class="modal-body" style="padding: 16px;">
+        <p style="font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; margin-bottom: 16px;">
+          최근 저장된 내부 백업 스냅샷 목록입니다. 언제든 원하는 시간대의 스냅샷을 탭하여 즉시 복구하실 수 있습니다. (최대 10개 보존)
+        </p>
+        <div id="snapshot-list-container" style="display: flex; flex-direction: column; gap: 10px; max-height: 300px; overflow-y: auto; padding-right: 4px;">
+          <!-- Snapshots injected here -->
+        </div>
+      </div>
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+        <span style="font-size: 11px; color: var(--text-tertiary); font-weight: 500;">단축키: Ctrl + S (현재 상태 즉시 저장)</span>
+        <div>
+          <button class="btn" id="close-snapshot-modal-footer-btn">닫기</button>
+        </div>
       </div>
     </div>
   </div>

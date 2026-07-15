@@ -10,26 +10,31 @@ const DEFAULT_TRIP_DETAILS = {
 
 const DEFAULT_EVENTS = [
   // City/Region Badges
-  { id: "c1", title: "✈️ 인천 ➔ 애틀랜타", date: "2026-10-15", color: "teal", type: "city" },
+  { id: "c1", title: "애틀랜타", date: "2026-10-15", color: "teal", type: "city" },
   { id: "c2", title: "애틀랜타", date: "2026-10-16", color: "teal", type: "city" },
   { id: "c3", title: "애틀랜타", date: "2026-10-17", color: "teal", type: "city" },
   { id: "c4", title: "애틀랜타", date: "2026-10-18", color: "teal", type: "city" },
   { id: "c5", title: "애틀랜타", date: "2026-10-19", color: "teal", type: "city" },
   
-  // Road trips
+  // October 20th: Atlanta -> Roadtrip -> Orlando -> 7h30m label
   { id: "rt1", title: "애틀랜타", date: "2026-10-20", color: "teal", type: "city" },
-  { id: "rt2", title: "로드트립", date: "2026-10-20", color: "black", type: "roadtrip", duration: "7시간 30분", destination: "올랜도" },
-  { id: "rt3", title: "올랜도", date: "2026-10-20", color: "orange", type: "city" },
+  { id: "rt2", title: "로드트립", date: "2026-10-20", color: "black", type: "roadtrip" },
+  { id: "rt3", title: "올랜드", date: "2026-10-20", color: "orange", type: "city" },
+  { id: "rtl1", title: "🚗7시간 30분", date: "2026-10-20", color: "grey", type: "label" },
 
-  { id: "rt4", title: "올랜도", date: "2026-10-21", color: "orange", type: "city" },
-  { id: "rt5", title: "로드트립", date: "2026-10-21", color: "black", type: "roadtrip", duration: "4시간", destination: "마이애미" },
+  // October 21st: Orlando -> Roadtrip -> Miami -> 4h label
+  { id: "rt4", title: "올랜드", date: "2026-10-21", color: "orange", type: "city" },
+  { id: "rt5", title: "로드트립", date: "2026-10-21", color: "black", type: "roadtrip" },
   { id: "rt6", title: "마이애미", date: "2026-10-21", color: "yellow", type: "city" },
+  { id: "rtl2", title: "🚗4시간", date: "2026-10-21", color: "grey", type: "label" },
 
   { id: "c7", title: "마이애미", date: "2026-10-22", color: "yellow", type: "city" },
   { id: "c8", title: "마이애미", date: "2026-10-23", color: "yellow", type: "city" },
   
+  // October 24th: Miami -> New York -> Morning ticket label
   { id: "c9", title: "마이애미", date: "2026-10-24", color: "yellow", type: "city" },
-  { id: "c10", title: "✈️ 뉴욕", date: "2026-10-24", color: "pink", type: "city", label: "*아침 비행기표" },
+  { id: "c10", title: "뉴욕", date: "2026-10-24", color: "pink", type: "city" },
+  { id: "lbl1", title: "*아침 비행기표", date: "2026-10-24", color: "grey", type: "label" },
 
   { id: "c11", title: "뉴욕", date: "2026-10-25", color: "pink", type: "city" },
   { id: "c12", title: "뉴욕", date: "2026-10-26", color: "pink", type: "city" },
@@ -38,19 +43,23 @@ const DEFAULT_EVENTS = [
   { id: "c15", title: "뉴욕", date: "2026-10-29", color: "pink", type: "city" },
   { id: "c16", title: "뉴욕", date: "2026-10-30", color: "pink", type: "city" },
   { id: "c17", title: "뉴욕", date: "2026-10-31", color: "pink", type: "city" },
+  
+  // November 1st: New York -> Dinner label
   { id: "c18", title: "뉴욕", date: "2026-11-01", color: "pink", type: "city" },
-  { id: "c19", title: "✈️ 뉴욕 ➔ 인천", date: "2026-11-02", color: "pink", type: "city" },
-  { id: "c20", title: "🇰🇷 인천공항 도착", date: "2026-11-03", color: "pink", type: "city" },
+  { id: "lbl2", title: "*뉴욕으로 오실 수 있다면 같이 저녁", date: "2026-11-01", color: "grey", type: "label" },
+
+  { id: "c19", title: "뉴욕", date: "2026-11-02", color: "pink", type: "city" },
+  { id: "c20", title: "뉴욕", date: "2026-11-03", color: "pink", type: "city" },
   
   // Activities (Small color badges)
-  { id: "a1", title: "⛳️ 골프 라운딩", date: "2026-10-18", color: "green", type: "activity" },
-  { id: "a2", title: "🌊 나이아가라 폭포", date: "2026-10-30", color: "blue", type: "activity" },
-  { id: "a3", title: "🏌️ 골프 라운딩", date: "2026-10-19", color: "green", type: "activity" },
-  { id: "a4", title: "🎃 할로윈", date: "2026-10-31", color: "red", type: "activity" },
+  { id: "a1", title: "⛳️ 골프 (아빠, 엄마&작은아빠)", date: "2026-10-17", color: "green", type: "activity" },
+  { id: "a2", title: "나이아가라 폭포", date: "2026-10-30", color: "blue", type: "activity" },
+  { id: "a3", title: "⛳️ 골프 (아빠, 엄마&작은아빠)", date: "2026-10-18", color: "green", type: "activity" },
+  { id: "a4", title: "할로윈", date: "2026-10-31", color: "red", type: "activity" },
 
   // Accommodations (Multi-day spans, shown as grey bar at the bottom)
-  { id: "ac1", title: "저지시티", date: "2026-10-24", endDate: "2026-10-29", color: "grey", type: "accommodation", hotel: "하얏트 하우스 저지시티 (예약번호: HY12948)", checkin: "체크인 15:00 / 체크아웃 11:00", address: "1 Exchange Pl, Jersey City, NJ 07302" },
-  { id: "ac2", title: "뉴욕 중심가", date: "2026-10-29", endDate: "2026-11-02", color: "grey", type: "accommodation", hotel: "밀레니엄 힐튼 뉴욕 원 디엔디 (예약번호: MH88471)", checkin: "체크인 16:00 / 체크아웃 11:00", address: "One United Nations Plaza, New York, NY 10017" }
+  { id: "ac1", title: "저지시티 숙박", date: "2026-10-24", endDate: "2026-10-29", color: "grey", type: "accommodation", hotel: "하얏트 하우스 저지시티 (예약번호: HY12948)", checkin: "체크인 15:00 / 체크아웃 11:00", address: "1 Exchange Pl, Jersey City, NJ 07302" },
+  { id: "ac2", title: "뉴욕 중심가 숙박", date: "2026-10-29", endDate: "2026-11-02", color: "grey", type: "accommodation", hotel: "밀레니엄 힐튼 뉴욕 원 디엔디 (예약번호: MH88471)", checkin: "체크인 16:00 / 체크아웃 11:00", address: "One United Nations Plaza, New York, NY 10017" }
 ];
 
 const DEFAULT_TIMELINE = {

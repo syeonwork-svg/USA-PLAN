@@ -201,13 +201,35 @@ const CalendarComponent = {
       renderableEvents.push(mergedEvent);
     }
 
-    // Sort events so that city/roadtrips are first, then activities, then accommodations
+    // Sort events so that city/roadtrips are first, then activities, then labels, then accommodations
     const sortedDayEvents = renderableEvents.sort((a, b) => {
-      const typeOrder = { city: 1, roadtrip: 2, activity: 3, accommodation: 4 };
+      const typeOrder = { city: 1, roadtrip: 2, activity: 3, label: 4, accommodation: 5 };
       return (typeOrder[a.type] || 9) - (typeOrder[b.type] || 9);
     });
 
     sortedDayEvents.forEach(ev => {
+      if (ev.type === "label") {
+        const labelDiv = document.createElement("div");
+        labelDiv.className = "calendar-cell-label";
+        labelDiv.style.fontSize = "10.5px";
+        labelDiv.style.color = "var(--text-secondary)";
+        labelDiv.style.marginTop = "3px";
+        labelDiv.style.fontWeight = "600";
+        labelDiv.style.paddingLeft = "4px";
+        labelDiv.style.whiteSpace = "nowrap";
+        labelDiv.style.overflow = "hidden";
+        labelDiv.style.textOverflow = "ellipsis";
+        labelDiv.style.cursor = "pointer";
+        labelDiv.innerHTML = `${ev.title}`;
+        
+        labelDiv.addEventListener("click", (e) => {
+          e.stopPropagation();
+          this.openModalForEdit(ev.id);
+        });
+        eventsContainer.appendChild(labelDiv);
+        return;
+      }
+
       const badge = document.createElement("div");
       badge.className = `badge-event color-${ev.color}`;
 
@@ -234,7 +256,7 @@ const CalendarComponent = {
           badge.innerHTML += ` <span style="font-size: 9px; opacity: 0.7; margin-left: 2px;">${ev.label}</span>`;
         }
       } else if (ev.type === "roadtrip") {
-        badge.innerHTML = `🚗 ${ev.title} (${ev.duration || ''})`;
+        badge.innerHTML = `🚗 ${ev.title}`;
       } else {
         // Activity
         badge.innerHTML = `${ev.title}`;
