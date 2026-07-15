@@ -109,6 +109,19 @@ const App = {
     });
     document.getElementById(tabId).classList.add("active");
 
+    // Re-render components on tab switch to guarantee fresh database load
+    try {
+      if (tabId === "tickets-tab" && window.TicketsComponent) TicketsComponent.render();
+      if (tabId === "calendar-tab" && window.CalendarComponent) CalendarComponent.render();
+      if (tabId === "itinerary-tab" && window.ItineraryComponent) ItineraryComponent.render();
+      if (tabId === "expenses-tab" && window.ExpensesComponent) ExpensesComponent.render();
+      if (tabId === "candidates-tab" && window.CandidatesComponent) CandidatesComponent.render();
+      if (tabId === "passports-tab" && window.PassportsComponent) PassportsComponent.render();
+      if (tabId === "checklist-tab" && window.ChecklistComponent) ChecklistComponent.render();
+    } catch (e) {
+      console.warn("Component tab refresh failed:", e);
+    }
+
     // 3. Leaflet/Google Map resize fix (Crucial for maps loaded in hidden containers)
     if (tabId === "map-tab" && window.MapComponent) {
       setTimeout(() => {
