@@ -30,7 +30,7 @@ const DEFAULT_EVENTS = [
   { id: "c8", title: "마이애미", date: "2026-10-23", color: "yellow", type: "city" },
   
   { id: "c9", title: "마이애미", date: "2026-10-24", color: "yellow", type: "city" },
-  { id: "c10", title: "뉴욕", date: "2026-10-24", color: "pink", type: "city", label: "*아침 비행기표" },
+  { id: "c10", title: "✈️ 뉴욕", date: "2026-10-24", color: "pink", type: "city", label: "*아침 비행기표" },
 
   { id: "c11", title: "뉴욕", date: "2026-10-25", color: "pink", type: "city" },
   { id: "c12", title: "뉴욕", date: "2026-10-26", color: "pink", type: "city" },
@@ -49,8 +49,8 @@ const DEFAULT_EVENTS = [
   { id: "a4", title: "🎃 할로윈", date: "2026-10-31", color: "red", type: "activity" },
 
   // Accommodations (Multi-day spans, shown as grey bar at the bottom)
-  { id: "ac1", title: "저지시티 숙박", date: "2026-10-24", endDate: "2026-10-29", color: "grey", type: "accommodation" },
-  { id: "ac2", title: "뉴욕 중심가 숙박", date: "2026-10-29", endDate: "2026-11-02", color: "grey", type: "accommodation" }
+  { id: "ac1", title: "저지시티", date: "2026-10-24", endDate: "2026-10-29", color: "grey", type: "accommodation", hotel: "하얏트 하우스 저지시티 (예약번호: HY12948)", checkin: "체크인 15:00 / 체크아웃 11:00", address: "1 Exchange Pl, Jersey City, NJ 07302" },
+  { id: "ac2", title: "뉴욕 중심가", date: "2026-10-29", endDate: "2026-11-02", color: "grey", type: "accommodation", hotel: "밀레니엄 힐튼 뉴욕 원 디엔디 (예약번호: MH88471)", checkin: "체크인 16:00 / 체크아웃 11:00", address: "One United Nations Plaza, New York, NY 10017" }
 ];
 
 const DEFAULT_TIMELINE = {

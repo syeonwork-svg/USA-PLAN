@@ -63,8 +63,15 @@ const CalendarComponent = {
     const endDateGroup = document.getElementById("cal-event-end-date-group");
     const durationGroup = document.getElementById("cal-event-duration-group");
     const destGroup = document.getElementById("cal-event-dest-group");
+    const hotelGroup = document.getElementById("cal-event-hotel-group");
+    const checkinGroup = document.getElementById("cal-event-checkin-group");
+    const addressGroup = document.getElementById("cal-event-address-group");
 
     endDateGroup.style.display = (type === "accommodation") ? "block" : "none";
+    hotelGroup.style.display = (type === "accommodation") ? "block" : "none";
+    checkinGroup.style.display = (type === "accommodation") ? "block" : "none";
+    addressGroup.style.display = (type === "accommodation") ? "block" : "none";
+    
     durationGroup.style.display = (type === "roadtrip") ? "block" : "none";
     destGroup.style.display = (type === "roadtrip") ? "block" : "none";
   },
@@ -201,7 +208,7 @@ const CalendarComponent = {
         }
         badge.innerHTML = `🏨 ${ev.title}`;
       } else if (ev.type === "city") {
-        badge.innerHTML = `📍 ${ev.title}`;
+        badge.innerHTML = `${ev.title}`;
         if (ev.label) {
           badge.innerHTML += ` <span style="font-size: 9px; opacity: 0.7; margin-left: 2px;">${ev.label}</span>`;
         }
@@ -236,6 +243,9 @@ const CalendarComponent = {
     document.getElementById("cal-event-duration").value = "";
     document.getElementById("cal-event-dest").value = "";
     document.getElementById("cal-event-label").value = "";
+    document.getElementById("cal-event-hotel").value = "";
+    document.getElementById("cal-event-checkin").value = "";
+    document.getElementById("cal-event-address").value = "";
 
     document.getElementById("delete-calendar-event-btn").style.display = "none";
     this.toggleFormFields("city");
@@ -259,6 +269,9 @@ const CalendarComponent = {
     document.getElementById("cal-event-duration").value = ev.duration || "";
     document.getElementById("cal-event-dest").value = ev.destination || "";
     document.getElementById("cal-event-label").value = ev.label || "";
+    document.getElementById("cal-event-hotel").value = ev.hotel || "";
+    document.getElementById("cal-event-checkin").value = ev.checkin || "";
+    document.getElementById("cal-event-address").value = ev.address || "";
 
     document.getElementById("delete-calendar-event-btn").style.display = "inline-flex";
     this.toggleFormFields(ev.type);
@@ -280,6 +293,9 @@ const CalendarComponent = {
     const duration = document.getElementById("cal-event-duration").value.trim();
     const destination = document.getElementById("cal-event-dest").value.trim();
     const label = document.getElementById("cal-event-label").value.trim();
+    const hotel = document.getElementById("cal-event-hotel").value.trim();
+    const checkin = document.getElementById("cal-event-checkin").value.trim();
+    const address = document.getElementById("cal-event-address").value.trim();
 
     if (!title || !date) {
       alert("제목과 날짜를 입력해주세요.");
@@ -293,7 +309,12 @@ const CalendarComponent = {
       events = events.map(ev => {
         if (ev.id === id) {
           const updated = { ...ev, title, type, color, date, label };
-          if (type === "accommodation") updated.endDate = endDate;
+          if (type === "accommodation") {
+            updated.endDate = endDate;
+            updated.hotel = hotel;
+            updated.checkin = checkin;
+            updated.address = address;
+          }
           if (type === "roadtrip") {
             updated.duration = duration;
             updated.destination = destination;
@@ -313,7 +334,12 @@ const CalendarComponent = {
         date,
         label
       };
-      if (type === "accommodation") newEvent.endDate = endDate;
+      if (type === "accommodation") {
+        newEvent.endDate = endDate;
+        newEvent.hotel = hotel;
+        newEvent.checkin = checkin;
+        newEvent.address = address;
+      }
       if (type === "roadtrip") {
         newEvent.duration = duration;
         newEvent.destination = destination;

@@ -1,6 +1,7 @@
 // Storage utility for USA Travel Planner
 
 const STORAGE_KEYS = {
+  VERSION: "usa_travel_data_version",
   TRIP_DETAILS: "usa_travel_trip_details",
   EVENTS: "usa_travel_events",
   TIMELINE: "usa_travel_timeline",
@@ -11,6 +12,21 @@ const STORAGE_KEYS = {
 const StorageManager = {
   // Initialize storage with mock data if empty
   init() {
+    const CURRENT_VERSION = "v3";
+    const savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
+
+    if (savedVersion !== CURRENT_VERSION) {
+      localStorage.setItem(STORAGE_KEYS.VERSION, CURRENT_VERSION);
+      localStorage.setItem(STORAGE_KEYS.TRIP_DETAILS, JSON.stringify(DEFAULT_TRIP_DETAILS));
+      localStorage.setItem(STORAGE_KEYS.EVENTS, JSON.stringify(DEFAULT_EVENTS));
+      localStorage.setItem(STORAGE_KEYS.TIMELINE, JSON.stringify(DEFAULT_TIMELINE));
+      localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(DEFAULT_EXPENSES));
+      if (!localStorage.getItem(STORAGE_KEYS.MAP_CONFIG)) {
+        localStorage.setItem(STORAGE_KEYS.MAP_CONFIG, JSON.stringify({ googleMapsApiKey: "" }));
+      }
+      return;
+    }
+
     if (!localStorage.getItem(STORAGE_KEYS.TRIP_DETAILS)) {
       localStorage.setItem(STORAGE_KEYS.TRIP_DETAILS, JSON.stringify(DEFAULT_TRIP_DETAILS));
     }
