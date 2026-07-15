@@ -3,43 +3,6 @@ const App = {
   currentTab: "calendar-tab",
 
   init() {
-    // 0. Intercept and load shared URL plans
-    if (window.location.hash && window.location.hash.startsWith("#share=")) {
-      try {
-        const base64Data = window.location.hash.substring(7);
-        const decodedJson = decodeURIComponent(escape(atob(base64Data)));
-        const sharedObj = JSON.parse(decodedJson);
-        
-        if (sharedObj && typeof sharedObj === "object") {
-          if (confirm("공유받은 여행 일정이 감지되었습니다! 이 일정을 불러와 브라우저에 적용하시겠습니까?\n(주의: 기존 브라우저에 등록해 둔 여행 정보가 공유된 일정으로 교체됩니다.)")) {
-            const save = (key, val) => {
-              if (val !== undefined && val !== null) {
-                localStorage.setItem(key, typeof val === "string" ? val : JSON.stringify(val));
-              }
-            };
-            
-            save("usa_travel_details", sharedObj.tripDetails);
-            save("usa_travel_events", sharedObj.events);
-            save("usa_travel_timeline", sharedObj.timeline);
-            save("usa_travel_expenses", sharedObj.expenses);
-            save("usa_travel_tickets", sharedObj.tickets);
-            save("usa_travel_candidates", sharedObj.candidates);
-            save("usa_travel_checklist", sharedObj.checklist);
-            save("usa_travel_passports", sharedObj.passports);
-            save("usa_travel_version", "v40");
-            save("usa_travel_data_version", "v40");
-
-            window.location.hash = "";
-            window.location.reload();
-            return;
-          }
-        }
-      } catch (e) {
-        console.error("Failed to load shared trip data:", e);
-      }
-      window.location.hash = "";
-    }
-
     // 1. Initialize Storage with mock data
     StorageManager.init();
 
