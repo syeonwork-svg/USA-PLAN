@@ -16,7 +16,7 @@ const STORAGE_KEYS = {
 const StorageManager = {
   // Initialize storage with mock data if empty
   init() {
-    const CURRENT_VERSION = "v22";
+    const CURRENT_VERSION = "v23";
     const savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
 
     // Non-destructive initialization: only set default if key doesn't exist
@@ -219,8 +219,8 @@ const StorageManager = {
         });
 
         // Sync local storage versions to prevent mismatches
-        localStorage.setItem("usa_travel_data_version", "v22");
-        localStorage.setItem(this.VERSION || "usa_travel_version", "v22");
+        localStorage.setItem("usa_travel_data_version", "v23");
+        localStorage.setItem(this.VERSION || "usa_travel_version", "v23");
 
         alert("성공적으로 데이터가 복원되었습니다! 페이지를 새로고침하여 적용합니다.");
         window.location.reload();
@@ -229,5 +229,120 @@ const StorageManager = {
       }
     };
     reader.readAsText(file);
+  },
+
+  getSnapshots() {
+    try {
+      return JSON.parse(localStorage.getItem("usa_travel_planner_snapshots")) || [];
+    } catch (e) {
+      return [];
+    }
+  },
+
+  saveSnapshot() {
+    const keys = [
+      "usa_travel_trip_details",
+      "usa_travel_events",
+      "usa_travel_timeline",
+      "usa_travel_expenses",
+      "usa_travel_tickets",
+      "usa_travel_passports",
+      "usa_travel_checklist",
+      "usa_travel_google_places",
+      "usa_travel_map_config"
+    ];
+    const snapshotData = {};
+    keys.forEach(key => {
+      snapshotData[key] = localStorage.getItem(key);
+    });
+
+    // Helper counts for display
+    let timelineCount = 0;
+    try {
+      const tl = JSON.parse(snapshotData.usa_travel_timeline || "{}");
+      Object.keys(tl).forEach(day => {
+        timelineCount += (tl[day] || []).length;
+      });
+    } catch(e){}
+
+    let ticketCount = 0;
+    try { ticketCount = (JSON.parse(snapshotData.usa_travel_tickets || "[]")).length; } catch(e){}
+
+    let expenseCount = 0;
+    try { expenseCount = (JSON.parse(snapshotData.usa_travel_expenses || "[]")).length; } catch(e){}
+
+    let checklistCount = 0;
+    try { checklistCount = (JSON.parse(snapshotData.usa_travel_checklist || "[]")).length; } catch(e){}
+
+    const now = new Date();
+    // Beautiful date time in KST
+    const yyyy = now.getFullYear();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const dd = String(now.getDate()).padStart(2, '0');
+    const hh = String(now.getHours()).padStart(2, '0');
+    const min = String(now.getMinutes()).padStart(2, '0');
+    const ss = String(now.getSeconds()).padStart(2, '0');
+    const timestamp = `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+
+    const newSnapshot = {
+      timestamp,
+      summary: `일정 ${timelineCount}개, 티켓 ${ticketCount}개, 경비 ${expenseCount}개, 체크리스트 ${checklistCount}개`,
+      data: snapshotData
+    };
+
+    let snapshots = this.getSnapshots();
+    snapshots.unshift(newSnapshot); // Put at front
+    if (snapshots.length > 10) {
+      snapshots = snapshots.slice(0, 10); // Keep max 10
+    }
+
+    localStorage.setItem("usa_travel_planner_snapshots", JSON.stringify(snapshots));
+    
+    if (window.App && typeof App.showNotification === "function") {
+      App.showNotification("현재 상태가 성공적으로 저장되었습니다!");
+    } else {
+      alert("현재 상태가 임시 백업으로 저장되었습니다!");
+    }
+  },
+
+  restoreSnapshot(index) {
+    const snapshots = this.getSnapshots();
+    const snap = snapshots[index];
+    if (!snap || !snap.data) {
+      alert("해당 스냅샷 데이터를 찾을 수 없습니다.");
+      return;
+    }
+
+    const keys = [
+      "usa_travel_trip_details",
+      "usa_travel_events",
+      "usa_travel_timeline",
+      "usa_travel_expenses",
+      "usa_travel_tickets",
+      "usa_travel_passports",
+      "usa_travel_checklist",
+      "usa_travel_google_places",
+      "usa_travel_map_config"
+    ];
+
+    keys.forEach(key => {
+      if (snap.data[key] !== undefined && snap.data[key] !== null) {
+        localStorage.setItem(key, snap.data[key]);
+      }
+    });
+
+    // Make sure versions stay matched
+    localStorage.setItem("usa_travel_data_version", "v23");
+    localStorage.setItem("usa_travel_version", "v23");
+
+    alert(`${snap.timestamp} 시점의 백업으로 복원 완료되었습니다! 페이지를 새로고침합니다.`);
+    window.location.reload();
+  },
+
+  deleteSnapshot(index) {
+    let snapshots = this.getSnapshots();
+    snapshots.splice(index, 1);
+    localStorage.setItem("usa_travel_planner_snapshots", JSON.stringify(snapshots));
+  }
   }
 };

@@ -53,25 +53,34 @@ const App = {
       }
     });
 
-    // Sidebar Backup & Restore
-    const sbExportBtn = document.getElementById("sb-export-backup-btn");
-    const sbImportTrigger = document.getElementById("sb-import-backup-btn-trigger");
-    const sbImportInput = document.getElementById("sb-import-backup-file-input");
+    // Sidebar Snapshot Backup & Restore
+    const sbSaveBtn = document.getElementById("sb-save-snapshot-btn");
+    const sbRestoreTrigger = document.getElementById("sb-restore-snapshot-btn");
 
-    if (sbExportBtn && sbImportTrigger && sbImportInput) {
-      sbExportBtn.addEventListener("click", () => {
-        StorageManager.exportBackup();
-      });
-      sbImportTrigger.addEventListener("click", () => {
-        sbImportInput.click();
-      });
-      sbImportInput.addEventListener("change", (e) => {
-        const file = e.target.files[0];
-        if (file) {
-          StorageManager.importBackup(file);
-        }
+    if (sbSaveBtn) {
+      sbSaveBtn.addEventListener("click", () => {
+        StorageManager.saveSnapshot();
       });
     }
+    if (sbRestoreTrigger) {
+      sbRestoreTrigger.addEventListener("click", () => {
+        this.openSnapshotModal();
+      });
+    }
+
+    // Modal Close Bindings
+    const closeBtn = document.getElementById("close-snapshot-modal-btn");
+    const closeFooterBtn = document.getElementById("close-snapshot-modal-footer-btn");
+    if (closeBtn) closeBtn.addEventListener("click", () => this.closeSnapshotModal());
+    if (closeFooterBtn) closeFooterBtn.addEventListener("click", () => this.closeSnapshotModal());
+
+    // Intercept Ctrl+S / Cmd+S globally
+    document.addEventListener("keydown", (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+        e.preventDefault();
+        StorageManager.saveSnapshot();
+      }
+    });
   },
 
   switchTab(tabId) {
@@ -163,12 +172,89 @@ const App = {
     const toast = document.getElementById("app-notification");
     const text = document.getElementById("notification-text");
     
-    text.innerText = message;
-    toast.classList.add("show");
-    
-    setTimeout(() => {
-      toast.classList.remove("show");
-    }, 3000);
+    if (text && toast) {
+      text.innerText = message;
+      toast.classList.add("show");
+      
+      setTimeout(() => {
+        toast.classList.remove("show");
+      }, 3000);
+    }
+  },
+
+  openSnapshotModal() {
+    const modal = document.getElementById("snapshot-modal");
+    if (modal) {
+      this.renderSnapshotsList();
+      modal.classList.add("active");
+    }
+  },
+
+  closeSnapshotModal() {
+    const modal = document.getElementById("snapshot-modal");
+    if (modal) {
+      modal.classList.remove("active");
+    }
+  },
+
+  renderSnapshotsList() {
+    const container = document.getElementById("snapshot-list-container");
+    if (!container) return;
+    container.innerHTML = "";
+
+    const snapshots = StorageManager.getSnapshots();
+    if (snapshots.length === 0) {
+      container.innerHTML = `
+        <div style="text-align: center; padding: 40px 10px; color: var(--text-secondary); font-size: 13px;">
+          <span style="font-size: 24px; display: block; margin-bottom: 6px;">📭</span>
+          저장된 내부 백업이 없습니다.<br>
+          <span style="font-size: 11px; color: var(--text-tertiary); margin-top: 4px; display: block;">
+            사이드바의 '저장' 버튼이나 단축키 Ctrl+S를 눌러 현재 입력 상태를 백업해 두세요.
+          </span>
+        </div>
+      `;
+      return;
+    }
+
+    snapshots.forEach((snap, idx) => {
+      const item = document.createElement("div");
+      item.style.padding = "10px 12px";
+      item.style.background = "var(--bg-secondary)";
+      item.style.border = "1px solid var(--border-color)";
+      item.style.borderRadius = "8px";
+      item.style.display = "flex";
+      item.style.justifyContent = "space-between";
+      item.style.alignItems = "center";
+      item.style.gap = "8px";
+
+      item.innerHTML = `
+        <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0; text-align: left;">
+          <span style="font-size: 13px; font-weight: 700; color: var(--text-primary);">${snap.timestamp}</span>
+          <span style="font-size: 11px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+            ${snap.summary}
+          </span>
+        </div>
+        <div style="display: flex; gap: 4px; flex-shrink: 0;">
+          <button class="btn btn-sm restore-btn" style="font-size: 11px; padding: 4px 8px; font-weight:600; background: var(--accent-color); color: white; border: none; border-radius: 4px; cursor: pointer;">복원</button>
+          <button class="btn btn-sm delete-btn" style="font-size: 11px; padding: 4px 6px; font-weight:600; border: 1px solid var(--border-color); background: var(--bg-primary); border-radius: 4px; cursor: pointer; color: var(--text-secondary);">✕</button>
+        </div>
+      `;
+
+      item.querySelector(".restore-btn").addEventListener("click", () => {
+        if (confirm(`${snap.timestamp} 시점으로 데이터를 복원하시겠습니까? 현재 화면의 모든 최신 데이터가 이 시점 저장분으로 대체됩니다.`)) {
+          StorageManager.restoreSnapshot(idx);
+        }
+      });
+
+      item.querySelector(".delete-btn").addEventListener("click", () => {
+        if (confirm("이 저장본을 삭제하시겠습니까?")) {
+          StorageManager.deleteSnapshot(idx);
+          this.renderSnapshotsList();
+        }
+      });
+
+      container.appendChild(item);
+    });
   }
 };
 
