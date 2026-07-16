@@ -229,6 +229,16 @@ const DEFAULT_TICKETS = [
     details: "티타임: 오전 08:00 | 인원: 3인 라운딩\n예약자: 임세연 | 카트 포함 여부: 포함",
     imageUrl: "",
     memo: "클럽하우스 30분 전 도착하여 체크인 요망"
+  },
+  {
+    id: "t5",
+    category: "accommodation",
+    title: "하얏트 하우스 저지 시티 (체크인)",
+    date: "2026-10-24",
+    time: "15:00",
+    details: "예약번호: 3823208\n체크인: 10월 24일 (토) 15:00 (체크인 마감 06:00)\n체크아웃: 10월 29일 (목) 12:00 (5박)\n투숙객: LIM JAEWOO (인원: 성인 4명)\n객실 타입: Specialty, 2 Queen Beds with Sofa Bed\n옵션: 무료 아침 식사, 무료 WiFi\n주소: 1 Exchange Pl, Jersey City, NJ 07302\n전화번호: +1-201-395-0500",
+    imageUrl: "",
+    memo: "예약자: skskdj25@naver.com (010-7322-2136)"
   }
 ];
 

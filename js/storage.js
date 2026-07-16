@@ -18,7 +18,7 @@ const StorageManager = {
   // Initialize storage with mock data if empty (non-destructive)
   init() {
     try {
-      const CURRENT_VERSION = "v42";
+      const CURRENT_VERSION = "v43";
       let savedVersion = null;
       try {
         savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
@@ -79,6 +79,26 @@ const StorageManager = {
         }
       } catch (e) {
         console.warn("Migration for t2 return ticket failed:", e);
+      }
+
+      // Non-destructively inject Hyatt House Jersey City hotel reservation if missing from active database
+      try {
+        const activeTickets = JSON.parse(localStorage.getItem(STORAGE_KEYS.TICKETS) || "[]");
+        if (Array.isArray(activeTickets) && !activeTickets.some(t => t.id === "t5")) {
+          activeTickets.push({
+            id: "t5",
+            category: "accommodation",
+            title: "하얏트 하우스 저지 시티 (체크인)",
+            date: "2026-10-24",
+            time: "15:00",
+            details: "예약번호: 3823208\n체크인: 10월 24일 (토) 15:00 (체크인 마감 06:00)\n체크아웃: 10월 29일 (목) 12:00 (5박)\n투숙객: LIM JAEWOO (인원: 성인 4명)\n객실 타입: Specialty, 2 Queen Beds with Sofa Bed\n옵션: 무료 아침 식사, 무료 WiFi\n주소: 1 Exchange Pl, Jersey City, NJ 07302\n전화번호: +1-201-395-0500",
+            imageUrl: "",
+            memo: "예약자: skskdj25@naver.com (010-7322-2136)"
+          });
+          localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(activeTickets));
+        }
+      } catch (e) {
+        console.warn("Migration for t5 hotel reservation failed:", e);
       }
 
       // Non-destructively inject new mock hotel candidate if missing from active database
@@ -370,8 +390,8 @@ const StorageManager = {
         });
 
         // Sync local storage versions to prevent mismatches
-        localStorage.setItem("usa_travel_data_version", "v42");
-        localStorage.setItem(this.VERSION || "usa_travel_version", "v42");
+        localStorage.setItem("usa_travel_data_version", "v43");
+        localStorage.setItem(this.VERSION || "usa_travel_version", "v43");
 
         alert("성공적으로 데이터가 복원되었습니다! 페이지를 새로고침하여 적용합니다.");
         window.location.reload();
@@ -485,8 +505,8 @@ const StorageManager = {
     });
 
     // Make sure versions stay matched
-    localStorage.setItem("usa_travel_data_version", "v42");
-    localStorage.setItem("usa_travel_version", "v42");
+    localStorage.setItem("usa_travel_data_version", "v43");
+    localStorage.setItem("usa_travel_version", "v43");
 
     alert(`${snap.timestamp} 시점의 백업으로 복원 완료되었습니다! 페이지를 새로고침합니다.`);
     window.location.reload();
