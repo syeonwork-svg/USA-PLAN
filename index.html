@@ -4,7 +4,7 @@
   <script>
     (function() {
       try {
-        const targetVersion = "v41";
+        const targetVersion = "v42";
         localStorage.setItem("usa_travel_data_version", targetVersion);
 
         // Failsafe inline share loader
@@ -291,6 +291,7 @@
           <div class="ticket-filter-bar" id="ticket-filter-bar">
             <button class="filter-btn active" data-category="all">전체</button>
             <button class="filter-btn" data-category="flight">✈️ 항공</button>
+            <button class="filter-btn" data-category="accommodation">🏨 숙박</button>
             <button class="filter-btn" data-category="museum">🏛️ 미술관/문화</button>
             <button class="filter-btn" data-category="activity">⛳️ 액티비티</button>
             <button class="filter-btn" data-category="etc">🎫 기타</button>
@@ -633,6 +634,7 @@
             <label for="ticket-category">카테고리</label>
             <select id="ticket-category" class="form-control" required>
               <option value="flight">항공권 (Flight)</option>
+              <option value="accommodation">숙박/호텔/콘도 (Accommodation)</option>
               <option value="museum">미술관/박물관/공연 (Culture)</option>
               <option value="activity">액티비티/관광/골프 (Activity)</option>
               <option value="etc">기타 예매 내역 (Other)</option>
@@ -838,16 +840,16 @@
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""></script>
   
   <!-- App JS Files -->
-  <script src="js/mockData.js?v=41"></script>
-  <script src="js/storage.js?v=41"></script>
-  <script src="js/calendar.js?v=41"></script>
-  <script src="js/itinerary.js?v=41"></script>
-  <script src="js/expenses.js?v=41"></script>
-  <script src="js/map.js?v=41"></script>
-  <script src="js/tickets.js?v=41"></script>
-  <script src="js/candidates.js?v=41"></script>
-  <script src="js/passports.js?v=41"></script>
-  <script src="js/checklist.js?v=41"></script>
-  <script src="js/app.js?v=41"></script>
+  <script src="js/mockData.js?v=42"></script>
+  <script src="js/storage.js?v=42"></script>
+  <script src="js/calendar.js?v=42"></script>
+  <script src="js/itinerary.js?v=42"></script>
+  <script src="js/expenses.js?v=42"></script>
+  <script src="js/map.js?v=42"></script>
+  <script src="js/tickets.js?v=42"></script>
+  <script src="js/candidates.js?v=42"></script>
+  <script src="js/passports.js?v=42"></script>
+  <script src="js/checklist.js?v=42"></script>
+  <script src="js/app.js?v=42"></script>
 </body>
 </html>

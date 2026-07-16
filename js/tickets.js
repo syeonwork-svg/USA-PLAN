@@ -3,6 +3,7 @@ const TicketsComponent = {
   activeFilter: "all",
   categories: {
     flight: { label: "항공권", color: "#007aff", bg: "rgba(0, 122, 255, 0.05)", emoji: "✈️" },
+    accommodation: { label: "숙박", color: "#5856d6", bg: "rgba(88, 86, 214, 0.05)", emoji: "🏨" },
     museum: { label: "미술관/공연", color: "#af52de", bg: "rgba(175, 82, 222, 0.05)", emoji: "🏛️" },
     activity: { label: "액티비티/골프", color: "#34c759", bg: "rgba(52, 199, 89, 0.05)", emoji: "⛳️" },
     etc: { label: "기타 예약", color: "#8e8e93", bg: "rgba(142, 142, 147, 0.05)", emoji: "🎫" }
