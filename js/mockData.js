@@ -181,7 +181,24 @@ const DEFAULT_TIMELINE = {
   ]
 };
 
-const DEFAULT_EXPENSES = [];
+const DEFAULT_EXPENSES = [
+  {
+    id: "exp_jc_accomm",
+    category: "accommodation",
+    title: "저지시티 숙박 (하얏트 하우스)",
+    amount: 3296422,
+    date: "2026-10-24",
+    memo: "5박 예약 완료"
+  },
+  {
+    id: "exp_ny_accomm",
+    category: "accommodation",
+    title: "뉴욕중심가 숙박 (콩코드 호텔)",
+    amount: 3508151,
+    date: "2026-10-29",
+    memo: "3박 예약 완료"
+  }
+];
 
 const DEFAULT_TICKETS = [
   {
@@ -239,6 +256,16 @@ const DEFAULT_TICKETS = [
     details: "예약번호: 3823208\n체크인: 10월 24일 (토) 15:00 (체크인 마감 06:00)\n체크아웃: 10월 29일 (목) 12:00 (5박)\n투숙객: LIM JAEWOO (인원: 성인 4명)\n객실 타입: Specialty, 2 Queen Beds with Sofa Bed\n옵션: 무료 아침 식사, 무료 WiFi\n주소: 1 Exchange Pl, Jersey City, NJ 07302\n전화번호: +1-201-395-0500",
     imageUrl: "",
     memo: "예약자: skskdj25@naver.com (010-7322-2136)"
+  },
+  {
+    id: "tkt_concorde",
+    category: "accommodation",
+    title: "더 콩코드 호텔 뉴욕 (체크인)",
+    date: "2026-10-29",
+    time: "15:00",
+    details: "체크인: 10월 29일 (목) 15:00 ~\n체크아웃: 11월 02일 (월) ~ 12:00 (4박)\n객실 정보: 예약 완료\n주소: 127 E 55th St, New York, NY 10022\n전화번호: +1-212-355-2755",
+    imageUrl: "",
+    memo: "*뉴욕 중심가 숙소 (센트럴파크 및 타임스퀘어 인근 위치)"
   }
 ];
 

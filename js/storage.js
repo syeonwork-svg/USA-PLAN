@@ -18,7 +18,7 @@ const StorageManager = {
   // Initialize storage with mock data if empty (non-destructive)
   init() {
     try {
-      const CURRENT_VERSION = "v43";
+      const CURRENT_VERSION = "v44";
       let savedVersion = null;
       try {
         savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
@@ -99,6 +99,61 @@ const StorageManager = {
         }
       } catch (e) {
         console.warn("Migration for t5 hotel reservation failed:", e);
+      }
+
+      // Non-destructively inject Concorde Hotel ticket if missing from active database
+      try {
+        const activeTickets = JSON.parse(localStorage.getItem(STORAGE_KEYS.TICKETS) || "[]");
+        if (Array.isArray(activeTickets) && !activeTickets.some(t => t.id === "tkt_concorde")) {
+          activeTickets.push({
+            id: "tkt_concorde",
+            category: "accommodation",
+            title: "더 콩코드 호텔 뉴욕 (체크인)",
+            date: "2026-10-29",
+            time: "15:00",
+            details: "체크인: 10월 29일 (목) 15:00 ~\n체크아웃: 11월 02일 (월) ~ 12:00 (4박)\n객실 정보: 예약 완료\n주소: 127 E 55th St, New York, NY 10022\n전화번호: +1-212-355-2755",
+            imageUrl: "",
+            memo: "*뉴욕 중심가 숙소 (센트럴파크 및 타임스퀘어 인근 위치)"
+          });
+          localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(activeTickets));
+        }
+      } catch (e) {
+        console.warn("Migration for Concorde Hotel failed:", e);
+      }
+
+      // Non-destructively inject accommodation expenses if missing from active database
+      try {
+        const activeExpenses = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXPENSES) || "[]");
+        let modified = false;
+        if (Array.isArray(activeExpenses)) {
+          if (!activeExpenses.some(e => e.id === "exp_jc_accomm")) {
+            activeExpenses.push({
+              id: "exp_jc_accomm",
+              category: "accommodation",
+              title: "저지시티 숙박 (하얏트 하우스)",
+              amount: 3296422,
+              date: "2026-10-24",
+              memo: "5박 예약 완료"
+            });
+            modified = true;
+          }
+          if (!activeExpenses.some(e => e.id === "exp_ny_accomm")) {
+            activeExpenses.push({
+              id: "exp_ny_accomm",
+              category: "accommodation",
+              title: "뉴욕중심가 숙박 (콩코드 호텔)",
+              amount: 3508151,
+              date: "2026-10-29",
+              memo: "3박 예약 완료"
+            });
+            modified = true;
+          }
+          if (modified) {
+            localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(activeExpenses));
+          }
+        }
+      } catch (e) {
+        console.warn("Migration for accommodation expenses failed:", e);
       }
 
       // Non-destructively inject new mock hotel candidate if missing from active database
@@ -390,8 +445,8 @@ const StorageManager = {
         });
 
         // Sync local storage versions to prevent mismatches
-        localStorage.setItem("usa_travel_data_version", "v43");
-        localStorage.setItem(this.VERSION || "usa_travel_version", "v43");
+        localStorage.setItem("usa_travel_data_version", "v44");
+        localStorage.setItem(this.VERSION || "usa_travel_version", "v44");
 
         alert("성공적으로 데이터가 복원되었습니다! 페이지를 새로고침하여 적용합니다.");
         window.location.reload();
@@ -505,8 +560,8 @@ const StorageManager = {
     });
 
     // Make sure versions stay matched
-    localStorage.setItem("usa_travel_data_version", "v43");
-    localStorage.setItem("usa_travel_version", "v43");
+    localStorage.setItem("usa_travel_data_version", "v44");
+    localStorage.setItem("usa_travel_version", "v44");
 
     alert(`${snap.timestamp} 시점의 백업으로 복원 완료되었습니다! 페이지를 새로고침합니다.`);
     window.location.reload();
