@@ -123,7 +123,7 @@ const DEFAULT_TIMELINE = {
   "2026-10-24": [
     { time: "06:30", title: "마이애미 공항으로 이동 및 렌터카 반납", desc: "마이애미 국제공항 국내선 터미널", locName: "Miami International Airport", lat: 25.7959, lng: -80.2870 , isDraft: true },
     { time: "08:30", title: "🛫 아침 비행기로 뉴욕 라구아디아 공항 출발", desc: "델타항공 DL2234편 (08:30 출발 -> 11:30 도착)", locName: "LaGuardia Airport", lat: 40.7769, lng: -73.8740 , isDraft: true },
-    { time: "13:00", title: "뉴욕 숙소(저지시티) 이동 및 체크인", desc: "맨해튼이 한눈에 보이는 저지시티 숙소 체크인", locName: "Jersey City, NJ", lat: 40.7178, lng: -74.0431 , isDraft: true },
+    { time: "15:00", title: "🏨 하얏트 하우스 저지 시티 체크인", desc: "예약번호: 3823208 / 객실: 2 Queen Beds with Sofa Bed / 4인 투숙", locName: "Hyatt House Jersey City", lat: 40.7161, lng: -74.0326 , isDraft: true },
     { time: "16:30", title: "첼시 마켓 및 하이라인 파크", desc: "폐철길을 도심 공원으로 꾸민 하이라인 산책 및 랍스터 식사", locName: "The High Line", lat: 40.7480, lng: -74.0048 , isDraft: true }
   ],
   "2026-10-25": [
@@ -150,8 +150,9 @@ const DEFAULT_TIMELINE = {
   ],
   "2026-10-29": [
     { time: "10:00", title: "그랜드 센트럴 터미널 관람", desc: "세계에서 가장 승강장이 많은 유서 깊은 기차역 광장", locName: "Grand Central Terminal", lat: 40.7527, lng: -73.9772 , isDraft: true },
-    { time: "11:00", title: "숙소 이동: 뉴욕 중심가 숙소 체크인", desc: "저지시티 숙소 퇴실 후 맨해튼 미드타운 호텔 체크인", locName: "Midtown Manhattan, NY", lat: 40.7549, lng: -73.9840 , isDraft: true },
+    { time: "11:30", title: "🏨 하얏트 하우스 저지 시티 체크아웃", desc: "체크아웃 완료 후 맨해튼 미드타운으로 이동", locName: "Hyatt House Jersey City", lat: 40.7161, lng: -74.0326 , isDraft: true },
     { time: "13:00", title: "📚 뉴욕 공립도서관 투어 & 브라이언트 공원", desc: "도서관 투어 시간 확인 후 야외 브라이언트 공원 휴식", locName: "New York Public Library", lat: 40.7531823, lng: -73.9822534 , isDraft: true },
+    { time: "15:00", title: "🏨 더 콩코드 호텔 뉴욕 체크인", desc: "미드타운 중심가 숙박 (센트럴파크 인근 위치)", locName: "The Concorde Hotel New York", lat: 40.7612, lng: -73.9712 , isDraft: true },
     { time: "15:30", title: "엠파이어 스테이트 빌딩 전망대", desc: "뉴욕의 클래식 랜드마크 86층 야외 전망대 관람", locName: "Empire State Building", lat: 40.7484, lng: -73.9857 , isDraft: true }
   ],
   "2026-10-30": [
@@ -173,6 +174,7 @@ const DEFAULT_TIMELINE = {
     { time: "18:30", title: "🥩 Quality Bistro 저녁 식사", desc: "파리풍의 미드타운 퀄리티 비스트로에서 저녁식사 (*버터가 시그니처)", locName: "Quality Bistro", lat: 40.7632028, lng: -73.979167 , isDraft: true }
   ],
   "2026-11-02": [
+    { time: "08:30", title: "🏨 더 콩코드 호텔 뉴욕 체크아웃", desc: "체크아웃 정산 완료 후 JFK 공항으로 출발", locName: "The Concorde Hotel New York", lat: 40.7612, lng: -73.9712 , isDraft: true },
     { time: "09:00", title: "JFK 공항 이동 및 출국 준비", desc: "인천행 대한항공 KE082편 출국 예약 수속", locName: "John F. Kennedy International Airport", lat: 40.6413, lng: -73.7781 , isDraft: true },
     { time: "12:00", title: "🛫 낮 비행기로 인천 공항 출발 (귀국)", desc: "대한항공 KE082편 이륙 (12:00 출발 -> 다음날 도착, 예약코드: EK859P)", locName: "John F. Kennedy International Airport", lat: 40.6413, lng: -73.7781 , isDraft: true }
   ],

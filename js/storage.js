@@ -18,7 +18,7 @@ const StorageManager = {
   // Initialize storage with mock data if empty (non-destructive)
   init() {
     try {
-      const CURRENT_VERSION = "v44";
+      const CURRENT_VERSION = "v45";
       let savedVersion = null;
       try {
         savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
@@ -154,6 +154,98 @@ const StorageManager = {
         }
       } catch (e) {
         console.warn("Migration for accommodation expenses failed:", e);
+      }
+
+      // Non-destructively inject lodging timeline events if missing from active database
+      try {
+        const activeTimeline = JSON.parse(localStorage.getItem(STORAGE_KEYS.TIMELINE) || "{}");
+        let modified = false;
+
+        // 1. October 24 Check-in
+        if (activeTimeline["2026-10-24"]) {
+          const items = activeTimeline["2026-10-24"];
+          if (!items.some(ev => ev.title.includes("하얏트 하우스"))) {
+            const filtered = items.filter(ev => !ev.title.includes("뉴욕 숙소(저지시티)"));
+            filtered.push({
+              time: "15:00",
+              title: "🏨 하얏트 하우스 저지 시티 체크인",
+              desc: "예약번호: 3823208 / 객실: 2 Queen Beds with Sofa Bed / 4인 투숙",
+              locName: "Hyatt House Jersey City",
+              lat: 40.7161,
+              lng: -74.0326,
+              isDraft: true
+            });
+            filtered.sort((a, b) => a.time.localeCompare(b.time));
+            activeTimeline["2026-10-24"] = filtered;
+            modified = true;
+          }
+        }
+
+        // 2. October 29 Check-out & Check-in
+        if (activeTimeline["2026-10-29"]) {
+          const items = activeTimeline["2026-10-29"];
+          let changed = false;
+          // Add Hyatt House checkout
+          if (!items.some(ev => ev.title.includes("하얏트 하우스 저지 시티 체크아웃"))) {
+            const filtered = items.filter(ev => !ev.title.includes("숙소 이동: 뉴욕 중심가"));
+            filtered.push({
+              time: "11:30",
+              title: "🏨 하얏트 하우스 저지 시티 체크아웃",
+              desc: "체크아웃 완료 후 맨해튼 미드타운으로 이동",
+              locName: "Hyatt House Jersey City",
+              lat: 40.7161,
+              lng: -74.0326,
+              isDraft: true
+            });
+            activeTimeline["2026-10-29"] = filtered;
+            changed = true;
+          }
+          // Add Concorde Hotel check-in
+          const currentItems = activeTimeline["2026-10-29"];
+          if (!currentItems.some(ev => ev.title.includes("더 콩코드 호텔 뉴욕 체크인"))) {
+            const filtered = currentItems.filter(ev => !ev.title.includes("숙소 이동: 뉴욕 중심가"));
+            filtered.push({
+              time: "15:00",
+              title: "🏨 더 콩코드 호텔 뉴욕 체크인",
+              desc: "미드타운 중심가 숙박 (센트럴파크 인근 위치)",
+              locName: "The Concorde Hotel New York",
+              lat: 40.7612,
+              lng: -73.9712,
+              isDraft: true
+            });
+            activeTimeline["2026-10-29"] = filtered;
+            changed = true;
+          }
+          if (changed) {
+            activeTimeline["2026-10-29"].sort((a, b) => a.time.localeCompare(b.time));
+            modified = true;
+          }
+        }
+
+        // 3. November 2 Check-out
+        if (activeTimeline["2026-11-02"]) {
+          const items = activeTimeline["2026-11-02"];
+          if (!items.some(ev => ev.title.includes("더 콩코드 호텔 뉴욕 체크아웃"))) {
+            items.push({
+              time: "08:30",
+              title: "🏨 더 콩코드 호텔 뉴욕 체크아웃",
+              desc: "체크아웃 정산 완료 후 JFK 공항으로 출발",
+              locName: "The Concorde Hotel New York",
+              lat: 40.7612,
+              lng: -73.9712,
+              isDraft: true
+            });
+            items.sort((a, b) => a.time.localeCompare(b.time));
+            activeTimeline["2026-11-02"] = items;
+            modified = true;
+          }
+        }
+
+        if (modified) {
+          localStorage.setItem(STORAGE_KEYS.TIMELINE, JSON.stringify(activeTimeline));
+        }
+      } catch (e) {
+        console.warn("Migration for lodging timeline events failed:", e);
       }
 
       // Non-destructively inject new mock hotel candidate if missing from active database
@@ -445,8 +537,8 @@ const StorageManager = {
         });
 
         // Sync local storage versions to prevent mismatches
-        localStorage.setItem("usa_travel_data_version", "v44");
-        localStorage.setItem(this.VERSION || "usa_travel_version", "v44");
+        localStorage.setItem("usa_travel_data_version", "v45");
+        localStorage.setItem(this.VERSION || "usa_travel_version", "v45");
 
         alert("성공적으로 데이터가 복원되었습니다! 페이지를 새로고침하여 적용합니다.");
         window.location.reload();
@@ -560,8 +652,8 @@ const StorageManager = {
     });
 
     // Make sure versions stay matched
-    localStorage.setItem("usa_travel_data_version", "v44");
-    localStorage.setItem("usa_travel_version", "v44");
+    localStorage.setItem("usa_travel_data_version", "v45");
+    localStorage.setItem("usa_travel_version", "v45");
 
     alert(`${snap.timestamp} 시점의 백업으로 복원 완료되었습니다! 페이지를 새로고침합니다.`);
     window.location.reload();
