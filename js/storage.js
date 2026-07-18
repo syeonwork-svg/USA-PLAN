@@ -18,7 +18,7 @@ const StorageManager = {
   // Initialize storage with mock data if empty (non-destructive)
   init() {
     try {
-      const CURRENT_VERSION = "v45";
+      const CURRENT_VERSION = "v46";
       let savedVersion = null;
       try {
         savedVersion = localStorage.getItem(STORAGE_KEYS.VERSION);
@@ -121,6 +121,29 @@ const StorageManager = {
         console.warn("Migration for Concorde Hotel failed:", e);
       }
 
+      // Non-destructively inject MIA-EWR flight ticket if missing from active database
+      try {
+        const activeTickets = JSON.parse(localStorage.getItem(STORAGE_KEYS.TICKETS) || "[]");
+        if (Array.isArray(activeTickets) && !activeTickets.some(t => t.id === "tkt_mia_ewr")) {
+          activeTickets.push({
+            id: "tkt_mia_ewr",
+            category: "flight",
+            title: "마이애미(MIA) ➔ 뉴욕 뉴어크(EWR) 항공권",
+            date: "2026-10-24",
+            time: "14:16",
+            details: "MIA (Miami Int'l) ➔ EWR (Newark Liberty Int'l)\n출발: 14:16 | 도착: 17:29 (3시간 13분 비행, 직항)\n좌석등급: 메인 캐빈 (Main Cabin)\n탑승인원: 성인 4명\n총 결제금액: 1,147,200 KRW (1인당 286,800 KRW)",
+            imageUrl: "",
+            memo: "*체크인 및 모바일 탑승권 준비 필수 (수하물 규정 확인)",
+            depCode: "MIA",
+            arrCode: "EWR",
+            flightNo: ""
+          });
+          localStorage.setItem(STORAGE_KEYS.TICKETS, JSON.stringify(activeTickets));
+        }
+      } catch (e) {
+        console.warn("Migration for MIA-EWR flight ticket failed:", e);
+      }
+
       // Non-destructively inject accommodation expenses if missing from active database
       try {
         const activeExpenses = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXPENSES) || "[]");
@@ -156,27 +179,40 @@ const StorageManager = {
         console.warn("Migration for accommodation expenses failed:", e);
       }
 
+      // Non-destructively inject MIA-EWR flight expense if missing from active database
+      try {
+        const activeExpenses = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXPENSES) || "[]");
+        if (Array.isArray(activeExpenses) && !activeExpenses.some(e => e.id === "exp_mia_ewr_flight")) {
+          activeExpenses.push({
+            id: "exp_mia_ewr_flight",
+            category: "transport",
+            title: "마이애미 ➔ 뉴욕 항공권 (4인)",
+            amount: 1147200,
+            date: "2026-10-24",
+            memo: "MIA - EWR 편도 총액 (유류할증료 및 세금 포함)"
+          });
+          localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(activeExpenses));
+        }
+      } catch (e) {
+        console.warn("Migration for MIA-EWR flight expense failed:", e);
+      }
+
       // Non-destructively inject lodging timeline events if missing from active database
       try {
         const activeTimeline = JSON.parse(localStorage.getItem(STORAGE_KEYS.TIMELINE) || "{}");
         let modified = false;
 
-        // 1. October 24 Check-in
+        // 1. October 24 Timeline Update (MIA-EWR Flight at 14:16)
         if (activeTimeline["2026-10-24"]) {
           const items = activeTimeline["2026-10-24"];
-          if (!items.some(ev => ev.title.includes("하얏트 하우스"))) {
-            const filtered = items.filter(ev => !ev.title.includes("뉴욕 숙소(저지시티)"));
-            filtered.push({
-              time: "15:00",
-              title: "🏨 하얏트 하우스 저지 시티 체크인",
-              desc: "예약번호: 3823208 / 객실: 2 Queen Beds with Sofa Bed / 4인 투숙",
-              locName: "Hyatt House Jersey City",
-              lat: 40.7161,
-              lng: -74.0326,
-              isDraft: true
-            });
-            filtered.sort((a, b) => a.time.localeCompare(b.time));
-            activeTimeline["2026-10-24"] = filtered;
+          if (!items.some(ev => ev.title.includes("뉴욕 뉴어크"))) {
+            activeTimeline["2026-10-24"] = [
+              { time: "11:30", title: "마이애미 공항으로 이동 및 렌터카 반납", desc: "마이애미 국제공항 국내선 터미널 이동 후 Hertz 렌터카 반납", locName: "Miami International Airport", lat: 25.7959, lng: -80.2870 , isDraft: true },
+              { time: "14:16", title: "🛫 마이애미(MIA) ➔ 뉴욕 뉴어크(EWR) 출발", desc: "MIA-EWR 편도 직항편 출발 (비행시간 3시간 13분, 4인 탑승)", locName: "Miami International Airport", lat: 25.7959, lng: -80.2870 , isDraft: true },
+              { time: "17:29", title: "뉴욕 뉴어크 리버티 국제공항(EWR) 도착", desc: "EWR 공항 도착 후 수하물 수취 및 숙소 이동 준비", locName: "Newark Liberty International Airport", lat: 40.6895, lng: -74.1745 , isDraft: true },
+              { time: "19:00", title: "🏨 하얏트 하우스 저지 시티 체크인", desc: "예약번호: 3823208 / 객실: 2 Queen Beds with Sofa Bed / 4인 투숙 (체크인 마감 06:00)", locName: "Hyatt House Jersey City", lat: 40.7161, lng: -74.0326 , isDraft: true },
+              { time: "19:30", title: "저녁 식사 및 저지시티 산책", desc: "숙소 인근 또는 맨해튼 뷰 감상하며 가벼운 저녁 식사", locName: "Exchange Place, Jersey City", lat: 40.7161, lng: -74.0326 , isDraft: true }
+            ];
             modified = true;
           }
         }
@@ -537,8 +573,8 @@ const StorageManager = {
         });
 
         // Sync local storage versions to prevent mismatches
-        localStorage.setItem("usa_travel_data_version", "v45");
-        localStorage.setItem(this.VERSION || "usa_travel_version", "v45");
+        localStorage.setItem("usa_travel_data_version", "v46");
+        localStorage.setItem(this.VERSION || "usa_travel_version", "v46");
 
         alert("성공적으로 데이터가 복원되었습니다! 페이지를 새로고침하여 적용합니다.");
         window.location.reload();
@@ -652,8 +688,8 @@ const StorageManager = {
     });
 
     // Make sure versions stay matched
-    localStorage.setItem("usa_travel_data_version", "v45");
-    localStorage.setItem("usa_travel_version", "v45");
+    localStorage.setItem("usa_travel_data_version", "v46");
+    localStorage.setItem("usa_travel_version", "v46");
 
     alert(`${snap.timestamp} 시점의 백업으로 복원 완료되었습니다! 페이지를 새로고침합니다.`);
     window.location.reload();

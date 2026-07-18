@@ -199,6 +199,14 @@ const DEFAULT_EXPENSES = [
     amount: 3508151,
     date: "2026-10-29",
     memo: "3박 예약 완료"
+  },
+  {
+    id: "exp_mia_ewr_flight",
+    category: "transport",
+    title: "마이애미 ➔ 뉴욕 항공권 (4인)",
+    amount: 1147200,
+    date: "2026-10-24",
+    memo: "MIA - EWR 편도 총액 (유류할증료 및 세금 포함)"
   }
 ];
 
@@ -268,6 +276,19 @@ const DEFAULT_TICKETS = [
     details: "체크인: 10월 29일 (목) 15:00 ~\n체크아웃: 11월 02일 (월) ~ 12:00 (4박)\n객실 정보: 예약 완료\n주소: 127 E 55th St, New York, NY 10022\n전화번호: +1-212-355-2755",
     imageUrl: "",
     memo: "*뉴욕 중심가 숙소 (센트럴파크 및 타임스퀘어 인근 위치)"
+  },
+  {
+    id: "tkt_mia_ewr",
+    category: "flight",
+    title: "마이애미(MIA) ➔ 뉴욕 뉴어크(EWR) 항공권",
+    date: "2026-10-24",
+    time: "14:16",
+    details: "MIA (Miami Int'l) ➔ EWR (Newark Liberty Int'l)\n출발: 14:16 | 도착: 17:29 (3시간 13분 비행, 직항)\n좌석등급: 메인 캐빈 (Main Cabin)\n탑승인원: 성인 4명\n총 결제금액: 1,147,200 KRW (1인당 286,800 KRW)",
+    imageUrl: "",
+    memo: "*체크인 및 모바일 탑승권 준비 필수 (수하물 규정 확인)",
+    depCode: "MIA",
+    arrCode: "EWR",
+    flightNo: ""
   }
 ];
 
